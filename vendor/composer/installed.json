@@ -1,0 +1,28 @@
+[
+    {
+        "name": "everyz/everyz-php-framework",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "git@bitbucket.dev.shevchenko.ua:com/everyz-php-framework.git",
+            "reference": "df4604701ce061761eb5c992eb5f5a82bfe480a0"
+        },
+        "require": {
+            "php": ">=5.4"
+        },
+        "time": "2016-04-12 11:26:20",
+        "type": "library",
+        "installation-source": "source",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Artem Morozov",
+                "email": "artem.morozov@azzby.com"
+            }
+        ],
+        "description": "EveryZ PHP Framework"
+    }
+]

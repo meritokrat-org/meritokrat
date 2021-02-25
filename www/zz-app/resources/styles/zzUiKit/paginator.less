@@ -1,0 +1,48 @@
+nav.zz-ui-paginator {
+  @red-color: #800000;
+  @gray-color: #fafafa;
+
+  display: block;
+  text-align: right;
+  background-color: @gray-color;
+  border-top: 1px solid @red-color;
+
+  > ul.wrapper {
+    display: inline-table;
+    margin: 0;
+    padding: 0px;
+    list-style: none;
+
+    > li.page {
+      display: table-cell;
+
+      > a.zz-ui-button {
+        display: block;
+        box-sizing: border-box;
+        padding: 10px;
+        font-weight: bold;
+
+        &:hover {
+          background-color: darken(@gray-color, 7%);
+        }
+
+        &:active {
+          background-color: darken(@gray-color, 15%);
+        }
+      }
+
+      &.current {
+        background-color: @red-color;
+
+        > a.zz-ui-button {
+          color: white;
+
+          &:hover {
+            background-color: inherit;
+          }
+        }
+      }
+
+    }
+  }
+}

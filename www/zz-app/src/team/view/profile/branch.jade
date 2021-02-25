@@ -1,0 +1,35 @@
+div(
+    ng-init="isCollapsed = false",
+    ng-controller="TeamBranchController as Branch",
+    ng-show="$profile.getTeam() !== undefined && $profile.getTeam().branch().length > 0"
+).zz-panel
+    header.zz-panel-header
+        div.zz-panel-tools
+            button(
+            ng-click="Branch.setLevelUp()",
+            ng-show="$profile.stack().length > 0"
+            ).zz-button.zz-icon-button
+                i.zz-icon.ion-chevron-left
+        div
+            h5 Команди ({{ $profile.getTeam().branch().length }})
+
+        div.zz-panel-tools
+            button(ng-click="Branch.refresh()").zz-button.zz-icon-button
+                i.zz-icon.zz-fx.ion-refresh
+            button(ng-click="isCollapsed = !isCollapsed").zz-button.zz-icon-button
+                i(ng-class="{'zz-fx-rotate-180deg': isCollapsed}").zz-icon.ion-chevron-up.zz-fx
+
+    div(ng-show="!isCollapsed").zz-panel-content
+        div(ng-show="UI.team.states.onLoadStat").spinner
+            i(ng-class="{'zz-fx-rotate-forever': UI.team.states.onLoadStat}").zz-icon.ion-load-d
+
+        div.zz-list
+            div(ng-repeat="child in $profile.getTeam().branch()").zz-list-item
+                div.zz-list-item-content
+                    a(ng-click="Branch.setLevelDown(child)", href="javascript:void(0);") {{ child.title }}
+                    a(ng-click="Branch.setLevelDown(child)", href="javascript:void(0);")
+                        div(
+                        ng-class="{'zero': (child.category > 1 && !(child.nextLevel.teams > 0)) || (!(child.category > 1) && !(child.nextLevel.members > 0))}"
+                        )
+                            span(ng-show="child.category > 1") {{ child.nextLevel.teams }}
+                            span(ng-hide="child.category > 1") {{ child.nextLevel.members }}

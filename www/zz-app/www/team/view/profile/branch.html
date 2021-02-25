@@ -1,0 +1,24 @@
+
+<div ng-init="isCollapsed = false" ng-controller="TeamBranchController as Branch" ng-show="$profile.getTeam() !== undefined &amp;&amp; $profile.getTeam().branch().length &gt; 0" class="zz-panel">
+  <header class="zz-panel-header">
+    <div class="zz-panel-tools">
+      <button ng-click="Branch.setLevelUp()" ng-show="$profile.stack().length &gt; 0" class="zz-button zz-icon-button"><i class="zz-icon ion-chevron-left"></i></button>
+    </div>
+    <div>
+      <h5>Команди ({{ $profile.getTeam().branch().length }})</h5>
+    </div>
+    <div class="zz-panel-tools">
+      <button ng-click="Branch.refresh()" class="zz-button zz-icon-button"><i class="zz-icon zz-fx ion-refresh"></i></button>
+      <button ng-click="isCollapsed = !isCollapsed" class="zz-button zz-icon-button"><i ng-class="{'zz-fx-rotate-180deg': isCollapsed}" class="zz-icon ion-chevron-up zz-fx"></i></button>
+    </div>
+  </header>
+  <div ng-show="!isCollapsed" class="zz-panel-content">
+    <div ng-show="UI.team.states.onLoadStat" class="spinner"><i ng-class="{'zz-fx-rotate-forever': UI.team.states.onLoadStat}" class="zz-icon ion-load-d"></i></div>
+    <div class="zz-list">
+      <div ng-repeat="child in $profile.getTeam().branch()" class="zz-list-item">
+        <div class="zz-list-item-content"><a ng-click="Branch.setLevelDown(child)" href="javascript:void(0);">{{ child.title }}</a><a ng-click="Branch.setLevelDown(child)" href="javascript:void(0);">
+            <div ng-class="{'zero': (child.category &gt; 1 &amp;&amp; !(child.nextLevel.teams &gt; 0)) || (!(child.category &gt; 1) &amp;&amp; !(child.nextLevel.members &gt; 0))}"><span ng-show="child.category &gt; 1">{{ child.nextLevel.teams }}</span><span ng-hide="child.category &gt; 1">{{ child.nextLevel.members }}</span></div></a></div>
+      </div>
+    </div>
+  </div>
+</div>

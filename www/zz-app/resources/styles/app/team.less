@@ -1,0 +1,82 @@
+@import (less) "./team/profile.less";
+
+.team {
+
+  .stat {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+
+    > .stat-divider {
+      width: 1px;
+      height: auto;
+      background-color: #600;
+    }
+
+    > .stat-content {
+      > .stat-label {
+        color: #aaa;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      > .stat-list {
+        display: flex;
+        flex-flow: row nowrap;
+        margin-top: 5px;
+
+        > .stat-item {
+          box-sizing: border-box;
+          margin-left: 15px;
+          text-align: center;
+
+          &:first-child {
+            margin-left: 0;
+          }
+
+          > .stat-value {
+            color: #660000;
+            font-size: 36px;
+          }
+
+          > .stat-label {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+
+  }
+
+  > * {
+    margin-top: 5px;
+
+    &:first-child {
+      margin-top: auto;
+    }
+  }
+
+  > header {
+    h1 {
+      color: #660000;
+    }
+
+    .zz-icon-button {
+      i {
+        color: #600;
+      }
+    }
+
+    > div {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      height: 71px;
+
+      > div:first-child {
+        margin-bottom: 15px;
+      }
+    }
+  }
+}

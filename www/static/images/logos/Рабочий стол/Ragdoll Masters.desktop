@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Ragdoll Masters
+Exec=env WINEPREFIX="/home/anton/.wine" wine C:\\\\Program\\ Files\\\\Ragdoll\\ Masters\\\\Ragdoll\\ Masters\\ v3.1.exe 
+Type=Application
+StartupNotify=true
+Path=/home/anton/.wine/dosdevices/c:/Program Files/Ragdoll Masters
+Icon=/home/anton/.local/share/icons/6f39_ragdoll masters v3.1.0.png

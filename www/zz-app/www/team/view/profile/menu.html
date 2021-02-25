@@ -1,0 +1,47 @@
+
+<div class="zz-panel">
+  <header class="zz-panel-header">
+    <div>
+      <h5>Загальна статистика</h5>
+    </div>
+    <div class="zz-panel-tools">
+      <button ng-click="isCollapsed = !isCollapsed" class="zz-button zz-icon-button"><i ng-class="{'zz-fx-rotate-180deg': isCollapsed}" class="zz-icon ion-chevron-up zz-fx"></i></button>
+    </div>
+  </header>
+  <div ng-show="!isCollapsed" class="zz-panel-content">
+    <div style="padding: 10px">
+      <div class="stat">
+        <div ng-show="$profile.getTeam().stat().hasOwnProperty('teams')" class="stat-content">
+          <div class="stat-label">
+            <h5>Команди</h5>
+          </div>
+          <div class="stat-list">
+            <div ng-repeat="(key, value) in $profile.getTeam().stat().teams" class="stat-item">
+              <div class="stat-value">{{ value }}</div>
+              <div class="stat-label">{{ Profile.statLabel(key) }}</div>
+            </div>
+          </div>
+        </div>
+        <div ng-show="$profile.getTeam().stat().hasOwnProperty('teams')" class="stat-divider"></div>
+        <div class="stat-content">
+          <div class="stat-label">
+            <h5>Люди</h5>
+          </div>
+          <div class="stat-list">
+            <div class="stat-item">
+              <div class="stat-value">{{ $profile.getTeam().stat().members | number }}</div>
+              <div class="stat-label">Учасників</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">{{ $profile.getTeam().stat().voters | number }}</div>
+              <div class="stat-label">Виборців</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="padding: 10px">
+      <div>{{ $profile.getTeam().buildings() }}</div>
+    </div>
+  </div>
+</div>

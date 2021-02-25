@@ -1,0 +1,62 @@
+@import (less) "./app/common.less";
+@import (less) "./app/tabs.less";
+@import (less) "./app/panel.less";
+@import (less) "./app/pagination.less";
+
+@import (less) "./app/team.less";
+
+html, body {
+  background-color: transparent !important;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  line-height: 1;
+}
+
+hr {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, .25);
+}
+
+p, h1, h2, h3, h4, h5 {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  @color: #800000;
+
+  color: @color;
+  text-decoration: none;
+
+  &:hover {
+    cursor: pointer !important;
+    text-decoration: underline;
+  }
+}
+
+.md-datepicker-open .md-datepicker-input {
+  height: auto;
+}
+
+md-input-container {
+  margin-bottom: 0;
+
+  .md-errors-spacer {
+    display: none;
+  }
+}
+
+md-option {
+  height: 24px;
+
+  .md-text {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,91 @@
+Subject: : Error happened on polithub.org, 14 Sep, 2016
+Receiver: support@polithub.org
+From: info@polithub.org
+
+Non-static method user_helper::datefields() should not be called statically, assuming $this from incompatible context
+
+Пользователь: Артем Морозов
+http://polithub.org/profile-11752
+
+URL: /blog-11752
+
+Referrer: http://polithub.org/blogs
+
+File: /var/www/polithub/apps/frontend/modules/blogs/views/partials/left.php
+Line: 75
+Code: 8192
+
+Backtrace:
+class: 
+method:include
+file:/var/www/polithub/apps/frontend/modules/blogs/views/user.view.php (4)
+
+class: 
+method:include
+file:/var/www/polithub/apps/frontend/layouts/layout.view.php (683)
+
+class: 
+method:include
+file:/var/www/polithub/framework/library/render/html_render.php (29)
+
+class: html_render
+method:render
+file:/var/www/polithub/framework/library/controller/basic_controller.php (128)
+
+class: basic_controller
+method:render
+file:/var/www/polithub/framework/library/controller/basic_controller.php (175)
+
+class: basic_controller
+method:run
+file:/var/www/polithub/framework/library/kernel/application.php (120)
+
+class: application
+method:execute
+file:/var/www/polithub/www/index.php (21)
+
+
+
+Array
+(
+    [USER] => www-data
+    [HOME] => /var/www
+    [FCGI_ROLE] => RESPONDER
+    [SERVER_SOFTWARE] => lighttpd/1.4.35
+    [SERVER_NAME] => polithub.org
+    [GATEWAY_INTERFACE] => CGI/1.1
+    [SERVER_PORT] => 80
+    [SERVER_ADDR] => 10.0.3.15
+    [REMOTE_PORT] => 55168
+    [REMOTE_ADDR] => 10.10.100.1
+    [SCRIPT_NAME] => /index.php
+    [PATH_INFO] => 
+    [SCRIPT_FILENAME] => /var/www/polithub/www/index.php
+    [DOCUMENT_ROOT] => /var/www/polithub/www
+    [REQUEST_URI] => /blog-11752
+    [REDIRECT_URI] => /index.php?module=blogs&action=user&user_id=11752
+    [QUERY_STRING] => module=blogs&action=user&user_id=11752
+    [REQUEST_METHOD] => GET
+    [REDIRECT_STATUS] => 200
+    [SERVER_PROTOCOL] => HTTP/1.0
+    [HTTP_HOST] => polithub.org
+    [HTTP_X_REAL_IP] => 91.239.80.58
+    [HTTP_X_FORWARDED_FOR] => 91.239.80.58
+    [HTTP_CONNECTION] => close
+    [HTTP_PRAGMA] => no-cache
+    [HTTP_CACHE_CONTROL] => no-cache
+    [HTTP_UPGRADE_INSECURE_REQUESTS] => 1
+    [HTTP_USER_AGENT] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.113 Safari/537.36
+    [HTTP_ACCEPT] => text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+    [HTTP_REFERER] => http://polithub.org/blogs
+    [HTTP_ACCEPT_ENCODING] => gzip, deflate, sdch
+    [HTTP_ACCEPT_LANGUAGE] => uk,ru;q=0.8,en;q=0.6
+    [HTTP_COOKIE] => PHPSESSID=ufs7mgg03be7c3tc8nq4d65rn4; fa53b91ccc1b78668d5af58e1ed3a485=till20052%40gmail.com%7C2bdd526587617ffbf91980b857decde2; __utma=217365527.520143062.1471246476.1471429980.1473851545.4; __utmb=217365527.48.10.1473851545; __utmc=217365527; __utmz=217365527.1471246476.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [ENVIRONMENT] => prod
+    [FRAMEWORK_PATH] => /var/www/polithub/framework
+    [LANGUAGE] => ua
+    [PHP_SELF] => /index.php
+    [REQUEST_TIME_FLOAT] => 1473855010.3192
+    [REQUEST_TIME] => 1473855010
+)
+

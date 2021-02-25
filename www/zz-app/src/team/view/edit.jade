@@ -1,0 +1,122 @@
+div(
+ng-controller="EditController as UI",
+layout='column'
+)
+    md-toolbar(
+    layout='row',
+    layout-align='start center'
+    ng-show='UI.panel("main").header'
+    )
+        a(ui-sref='team.index')
+            md-button.md-icon-button
+                md-icon.material-icons keyboard_arrow_left
+        div(layout-padding)
+            h4 Нова команда
+
+    md-content
+        div(layout='column')
+            div(layout='column', flex-offset='10')
+                h3 Назва команди
+                div(layout='row')
+                    md-input-container(flex='90')
+                        label Введіть назву команди
+                        input(ng-model='UI.entity("team").title', name='title')
+
+            div(layout='column', flex-offset='10').mt-10
+                h3 Кількість виборців
+                div(layout='row')
+                    md-input-container(flex='90')
+                        label Введіть кількість виборців
+                        input(ng-model='UI.entity("team").votersCount', name='title')
+
+            div(layout='column', flex-offset='10').mt-10
+                h3 Оберіть рівень
+                div(layout='row')
+                    md-input-container(flex='90')
+                        label Рівень
+                        md-select(
+                        name='level',
+                        ng-model='UI.entity("team").level'
+                        )
+                            md-option(ng-repeat='item in UI.dataSource.levels', value='{{ item.id }}') {{ item.title }}
+
+            div(
+            layout='column',
+            flex-offset='10',
+            ng-show='(UI.entity("team").level == 0)'
+            ).mt-10
+                h3 Оберіть тип
+                div(layout='row')
+                    md-input-container(flex='90')
+                        label Тип
+                        md-select(
+                        name='type',
+                        ng-model='UI.entity("team").type'
+                        )
+                            md-option(ng-repeat='item in UI.dataSource.types', value='{{ item.id }}') {{ item.title }}
+
+            md-divider.mt-15.mb-15
+
+            div(layout='column', flex-offset='10')
+                h3 Розташування команди
+                div(layout='row')
+                    md-input-container(flex='30')
+                        label Регіональний рівень
+                        md-select(
+                        name='regions',
+                        ng-model='UI.entity("team").region',
+                        ng-change='UI.onRegionChange()'
+                        )
+                            md-option(ng-repeat='item in UI.dataSource.regions', value='{{ item.id }}') {{ item.title }}
+
+                    md-input-container(flex='30', ng-show='UI.entity("team").region > 0').ml-15
+                        label Місцевий рівень
+                        md-select(
+                        name='cities',
+                        ng-model='UI.entity("team").city',
+                        ng-change='UI.onCityChange()'
+                        )
+                            md-option(ng-repeat='item in UI.dataSource.cities', value='{{ item.id }}') {{ item.title }}
+
+                    md-input-container(flex='30', ng-show='(UI.dataSource.districts.length > 0 && UI.entity("team").level == 1 && UI.entity("team").city > 0)').ml-15
+                        label Сектор
+                        md-select(
+                        name='districts',
+                        ng-model='UI.entity("team").district',
+                        ng-change='UI.onDistrictChange()'
+                        )
+                            md-option(ng-repeat='item in UI.dataSource.districts', value='{{ item.id }}') {{ item.title }}
+
+            div(layout='column', flex-offset='10')
+                div(layout='row')
+                    md-input-container(flex='90')
+                        label Адреса
+                        input(
+                        name='address'
+                        ng-model='UI.entity("team").address'
+                        )
+
+            div(layout='column', flex-offset='10')
+                div(layout='row')
+                    md-input-container(flex='90')
+                        label Адреси будинків, що входять до виборчого округу
+                        textarea(name='buildings', ng-model='UI.entity("team").buildings')
+
+            md-divider.mt-15.mb-15
+
+            div(layout='column', flex-offset='10')
+                div
+                    h3 Вкажіть дату установчих зборів
+                    md-datepicker(
+                    flex='60',
+                    md-placeholder='Дата установчих зборів',
+                    ng-model='UI.entity("team").dateOfAssembly'
+                    )
+
+            md-divider.mt-15.mb-15
+
+            div(layout='column', flex-offset='10', style="padding-bottom: 150px")
+                div(layout='row', layout-align='start center')
+                    md-button(ng-click='UI.save($event)').md-raised.md-primary Зберегти
+                    span(ng-show="UI.onSavedSuccess").green Дані були успішно збережені!
+                    span(ng-show="UI.onSavedError").error Помилка збереження!

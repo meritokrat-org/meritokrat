@@ -1,0 +1,227 @@
+<html>
+    <head>
+        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>        <title></title>        
+        <script type="text/javascript" src ="/static/javascript/library/jquery/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src ="/static/javascript/library/jquery/jquery.ui.core.js"></script>
+        <script type="text/javascript" src ="/static/javascript/library/jquery/jquery.ui.datepicker-ru.js"></script>
+        <script type="text/javascript" src ="/static/javascript/library/jquery/jquery.ui.datepicker-uk.js"></script>
+        <script type="text/javascript" src ="/static/javascript/library/jquery/jquery.ui.datepicker.js"></script>
+        <script type="text/javascript" src ="/static/javascript/library/jquery/jquery.ui.widget.js"></script>
+        <script type="text/javascript" src ="/static/javascript/library/validators.js"></script>
+        
+        <script type="text/javascript" src ="/static/javascript/modules/admin.js"></script>
+        <link type="text/css" href="/static/javascript/library/jquery/css/jquery.ui.all.css" rel="stylesheet" />
+        <link type="text/css" href="/static/css/main.css" rel="stylesheet" />
+        
+    </head>
+    <body>
+       <div id="all_sitebox" class="cb">
+            <div class="body" style="margin: 0 auto;">
+                <div id="header" class="fl">
+                                    </div>
+                <div id="all_content_box" class="fl">
+                    <div id="content" class="fl">
+                        <div class="inner_content_box fl">
+                            <style>
+    .bold {font-weight: bold;}
+</style>
+<script>
+    $(document).ready(function() {
+        Admin.init_selects('country_id','region_id','city_id');
+        $( "#birthday" ).datepicker({
+			changeMonth: true,
+			changeYear: true
+                        });
+$( "#work_start_date" ).datepicker({
+			changeMonth: true,
+			changeYear: true
+                        });
+$( "#test_period_end" ).datepicker({
+			changeMonth: true,
+			changeYear: true
+                        });
+$( "#work_quit_date" ).datepicker({
+			changeMonth: true,
+			changeYear: true
+                        });                        
+                        
+    });
+
+</script>
+
+<div class="contact_all_box fl">
+    <h1 class="bold" style="text-align:center;">Форма добавления личной карты сотрудника</h1>
+    <form class="fl" method="post">
+        <input type="hidden" name="add_employee" value="1">
+                <div class="one_row fl">
+            <div class="text fl bold">Фамилия<span style="color: red;">*</span></div>
+            <input class="text" type="text" name="last_name" id="last_name" value=''>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Имя<span style="color: red;">*</span></div>
+            <input class="text" type="text" name="first_name" id="first_name" value=''><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Отчество<span style="color: red;">*</span></div>
+            <input class="text" type="text" name="father_name" id="father_name" value=''>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Пол<span style="color: red;">*</span></div>
+            <div class="fl">
+                <input type="radio" name="gender[]" value="m" ><span>Male</span><br>
+                <input type="radio" name="gender[]" value="f" ><span>Female</span>
+            </div>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Должность<span style="color: red;">*</span></div>
+            <input class="text" type="text" name="position" id="position" value=''><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Дата прийому на роботу<span style="color: red;">*</span></div>
+            <input class="text" type="text" name="work_start_date" id="work_start_date" value=''><br>
+        </div>
+         <div class="one_row fl">
+            <div class="text fl bold">Дата завершення випробувального терміну<span style="color: red;">*</span></div>
+            <input class="text" type="text" name="test_period_end" id="test_period_end" value=''><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Результати оцінювання після випробувального терміну</div>
+            <textarea class="text" type="text" name="test_period_results" id="test_period_results"></textarea><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Кабінет</div>
+            <input class="text" type="text" name="cabinet" id="cabinet" value=''><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Картка входу в офіс</div>
+            <input type="checkbox" name="card" id="card" value="card" ><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Рабочий телефон<br><span style="font-size: 10px; font-weight: normal;">Формат: 0671234567</span></div>
+            <input class="text" type="text" name="work_phone" id="work_phone" value=''><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">E-адрес<span style="color: red;">*</span></div>
+            <input class="text" type="text" name="email" id="email" value=''><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Доступ до колекторних поштових скриньок<span style="color: red;">*</span></div>
+            <textarea class="text" type="text" name="collector_email_access" id="collector_email_access"></textarea><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Доступ до мережевих ресурсів</div>
+            <div class="fl">
+                            <input type="checkbox" name="network_source_access[]" value="1"><span>Party</span><br>
+                            <input type="checkbox" name="network_source_access[]" value="2"><span>Media</span><br>
+                            <input type="checkbox" name="network_source_access[]" value="3"><span>Public</span><br>
+                            <input type="checkbox" name="network_source_access[]" value="4"><span>Private-Designer</span><br>
+                            <input type="checkbox" name="network_source_access[]" value="5"><span>IAS-IAS</span><br>
+                        </div>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Специфічне програмне забезпечення<span style="color: red;">*</span></div>
+            <textarea class="text" type="text" name="specific_software" id="specific_software"></textarea>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Додаткові дії з облаштування робочого місця<span style="color: red;">*</span></div>
+            <textarea class="text" type="text" name="workplace design" id="workplace design"></textarea>
+        </div>
+        
+        
+         <div class="one_row fl">
+            <div class="text fl bold">Страна<span style="color: red;">*</span></div>
+                        <select  use_values="" value="" id="country_id" class="fl" name="country"><option value="0" selected>- оберіть країну -</option><option value="1" >Україна</option><option value="2" >Австрія</option><option value="3" >Азербайджан</option><option value="4" >Албанія</option><option value="5" >Алжир</option><option value="6" >Ангола</option><option value="7" >Андорра</option><option value="8" >Антигуа і Барбуда</option><option value="9" >Аргентина</option><option value="10" >Вірменія</option><option value="11" >Афганістан</option><option value="12" >Багами</option><option value="13" >Бангладеш</option><option value="14" >Барбадос</option><option value="15" >Бахрейн</option><option value="16" >Білорусь</option><option value="17" >Беліз</option><option value="18" >Бельгія</option><option value="19" >Бенін</option><option value="20" >Болгарія</option><option value="21" >Болівія</option><option value="22" >Боснія і Герцеговина</option><option value="23" >Ботсвана</option><option value="24" >Бразилія</option><option value="25" >Бруней</option><option value="26" >Буркіна-Фасо</option><option value="27" >Бурунді</option><option value="28" >Бутан</option><option value="29" >Вануату</option><option value="30" >Ватикан</option><option value="31" >Великобританія</option><option value="32" >Угорщина</option><option value="33" >Венесуела</option><option value="34" >Східний Тимор</option><option value="35" >В'єтнам</option><option value="36" >Габон</option><option value="37" >Гаїті</option><option value="38" >Гайана</option><option value="39" >Гамбія</option><option value="40" >Гана</option><option value="41" >Гватемала</option><option value="42" >Гвінея</option><option value="43" >Гвінея-Бісау</option><option value="44" >Німеччина</option><option value="45" >Гондурас</option><option value="46" >Гренада</option><option value="47" >Греція</option><option value="48" >Грузія</option><option value="49" >Данія</option><option value="50" >Джібуті</option><option value="51" >Домініка</option><option value="52" >Домініканська Республіка</option><option value="53" >Єгипет</option><option value="54" >Замбія</option><option value="55" >Зімбабве</option><option value="56" >Ізраїль</option><option value="57" >Індія</option><option value="58" >Індонезія</option><option value="59" >Йорданія</option><option value="60" >Ірак</option><option value="61" >Іран</option><option value="62" >Ірландія</option><option value="63" >Ісландія</option><option value="64" >Іспанія</option><option value="65" >Італія</option><option value="66" >Ємен</option><option value="67" >Кабо-Верде</option><option value="68" >Казахстан</option><option value="69" >Камбоджа</option><option value="70" >Камерун</option><option value="71" >Канада</option><option value="72" >Катар</option><option value="73" >Кенія</option><option value="74" >Кіпр</option><option value="75" >Киргизія</option><option value="76" >Кірібаті</option><option value="77" >КНР</option><option value="78" >Комори</option><option value="79" >Республіка Конго</option><option value="80" >ДР Конго</option><option value="81" >Колумбія</option><option value="82" >КНДР</option><option value="83" >Республіка Корея</option><option value="84" >Коста-Ріка</option><option value="85" >Кот-д'Івуар</option><option value="86" >Куба</option><option value="87" >Кувейт</option><option value="88" >Лаос</option><option value="89" >Латвія</option><option value="90" >Лесото</option><option value="91" >Ліберія</option><option value="92" >Ліван</option><option value="93" >Лівія</option><option value="94" >Литва</option><option value="95" >Ліхтенштейн</option><option value="96" >Люксембург</option><option value="97" >Маврикій</option><option value="98" >Мавританія</option><option value="99" >Мадагаскар</option><option value="100" >Македонія</option><option value="101" >Малаві</option><option value="102" >Малайзія</option><option value="103" >Малі</option><option value="104" >Мальдіви</option><option value="105" >Мальта</option><option value="106" >Марокко</option><option value="107" >Маршаллові Острови</option><option value="108" >Мексика</option><option value="109" >Мозамбік</option><option value="110" >Молдова</option><option value="111" >Монако</option><option value="112" >Монголія</option><option value="113" >М'янма</option><option value="114" >Намібія</option><option value="115" >Науру</option><option value="116" >Непал</option><option value="117" >Нігер</option><option value="118" >Нігерія</option><option value="119" >Нідерланди</option><option value="120" >Нікарагуа</option><option value="121" >Нова Зеландія</option><option value="122" >Норвегія</option><option value="123" >ОАЕ</option><option value="124" >Оман</option><option value="125" >Пакистан</option><option value="126" >Палау</option><option value="127" >Панама</option><option value="128" >Папуа-Нова Гвінея</option><option value="129" >Парагвай</option><option value="130" >Перу</option><option value="131" >Польща</option><option value="132" >Португалія</option><option value="133" >Росія</option><option value="134" >Руанда</option><option value="135" >Румунія</option><option value="136" >Сальвадор</option><option value="137" >Самоа</option><option value="138" >Сан-Марино</option><option value="139" >Сан-Томе і Прінсіпі</option><option value="140" >Саудівська Аравія</option><option value="141" >Свазіленд</option><option value="142" >Сейшельські Острови</option><option value="143" >Сенегал</option><option value="144" >Сент-Вінсент і Гренадини</option><option value="145" >Сент-Кітс і Невіс</option><option value="146" >Сент-Люсія</option><option value="147" >Сербія</option><option value="148" >Сінгапур</option><option value="149" >Сирія</option><option value="150" >Словаччина</option><option value="151" >Словенія</option><option value="152" >США</option><option value="153" >Соломонові Острови</option><option value="154" >Сомалі</option><option value="155" >Судан</option><option value="156" >Суринам</option><option value="157" >Сьєрра-Леоне</option><option value="158" >Таджикистан</option><option value="159" >Таїланд</option><option value="160" >Танзанія</option><option value="161" >Того</option><option value="162" >Тонга</option><option value="163" >Тринідад і Тобаго</option><option value="164" >Тувалу</option><option value="165" >Туніс</option><option value="166" >Туркменія</option><option value="167" >Туреччина</option><option value="168" >Уганда</option><option value="169" >Австралія</option><option value="170" >Узбекистан</option><option value="171" >Уругвай</option><option value="172" >Федеративні Штати Мікронезії</option><option value="173" >Фіджі</option><option value="174" >Філіппіни</option><option value="175" >Фінляндія</option><option value="176" >Франція</option><option value="177" >Хорватія</option><option value="178" >ЦАР</option><option value="179" >Чад</option><option value="180" >Чорногорія</option><option value="181" >Чехія</option><option value="182" >Чилі</option><option value="183" >Швейцарія</option><option value="184" >Швеція</option><option value="185" >Шрі-Ланка</option><option value="186" >Еквадор</option><option value="187" >Екваторіальна Гвінея</option><option value="188" >Еритрея</option><option value="189" >Естонія</option><option value="190" >Ефіопія</option><option value="191" >ПАР</option><option value="192" >Ямайка</option><option value="193" >Японія</option></select>        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Регион<span style="color: red;">*</span></div>
+                        <select  use_values="" value="" id="region_id" class="fl" name="region"><option value="" selected>&mdash;</option></select>        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Район области/Город<br>обласного значения<span style="color: red;">*</span></div>
+                        <select  use_values="" value="" id="city_id" class="fl" name="city"><option value="" selected>&mdash;</option></select>        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Адрес<br><span style="font-size: 10px; font-weight: normal;">город, пгт, село, улица, дом, квартира</span></div>
+            <input class="text" type="text" name="address" id="address" value=''><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Мобильный телефон<br><span style="font-size: 10px; font-weight: normal;">Формат: 0671234567</span></div>
+            <input class="text" type="text" name="mobile_phone" id="mobile_phone" value=''><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Домашний телефон<br><span style="font-size: 10px; font-weight: normal;">Формат: 0671234567</span></div>
+            <input class="text" type="text" name="home_phone" id="home_phone" value=''><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Особистий&nbsp;E-адрес<br><span style="font-size: 10px; font-weight: normal;">Формат: 0671234567</span></div>
+            <input class="text" type="text" name="private_email" id="private_email" value=''><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Дата рождения<span style="color: red;">*</span></div>
+            <input class="text" type="text" name="birthday" id="birthday" value='01/01/1970'>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Паспортні дані</div>
+            <textarea id="about" name="passport_data" value=''></textarea>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Icq</div>
+            <input class="text" type="text" name="icq" id="icq" value=''><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Skype</div>
+            <input class="text" type="text" name="skype" id="skype" value=''><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Дата звільнення<br><span style="font-size: 10px; font-weight: normal;">Формат: 0671234567</span></div>
+            <input class="text" type="text" name="work_quit_date" id="work_quit_date" value=''><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Причина звільнення<br><span style="font-size: 10px; font-weight: normal;">Формат: 0671234567</span></div>
+            <input class="text" type="text" name="quit_reason" id="quit_reason" value=''><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Administrator</div>
+            <input type="checkbox" name="credintials" id="credintials" value="admin" ><br>
+        </div>
+        <div class="one_row fl">
+            <div class="text fl bold">Дополнительная информация</div>
+            <textarea id="about" name="about" value=''></textarea>
+        </div>
+        <div class="one_row fl">
+            <input style="float: none; margin: 10px 300px; width: 100px;" class="button" type="button" name="sendData" onClick="javascript: SendForm(this)" value="Отправить">
+        </div>
+    </form>
+    <div id="errors" class="cb" style="display: none;padding: 10px; background-color: red; text-align: center; text-color: black;"></div>
+</div>
+<script>
+    function SendForm(form_obj) {
+        $form = $('form');
+        $errors = '';
+        if(validatorLength($('#first_name').val(),2)) $errors += 'Ім’я занадто коротке<br>';
+        if(validatorLength($('#last_name').val(),2)) $errors += 'Прізвище занадто коротке<br>';
+        if(validatorEmail($('#email').val())) $errors += 'Hевірний емейл<br>';
+        if(validatorRequired($('#country_id').val())) $errors += 'Країна не обрана<br>';
+        if(validatorRequired($('#region_id').val())) $errors += 'Регіон не обран<br>';
+        if(validatorRequired($('#city_id').val())) $errors += 'Місто не обрана<br>';
+        if($errors!='')
+            $('#errors').fadeIn(300,function() { $(this).html($errors); }).fadeOut(3000,function() {$(this).html('');});
+        else { 
+            $form.submit();
+        }
+
+    }
+</script>
+                        </div>
+                    </div>
+                </div>
+                <div id="right_column" class="fl">
+                                        </div>
+                <div id="some_block" class="fl"></div>
+            </div>
+           
+           <div id="footer" class="fl">
+                <div class="body" style="margin: 0 auto;">
+                                    </div>
+            </div>
+        </div>
+   </body>
+</html>

@@ -1,0 +1,1 @@
+<? if ( $child_id ) { include 'partials/post_child_comment.php'; } else { include 'partials/post_comment.php'; } ?>

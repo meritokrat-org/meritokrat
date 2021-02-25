@@ -1,0 +1,74 @@
+/* 
+    Document   : news-slider.css
+    Created on : 11.08.2010, 15:48:50
+    Author     : andrew
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+
+.news_slider {
+  position: relative;
+  width: 410px;
+  margin:0;
+  text-align: left;
+}
+.news_slider .messaging {
+  display: block;
+  padding: 5px;
+  margin: 0 20px 5px 20px;
+  background: #ffffcc;
+}
+.news_slider .prev, .news_slider .next {
+  position: absolute;
+  top: 42%;
+  display: none;
+}
+.news_slider .next {
+  right: 0;
+}
+.news_slider .container {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.news_slider .news_items {
+  /* Важно!
+  Ширина должна быть
+  равна .item ((width +
+  margin-right) * 2) */
+  position: relative;
+  width: 360px;
+  top: 0;
+  left: 20px;
+  overflow: hidden;
+}
+.news_slider .view_all {
+  font-size: .8em;
+  padding: 5px;
+  margin: 0 0 2px 0;
+  text-align: center;
+}
+.news_slider .item {
+  /* Важно!
+  Обязательно определяем
+  свойства width и
+  margin-right. */
+  width: 170px;
+  margin-right: 10px;
+}
+.news_slider .item div {
+  font-size: .8em;
+  width: 170px;
+  padding: 10px 0 10px 0;
+}
+.news_slider .item img {
+  padding: 10px;
+}
+

@@ -1,0 +1,1 @@
+<? if ( $child_id ) { include 'partials/child_argument.php'; } else if ( $id ) { include 'partials/argument.php'; } ?>

@@ -1,0 +1,30 @@
+div.zz-panel
+    header.zz-panel-header
+        div
+            h5 Загальна статистика
+        div.zz-panel-tools
+            button(ng-click="isCollapsed = !isCollapsed").zz-button.zz-icon-button
+                i(ng-class="{'zz-fx-rotate-180deg': isCollapsed}").zz-icon.ion-chevron-up.zz-fx
+    div(ng-show="!isCollapsed").zz-panel-content
+        div(style="padding: 10px")
+            div.stat
+                div(ng-show="$profile.getTeam().stat().hasOwnProperty('teams')").stat-content
+                    div.stat-label
+                        h5 Команди
+                    div.stat-list
+                        div(ng-repeat="(key, value) in $profile.getTeam().stat().teams").stat-item
+                            div.stat-value {{ value }}
+                            div.stat-label {{ Profile.statLabel(key) }}
+                div(ng-show="$profile.getTeam().stat().hasOwnProperty('teams')").stat-divider
+                div.stat-content
+                    div.stat-label
+                        h5 Люди
+                    div.stat-list
+                        div.stat-item
+                            div.stat-value {{ $profile.getTeam().stat().members | number }}
+                            div.stat-label Учасників
+                        div.stat-item
+                            div.stat-value {{ $profile.getTeam().stat().voters | number }}
+                            div.stat-label Виборців
+        div(style="padding: 10px")
+            div {{ $profile.getTeam().buildings() }}

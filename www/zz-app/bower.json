@@ -1,0 +1,29 @@
+{
+  "name": "zzapp",
+  "description": "A frontend application based on AngularJS",
+  "main": "index.js",
+  "authors": [
+    "Artem Morozov <artem.morozov@azzby.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.3",
+    "angular": "^1.5.3",
+    "angular-ui-router": "^0.2.18",
+    "Ionicons": "ionicons#^2.0.1",
+    "angular-animate": "^1.5.5",
+    "angular-aria": "^1.5.5",
+    "angular-messages": "^1.5.5",
+    "angular-material": "^1.0.7",
+    "material-design-icons": "^2.2.3"
+  }
+}

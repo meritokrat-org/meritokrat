@@ -1,0 +1,13 @@
+echo Deployment started...
+echo Updating sources....
+cd ..
+svn up
+echo Sources updated
+echo Migrating DB
+cd tasks
+./run db_migrate
+echo DB Migrated
+echo Updating framework sources...
+cd ../framework
+svn up
+echo Deployment finished

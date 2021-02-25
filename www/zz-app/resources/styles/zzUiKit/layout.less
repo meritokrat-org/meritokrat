@@ -1,0 +1,38 @@
+.zz-layout {
+  &,
+  .zz-layout-row,
+  .zz-layout-column {
+    box-sizing: border-box;
+    border: 1px dotted rgba(0, 0, 0, .25);
+  }
+
+  &.zz-layout-row {
+    display: table;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    table-layout: fixed;
+
+    > .zz-layout-column {
+      display: table-cell;
+
+
+    }
+  }
+
+  &.zz-layout-column {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    > .zz-layout-row {
+      display: block;
+
+      &.zz-layout {
+        display: table;
+      }
+    }
+  }
+
+}

@@ -1,0 +1,94 @@
+Subject: : Error happened on polithub.org, 17 Aug, 2016
+Receiver: support@polithub.org
+From: info@polithub.org
+
+Non-static method lang_helper::get_lang_cols() should not be called statically, assuming $this from incompatible context
+
+URL: /poll316
+
+Referrer: http://yandex.ru/clck/jsredir?from=yandex.ru%3Bsearch%3Bweb%3B%3B&text=&etext=1150.RhzeNVkaVxQH6Xqu72ALLPoHvOkWtbMlL0Lpe8X6w90xpQdYqKJev7muHiWijwgD.d43202b94b8f7c961f2d9756d9973ed36c352844&uuid=&state=_BLhILn4SxNIvvL0W45KSic66uCIg23qh8iRG98qeIXmeppkgUc0YMkOSpatjLUqgxH-XWLwn-g&data=UlNrNmk5WktYejR0eWJFYk1LdmtxaHk0aHVzUlBlSmZ4MTZNZXl3ZjlkSjdud0s4UjlXWW5TLTVHdEhsdUUtNklnWGtHT1ZiUG9PNEs0T0RwcjZXSE5UbXZ1REFDdzhJaElaVWtWZVRnTkE&b64e=2&sign=3aba9e972b1161f3e4b74406da1e220f&keyno=0&cst=AiuY0DBWFJ7IXge4WdYJQaYgAYq7JarrE_sA5fQNpRZ_bsHYcSF1GpMxZwvG0bDXBkBm4XfRSzZ-UWmmdR_5zXiQ3V8P3L8rvKXbfZCt_m9LNMy7c9Uq8a7UBn2H7VMr_6OMvI7sNi-UHa3r7Mt0mXkvcDwGpfg-&ref=orjY4mGPRjk5boDnW0uvlrrd71vZw9kp5uQozpMtKCWSYRYQUk8YrzFMmAwFzFHrPYK_VjFDfHtYOL7FFbZqTvl_KULNTrXt-YmE6qut10hpFq15n8mT9w&l10n=ru&cts=1471430027752&mc=6.00358171123
+
+File: /var/www/polithub/lib/models/user/user_data.peer.php
+Line: 36
+Code: 8192
+
+Backtrace:
+class: user_data_peer
+method:get_item
+file:/var/www/polithub/lib/helpers/view/user.helper.php (70)
+
+class: user_helper
+method:photo_path
+file:/var/www/polithub/lib/helpers/view/user.helper.php (31)
+
+class: user_helper
+method:photo
+file:/var/www/polithub/apps/frontend/modules/polls/views/view.view.php (5)
+
+class: 
+method:include
+file:/var/www/polithub/apps/frontend/layouts/layout.view.php (683)
+
+class: 
+method:include
+file:/var/www/polithub/vendor/everyz/everyz-php-framework/vendor/library/render/html_render.php (29)
+
+class: html_render
+method:render
+file:/var/www/polithub/vendor/everyz/everyz-php-framework/vendor/library/controller/basic_controller.php (128)
+
+class: basic_controller
+method:render
+file:/var/www/polithub/vendor/everyz/everyz-php-framework/vendor/library/controller/basic_controller.php (175)
+
+class: basic_controller
+method:run
+file:/var/www/polithub/vendor/everyz/everyz-php-framework/vendor/library/kernel/application.php (120)
+
+class: application
+method:execute
+file:/var/www/polithub/www/index.php (19)
+
+
+
+Array
+(
+    [PATH] => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    [PHP_FCGI_CHILDREN] => 4
+    [PHP_FCGI_MAX_REQUESTS] => 10000
+    [LANGUAGE] => ua
+    [FRAMEWORK_PATH] => /var/www/polithub/framework
+    [ENVIRONMENT] => prod
+    [HTTP_PRAGMA] => no-cache
+    [HTTP_ACCEPT_ENCODING] => gzip, deflate
+    [HTTP_USER_AGENT] => Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0; Touch; MASMJS)
+    [HTTP_REFERER] => http://yandex.ru/clck/jsredir?from=yandex.ru%3Bsearch%3Bweb%3B%3B&text=&etext=1150.RhzeNVkaVxQH6Xqu72ALLPoHvOkWtbMlL0Lpe8X6w90xpQdYqKJev7muHiWijwgD.d43202b94b8f7c961f2d9756d9973ed36c352844&uuid=&state=_BLhILn4SxNIvvL0W45KSic66uCIg23qh8iRG98qeIXmeppkgUc0YMkOSpatjLUqgxH-XWLwn-g&data=UlNrNmk5WktYejR0eWJFYk1LdmtxaHk0aHVzUlBlSmZ4MTZNZXl3ZjlkSjdud0s4UjlXWW5TLTVHdEhsdUUtNklnWGtHT1ZiUG9PNEs0T0RwcjZXSE5UbXZ1REFDdzhJaElaVWtWZVRnTkE&b64e=2&sign=3aba9e972b1161f3e4b74406da1e220f&keyno=0&cst=AiuY0DBWFJ7IXge4WdYJQaYgAYq7JarrE_sA5fQNpRZ_bsHYcSF1GpMxZwvG0bDXBkBm4XfRSzZ-UWmmdR_5zXiQ3V8P3L8rvKXbfZCt_m9LNMy7c9Uq8a7UBn2H7VMr_6OMvI7sNi-UHa3r7Mt0mXkvcDwGpfg-&ref=orjY4mGPRjk5boDnW0uvlrrd71vZw9kp5uQozpMtKCWSYRYQUk8YrzFMmAwFzFHrPYK_VjFDfHtYOL7FFbZqTvl_KULNTrXt-YmE6qut10hpFq15n8mT9w&l10n=ru&cts=1471430027752&mc=6.00358171123
+    [HTTP_ACCEPT_LANGUAGE] => en-US
+    [HTTP_ACCEPT] => */*
+    [HTTP_CONNECTION] => close
+    [HTTP_HOST] => polithub.org
+    [HTTP_X_FORWARDED_FOR] => 46.188.61.199
+    [HTTP_X_REAL_IP] => 46.188.61.199
+    [SERVER_PROTOCOL] => HTTP/1.0
+    [REDIRECT_STATUS] => 200
+    [REQUEST_METHOD] => GET
+    [QUERY_STRING] => module=polls&action=view&id=316
+    [REDIRECT_URI] => /index.php?module=polls&action=view&id=316
+    [REQUEST_URI] => /poll316
+    [DOCUMENT_ROOT] => /var/www/polithub/www
+    [SCRIPT_FILENAME] => /var/www/polithub/www/index.php
+    [PATH_INFO] => 
+    [SCRIPT_NAME] => /index.php
+    [REMOTE_ADDR] => 127.0.0.1
+    [REMOTE_PORT] => 56022
+    [SERVER_ADDR] => 127.0.0.1
+    [SERVER_PORT] => 8080
+    [GATEWAY_INTERFACE] => CGI/1.1
+    [SERVER_NAME] => polithub.org
+    [SERVER_SOFTWARE] => lighttpd/1.4.35
+    [FCGI_ROLE] => RESPONDER
+    [PHP_SELF] => /index.php
+    [REQUEST_TIME_FLOAT] => 1471432641.4297
+    [REQUEST_TIME] => 1471432641
+)
+

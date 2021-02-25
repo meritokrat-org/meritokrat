@@ -1,0 +1,39 @@
+div.zz-panel {
+  &,
+  .zz-panel-header {
+    box-sizing: border-box;
+  }
+
+  > .zz-panel-header {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 7px 12px;
+    color: white;
+    background-color: darkred;
+
+    > .zz-panel-tools {
+      display: flex;
+
+      .zz-icon-button {
+        padding: 0;
+        background-color: transparent;
+
+        > i {
+          width: 18px;
+          height: 18px;
+
+          &:before {
+            font-size: 15px;
+          }
+        }
+      }
+    }
+  }
+
+  > .zz-panel-content {
+    position: relative;
+  }
+}

@@ -1,0 +1,134 @@
+ /* -------------------------------------------------------------- 
+   
+   forms.css
+   * Sets up some default styling for forms
+   * Gives you classes to enhance your forms
+   
+   Usage:
+   * For text fields, use class .title or .text
+   
+-------------------------------------------------------------- */
+
+label       { cursor: pointer; }
+fieldset    { padding:1.4em; margin: 0 0 1.5em 0; border: 1px solid #ccc; }
+legend      { font-weight: bold; font-size:1.2em; }
+
+
+/* Form fields
+-------------------------------------------------------------- */
+
+input.text, input.title,
+textarea, select {
+  padding: 2px; border: 1px solid #999999; font-size: 11px; color: black;
+}
+
+input.text:focus, input.title:focus,
+textarea:focus, select:focus {
+  border:1px solid #999999; color: black;
+}
+
+textarea		{ width: 390px; height: 100px; }
+
+
+.button		{
+        background: url(/common/spritebuttons.png) repeat-x 0 -132px;
+        color: #FFF;
+	font-size: 11px;
+        padding-bottom: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+        border:none;
+        height:23px;
+        border:1px solid #660000;
+}
+
+.button:hover{
+    background: url(/common/spritebuttons.png) repeat-x 0 -155px;
+}
+
+.button_gray		{
+	background: url(/common/spritebuttons.png) repeat-x 0 -200px;
+        color: #FFF;
+	font-size: 11px;
+        padding-bottom: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+        border:none;
+        height:23px;
+        border:1px solid gray;
+}
+
+.button_gray:hover{
+    background: url(/common/spritebuttons.png) repeat-x 0 -223px;
+}
+
+.button, .button_gray{
+    /* CSS3 */
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;
+    border-radius:8px;
+    -moz-box-shadow: 0 1px 3px gray;
+    -webkit-box-shadow: 0 1px 3px gray;
+    box-shadow: 0 1px 3px gray;
+}
+
+a.button, a.button_gray{
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:4px;
+    text-align:center;
+}
+
+a.button:hover, a.button_gray:hover{
+    color: #FFF;
+    text-decoration: none;
+}
+
+.button_enter, .button_enter_ru{
+    width:106px;
+    height:24px;
+    border:none;
+    text-indent: 200px;
+    background: url(/common/button_s.png) no-repeat;
+    cursor: pointer;
+}
+
+.button_enter_ru{
+    background: url(/common/button_s_ru.png) no-repeat;
+}
+
+.entercheckbox{
+    margin: 0;
+    opacity: 0;
+    padding: 0;
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+}
+
+div.echeckbox{
+    width:15px;
+    height:15px;
+    float:left;
+    margin-right:5px;
+}
+
+div.chon, div.choff{
+    background: url(/common/spriteicons.png) no-repeat;
+    background-position: -621px 0;
+}
+
+div.choff{
+    background-position: -596px 0;
+}
+/* Success, notice and error boxes
+-------------------------------------------------------------- */
+
+ .error,
+.notice, 
+.success    { padding: .8em; margin-bottom: 1em; text-align: center; font-weight: bold; }
+
+.error      { background: #FBE3E4; color: #8a1f11; }
+.notice     { background: #FFF6BF; color: #514721; }
+.success    { background: #E6EFC2; color: green; }
+.error a    { color: #8a1f11; }
+.notice a   { color: #514721; }
+.success a  { color: #264409; }

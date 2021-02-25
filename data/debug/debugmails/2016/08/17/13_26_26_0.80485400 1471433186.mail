@@ -1,0 +1,80 @@
+Subject: : Error happened on polithub.org, 17 Aug, 2016
+Receiver: support@polithub.org
+From: info@polithub.org
+
+Non-static method lang_helper::get_lang_cols() should not be called statically, assuming $this from incompatible context
+
+URL: /groups/posts?group_id=451
+
+Referrer: 
+
+File: /var/www/polithub/lib/models/user/user_data.peer.php
+Line: 36
+Code: 8192
+
+Backtrace:
+class: user_data_peer
+method:get_item
+file:/var/www/polithub/apps/frontend/layouts/layout.view.php (719)
+
+class: 
+method:include
+file:/var/www/polithub/vendor/everyz/everyz-php-framework/vendor/library/render/html_render.php (29)
+
+class: html_render
+method:render
+file:/var/www/polithub/vendor/everyz/everyz-php-framework/vendor/library/controller/basic_controller.php (128)
+
+class: basic_controller
+method:render
+file:/var/www/polithub/vendor/everyz/everyz-php-framework/vendor/library/controller/basic_controller.php (175)
+
+class: basic_controller
+method:run
+file:/var/www/polithub/vendor/everyz/everyz-php-framework/vendor/library/kernel/application.php (120)
+
+class: application
+method:execute
+file:/var/www/polithub/www/index.php (21)
+
+
+
+Array
+(
+    [PATH] => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    [PHP_FCGI_CHILDREN] => 4
+    [PHP_FCGI_MAX_REQUESTS] => 10000
+    [LANGUAGE] => ua
+    [FRAMEWORK_PATH] => /var/www/polithub/framework
+    [ENVIRONMENT] => prod
+    [HTTP_ACCEPT_ENCODING] => gzip,deflate,br
+    [HTTP_USER_AGENT] => Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+    [HTTP_FROM] => googlebot(at)googlebot.com
+    [HTTP_ACCEPT] => text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    [HTTP_CONNECTION] => close
+    [HTTP_HOST] => polithub.org
+    [HTTP_X_FORWARDED_FOR] => 66.249.76.82
+    [HTTP_X_REAL_IP] => 66.249.76.82
+    [SERVER_PROTOCOL] => HTTP/1.0
+    [REDIRECT_STATUS] => 200
+    [REQUEST_METHOD] => GET
+    [QUERY_STRING] => module=groups&action=posts&group_id=451
+    [REDIRECT_URI] => /index.php?module=groups&action=posts&group_id=451
+    [REQUEST_URI] => /groups/posts?group_id=451
+    [DOCUMENT_ROOT] => /var/www/polithub/www
+    [SCRIPT_FILENAME] => /var/www/polithub/www/index.php
+    [PATH_INFO] => 
+    [SCRIPT_NAME] => /index.php
+    [REMOTE_ADDR] => 127.0.0.1
+    [REMOTE_PORT] => 56812
+    [SERVER_ADDR] => 127.0.0.1
+    [SERVER_PORT] => 8080
+    [GATEWAY_INTERFACE] => CGI/1.1
+    [SERVER_NAME] => polithub.org
+    [SERVER_SOFTWARE] => lighttpd/1.4.35
+    [FCGI_ROLE] => RESPONDER
+    [PHP_SELF] => /index.php
+    [REQUEST_TIME_FLOAT] => 1471433186.787
+    [REQUEST_TIME] => 1471433186
+)
+

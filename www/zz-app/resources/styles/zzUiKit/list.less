@@ -1,0 +1,23 @@
+.zz-list {
+  position: relative;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+
+  &,
+  .zz-spinner,
+  .zz-list-item {
+    box-sizing: border-box;
+  }
+
+  > .zz-list-item {
+    padding: 7px 12px;
+
+    > .zz-list-item-content {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+    }
+
+  }
+}

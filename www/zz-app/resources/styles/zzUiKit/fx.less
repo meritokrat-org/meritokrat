@@ -1,0 +1,25 @@
+@-webkit-keyframes zz-fx-rotate-forever {
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: scale(1) rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+.zz-fx {
+  -webkit-transition: all ease-out .25s;
+  transition: all ease-out .25s;
+}
+
+.zz-fx-rotate-forever {
+  -webkit-animation: zz-fx-rotate-forever .5s linear infinite;
+  animation: zz-fx-rotate-forever .5s linear infinite;
+}
+
+.zz-fx-rotate-180deg {
+  -webkit-transform: scale(1) rotate(-180deg);
+  transform: scale(1) rotate(-180deg);
+}

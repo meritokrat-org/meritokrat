@@ -1,0 +1,14 @@
+doctype html
+html(ng-app='zzApp', ng-cloak)
+    head
+        base(href='/zz/app')
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        title Meritokrat - The political social network
+        link(type='text/css', href='/zz/css/common.min.css', rel='stylesheet')
+        link(type='text/css', href='/zz/css/style.css', rel='stylesheet')
+    body(ui-view, zz-body)
+        block scripts
+            script(src="/zz/js/kern.min.js")
+            script(src="/zz/js/lib/zz-iframe.min.js")
+            script(src="/zz/js/app.js")

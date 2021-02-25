@@ -1,0 +1,35 @@
+.layout,
+.layout-row,
+.layout-column {
+  display: flex;
+}
+.layout.layout-row {
+  flex-flow: row wrap;
+  width: 100%;
+}
+.layout.layout-row.layout-indent > .layout-column {
+  margin-left: 12px;
+}
+.layout.layout-row.layout-indent > .layout-column:first-child {
+  margin-left: 0;
+}
+.layout.layout-row > .layout-column {
+  flex-flow: column nowrap;
+}
+.layout.layout-column {
+  flex-flow: column nowrap;
+}
+form > * {
+  width: 100%;
+}
+form > section > div {
+  margin-top: 7px;
+}
+form > section > div:first-child {
+  margin-top: 0;
+}
+form > section > div > :first-child {
+  width: 30%;
+  padding-right: 12px;
+  text-align: right;
+}

@@ -1,0 +1,108 @@
+
+<div ng-controller="EditController as UI" layout="column">
+  <md-toolbar layout="row" layout-align="start center" ng-show="UI.panel(&quot;main&quot;).header"><a ui-sref="team.index">
+      <md-button class="md-icon-button">
+        <md-icon class="material-icons">keyboard_arrow_left</md-icon>
+      </md-button></a>
+    <div layout-padding="layout-padding">
+      <h4>Нова команда</h4>
+    </div>
+  </md-toolbar>
+  <md-content>
+    <div layout="column">
+      <div layout="column" flex-offset="10">
+        <h3>Назва команди</h3>
+        <div layout="row">
+          <md-input-container flex="90">
+            <label>Введіть назву команди</label>
+            <input ng-model="UI.entity(&quot;team&quot;).title" name="title"/>
+          </md-input-container>
+        </div>
+      </div>
+      <div layout="column" flex-offset="10" class="mt-10">
+        <h3>Кількість виборців</h3>
+        <div layout="row">
+          <md-input-container flex="90">
+            <label>Введіть кількість виборців</label>
+            <input ng-model="UI.entity(&quot;team&quot;).votersCount" name="title"/>
+          </md-input-container>
+        </div>
+      </div>
+      <div layout="column" flex-offset="10" class="mt-10">
+        <h3>Оберіть рівень</h3>
+        <div layout="row">
+          <md-input-container flex="90">
+            <label>Рівень</label>
+            <md-select name="level" ng-model="UI.entity(&quot;team&quot;).level">
+              <md-option ng-repeat="item in UI.dataSource.levels" value="{{ item.id }}">{{ item.title }}</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+      </div>
+      <div layout="column" flex-offset="10" ng-show="(UI.entity(&quot;team&quot;).level == 0)" class="mt-10">
+        <h3>Оберіть тип</h3>
+        <div layout="row">
+          <md-input-container flex="90">
+            <label>Тип</label>
+            <md-select name="type" ng-model="UI.entity(&quot;team&quot;).type">
+              <md-option ng-repeat="item in UI.dataSource.types" value="{{ item.id }}">{{ item.title }}</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+      </div>
+      <md-divider class="mt-15 mb-15"></md-divider>
+      <div layout="column" flex-offset="10">
+        <h3>Розташування команди</h3>
+        <div layout="row">
+          <md-input-container flex="30">
+            <label>Регіональний рівень</label>
+            <md-select name="regions" ng-model="UI.entity(&quot;team&quot;).region" ng-change="UI.onRegionChange()">
+              <md-option ng-repeat="item in UI.dataSource.regions" value="{{ item.id }}">{{ item.title }}</md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container flex="30" ng-show="UI.entity(&quot;team&quot;).region &gt; 0" class="ml-15">
+            <label>Місцевий рівень</label>
+            <md-select name="cities" ng-model="UI.entity(&quot;team&quot;).city" ng-change="UI.onCityChange()">
+              <md-option ng-repeat="item in UI.dataSource.cities" value="{{ item.id }}">{{ item.title }}</md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container flex="30" ng-show="(UI.dataSource.districts.length &gt; 0 &amp;&amp; UI.entity(&quot;team&quot;).level == 1 &amp;&amp; UI.entity(&quot;team&quot;).city &gt; 0)" class="ml-15">
+            <label>Сектор</label>
+            <md-select name="districts" ng-model="UI.entity(&quot;team&quot;).district" ng-change="UI.onDistrictChange()">
+              <md-option ng-repeat="item in UI.dataSource.districts" value="{{ item.id }}">{{ item.title }}</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+      </div>
+      <div layout="column" flex-offset="10">
+        <div layout="row">
+          <md-input-container flex="90">
+            <label>Адреса</label>
+            <input name="address" ng-model="UI.entity(&quot;team&quot;).address"/>
+          </md-input-container>
+        </div>
+      </div>
+      <div layout="column" flex-offset="10">
+        <div layout="row">
+          <md-input-container flex="90">
+            <label>Адреси будинків, що входять до виборчого округу</label>
+            <textarea name="buildings" ng-model="UI.entity(&quot;team&quot;).buildings"></textarea>
+          </md-input-container>
+        </div>
+      </div>
+      <md-divider class="mt-15 mb-15"></md-divider>
+      <div layout="column" flex-offset="10">
+        <div>
+          <h3>Вкажіть дату установчих зборів</h3>
+          <md-datepicker flex="60" md-placeholder="Дата установчих зборів" ng-model="UI.entity(&quot;team&quot;).dateOfAssembly"></md-datepicker>
+        </div>
+      </div>
+      <md-divider class="mt-15 mb-15"></md-divider>
+      <div layout="column" flex-offset="10" style="padding-bottom: 150px">
+        <div layout="row" layout-align="start center">
+          <md-button ng-click="UI.save($event)" class="md-raised md-primary">Зберегти</md-button><span ng-show="UI.onSavedSuccess" class="green">Дані були успішно збережені!</span><span ng-show="UI.onSavedError" class="error">Помилка збереження!</span>
+        </div>
+      </div>
+    </div>
+  </md-content>
+</div>

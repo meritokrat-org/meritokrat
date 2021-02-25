@@ -1,0 +1,28 @@
+div(ng-controller="ProfileController as Profile").team
+    header
+        div
+            div
+                h1 {{ $profile.getTeam().title() }}
+                p {{ $profile.getTeam().location().title }}
+            div
+                button(
+                ng-click="$profile.stepBack()",
+                ng-show="$profile.stack().length > 0"
+                title="Повернутись до попередньої команди"
+                ).zz-button.zz-icon-button
+                    i.ion-chevron-left
+
+                button(ng-click="Profile.create()", title="Створити нову команду").zz-button.zz-icon-button
+                    i.ion-plus-round
+
+                button(ng-click="Profile.edit()", title="Редагувати команду").zz-button.zz-icon-button
+                    i.ion-edit
+
+                button(ng-click="Profile.list()", title="Відкрити весь список").zz-button.zz-icon-button
+                    i.ion-navicon-round
+
+    section
+        include ./profile/menu
+
+    section
+        include ./profile/branch
