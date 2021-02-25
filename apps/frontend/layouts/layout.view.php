@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <script src='/static/javascript/jquery/jquery-1.4.2.js'></script>
     <script src='/static/javascript/jquery/jquery.ui.core.js'></script>
     <script src='/static/javascript/jquery/selects.js'></script>
@@ -13,14 +12,9 @@
     <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
     <script src='/static/javascript/library/plugins/cookie.js'></script>
 
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-    <!--<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
-    <link rel="stylesheet" href="/static/css/material-icons.css">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/material-icons.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 
     <script>
         jQuery(document).ready(function () {
@@ -29,7 +23,7 @@
         });
     </script>
 
-    <?php if ("blogs" === context::get_controller()->get_module() && empty($error_message) && isset($post_data)) { ?>
+    <?php if (isset($post_data) && empty($error_message) && 'blogs' === context::get_controller()->get_module()) { ?>
         <?php preg_match(
                 '/\<title\>(.*)\<\/title\>/',
                 seo_helper::get_title(
@@ -39,16 +33,16 @@
                 ),
                 $match
         ); ?>
-        <?php $user = user_data_peer::instance()->get_item($post_data["user_id"]) ?>
+        <?php $user = user_data_peer::instance()->get_item($post_data['user_id']) ?>
 
         <?php
 
         $doc = new DOMDocument();
-        @$doc->loadHTML($post_data["body"]);
+        @$doc->loadHTML($post_data['body']);
 
         $tags = $doc->getElementsByTagName('img');
 
-        $image = "https://meritokrat.org/static/images/logos/logo.png";
+        $image = 'https://meritokrat.org/static/images/logos/logo.png';
         foreach ($tags as $tag) {
             $image = $tag->getAttribute('src');
             break;
@@ -59,14 +53,14 @@
         <meta property="og:image" content="<?= $image ?>"/>
         <meta property="og:type" content="website"/>
         <meta property="og:url" content="https://meritokrat.org/blogpost<?= $post_data['id'] ?>"/>
-        <meta property="og:title" content="<?= explode(" - ", $match[1])[0] ?>"/>
-        <meta property="og:description" content="<?= str_replace("<br />", "", $post_data['preview']) ?>"/>
+        <meta property="og:title" content="<?= explode(' - ', $match[1])[0] ?>"/>
+        <meta property="og:description" content="<?= str_replace('<br />', '', $post_data['preview']) ?>"/>
     <?php } ?>
 
-    <?php if ("ooops" == context::get_controller()->get_module() && !empty($error_message)) { ?>
-        <?php $tokens = explode("|", $error_message); ?>
+    <?php if (!empty($error_message) && 'ooops' === context::get_controller()->get_module()) { ?>
+        <?php $tokens = explode('|', $error_message); ?>
         <meta property="og:image" content="https://meritokrat.org/static/images/error.png"/>
-        <meta property="og:url" content="https://meritokrat.org/<?= $_SERVER["REQUEST_URI"] ?>"/>
+        <meta property="og:url" content="https://meritokrat.org/<?= $_SERVER['REQUEST_URI'] ?>"/>
         <meta property="og:type" content="website"/>
         <meta property="og:title"
               content="Ошибка<?= !empty($tokens[0]) ? ': '.$tokens[0] : 'Документ, который Вы запрашиваете, не найден' ?>"/>
@@ -74,8 +68,8 @@
               content="<?= isset($tokens[1]) ? $tokens[1] : 'Документ, который Вы запрашиваете, не найден. Возможно, ошиблись с вводом ссылки или документ перенесли в другой раздел' ?>"/>
     <?php } ?>
 
-    <?php if ("shop" == context::get_controller()->get_module()) { ?>
-        <?php $tokens = explode("|", $error_message); ?>
+    <?php if ('shop' === context::get_controller()->get_module()) { ?>
+        <?php $tokens = explode('|', $error_message); ?>
         <meta property="og:image" content="https://meritokrat.org/static/images/logos/logo.png"/>
         <meta property="og:url" content="https://meritokrat.org/shop"/>
         <meta property="og:type" content="website"/>
@@ -280,7 +274,7 @@
 </body>
 
 <?= tag_helper::js('system.js') ?>
-<?php if ("home" !== context::get_controller()->get_module()): ?>
+<?php if ('home' !== context::get_controller()->get_module()): ?>
     <?= tag_helper::js('module_'.context::get_controller()->get_module().'.js') ?>
 <?php endif ?>
 

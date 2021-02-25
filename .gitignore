@@ -1,3 +1,4 @@
+/.idea/
 /conf/
 !conf/.gitignore
 /data/storage/
