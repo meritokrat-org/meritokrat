@@ -3,7 +3,7 @@
 
 namespace App\Component;
 
-interface Component
+interface ComponentInterface
 {
     /**
      * @return string

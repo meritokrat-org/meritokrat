@@ -236,8 +236,8 @@ load::model('ppo/ppo');
                         <div class="row m-0 mt-2">
                             <div class="col offset-2">
                                 <input type="submit" name="submit"
-                                       class="btn btn-sm btn-danger text-uppercase fw-bold rounded"
-                                       style="background-color: #600; border-color: #600; font-size: .75rem; padding: .25rem 1rem"
+                                       class="btn btn-sm btn-primary text-uppercase"
+                                       style="font-size: .75rem; padding: .25rem 1rem"
                                        value="<?= t('Отправить') ?>"/>
                             </div>
                         </div>

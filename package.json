@@ -1,0 +1,25 @@
+{
+  "name": "meritokrat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "css:watch": "./node_modules/.bin/sass --watch sass/bootstrap/:www/bootstrap/css/ sass/style/:www/css/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onixspot/meritokrat.git"
+  },
+  "author": "Artem Morozov <till20052@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/onixspot/meritokrat/issues"
+  },
+  "homepage": "https://github.com/onixspot/meritokrat#readme",
+  "dependencies": {
+    "bootstrap": "^5.0.0-beta2",
+    "bootswatch": "^4.6.0",
+    "sass": "^1.32.8"
+  }
+}

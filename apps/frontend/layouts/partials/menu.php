@@ -1,7 +1,4 @@
 <a class="fw-bold text-white text-uppercase" href="/"><?= t('Головна'); ?></a>&nbsp;&nbsp;
-<?php
-/*<a class="fw-bold text-white text-uppercase" href="/ideas"><?=t('ИДЕОЛОГИЯ');?></a>&nbsp;&nbsp;
-        <a class="fw-bold text-white text-uppercase"  style="text-transform:uppercase;" href="/ideas/index?segment=%D0%9F%D0%B0%D1%80%D1%82%D1%96%D1%8F"><?=t('Партия');?></a>&nbsp;&nbsp;*/ ?>
 <?php if (session::is_authenticated()) { ?>
     <a class="fw-bold text-white text-uppercase"
        style="text-transform:uppercase;" href="/people"><?= t('Команда') ?></a>&nbsp;&nbsp;

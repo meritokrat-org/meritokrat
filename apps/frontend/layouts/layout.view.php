@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var basic_controller $controller
+ */
+?>
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -13,8 +18,10 @@
     <script src='/static/javascript/library/plugins/cookie.js'></script>
 
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/static/css/material-icons.css">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+    <script src="https://kit.fontawesome.com/7edf9be78e.js" crossorigin="anonymous"></script>
 
     <script>
         jQuery(document).ready(function () {
@@ -135,13 +142,13 @@
     <link rel="shortcut icon" href="/favicon.ico"/>
 </head>
 
-<body class="text-white">
+<body class="text-body">
 
-<div class="container-fluid p-0">
+<div>
 
     <?= call_user_func(require __DIR__.'/partials/Header.php') ?>
 
-    <div id="main_content" class="" style="background: #FFF;">
+    <div id="main_content">
         <div class="root_container container_bg row mb-5" style="margin-top: 6px;">
             <?php if ('election' !== request::get('module')) { ?>
 
@@ -174,45 +181,20 @@
         </div>
     </div>
 
-    <div class="clear"></div>
+    <?= call_user_func(require __DIR__.'/partials/Footer.php') ?>
 
     <!-- POPUPS STARTED -->
     <?php $additional_data = user_data_peer::instance()->get_item(session::get_user_id()); ?>
-    <?php
-    /*
-     * если сделал больше двух посещений и если еще не заполнил тарджет/доп инфо и если не смотрел сегодня эту форму
-     */
-    ?>
     <?php if (
-    (
-            5 != session::get_user_id()
+            5 !== ($userId = session::get_user_id()) && $userId > 10907
             && db_key::i()->get('all_visits_'.session::get_user_id()) > 2
             && !db_key::i()->get('seen_form'.date('md').':'.session::get_user_id())
-            && session::get_user_id() > 10907
-    )
     ) { ?>
-
-        <?php db_key::i()->set(
-                'seen_form'.date('md').':'.session::get_user_id(),
-                true
-        ); //сегодня этому товарищу больше не показывать ?>
-
+        <?php db_key::i()->set('seen_form'.date('md').':'.$userId, true); //сегодня этому товарищу больше не показывать ?>
         <div id="popup_opacity" class="hide"
              style="position: absolute; left: 0pt; top: 0pt; width: 1700px; height: 2700px; text-align: center; z-index: 10000; background: none repeat scroll 0% 0% rgb(0, 0, 0);  opacity: 0.5; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50); -moz-opacity: 0.5; -khtml-opacity: 0.5;"
              id="popup_box" class="popup_box"></div>
-
-    <?php // if($_REQUEST['module'] == 'blogs' && $_REQUEST['action'] == 'post' && $_REQUEST['id'] == 3910){ ?>
-    <?php // include 'popups/election.php' ?>
-    <?php // } else { ?>
-    <?php // if (!$additional_data['birthday'] || !$additional_data['phone'] || ($_REQUEST['module'] == 'blogs' && $_REQUEST['action'] == 'post' && $_REQUEST['id'] == 3910)){ ?>
-    <?php // $popup_flag = ($_REQUEST['module'] == 'blogs' && $_REQUEST['action'] == 'post' && $_REQUEST['id'] == 3910) ? true : false; ?>
-    <?php // include 'popups/election.php' ?>
-    <?php // include 'popups/additional_info.php'; ?>
-    <?php // } else {//if (db_key::i()->get('all_visits_' .session::get_user_id())>5){ ?>
     <?php include 'popups/target.php'; ?>
-    <?php // } ?>
-    <?php // } ?>
-
         <script>
             jQuery(document).ready(function () {
                 <?php if( !('blogs' == $_REQUEST['module'] && 'post' == $_REQUEST['action'] && 3910 == $_REQUEST['id'])){ ?>
@@ -233,58 +215,33 @@
 
     <?php } ?>
     <!-- POPUPS END -->
-
-    <!-- SURVEY START -->
-
-    <!-- SURVEY END -->
-
-    <div id="footer" class="top_line_2 fs11"
-         style="background: transparent url(/static/images/common/bg-footer.png) repeat scroll 0% 0%; height: 178px; ">
-
-        <div
-                style="background: transparent no-repeat scroll center center; height: 176px; -moz-background-clip: border;"
-                class="top_line_2 fs11">
-            <div class="root_container mt10 footer"><?php include __DIR__.'/_footer.php' ?><br/>&nbsp;</div>
-        </div>
-        <?php if (!conf::get('enable_web_debug')) {
-            include '_counter.php';
-        } ?>
-    </div>
+    <!--<div id="footer" class="top_line_2 fs11"-->
+    <!--     style="background: transparent url(/static/images/common/bg-footer.png) repeat scroll 0% 0%; height: 178px; ">-->
+    <!---->
+    <!--    <div-->
+    <!--            style="background: transparent no-repeat scroll center center; height: 176px; -moz-background-clip: border;"-->
+    <!--            class="top_line_2 fs11">-->
+    <!--        <div class="root_container mt10 footer">--><?php //include __DIR__.'/_footer.php' ?><!--<br/>&nbsp;</div>-->
+    <!--    </div>-->
+    <!--    --><?php //if (!conf::get('enable_web_debug')) {
+    //         include '_counter.php';
+    //     } ?>
+    <!--</div>-->
 </div>
 
 <script src="/bootstrap/js/bootstrap.bundle.js"></script>
-<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js"-->
-<!--        integrity="sha384-BOsAfwzjNJHrJ8cZidOg56tcQWfp6y72vEJ8xQ9w6Quywb24iOsW913URv1IS4GD"-->
-<!--        crossorigin="anonymous"></script>-->
-
 <?= tag_helper::js('/lib/ui.js') ?>
 <?= tag_helper::js('/lib/api.js') ?>
-
-<script>
-    (function () {
-        var po = document.createElement('script');
-        po.type = 'text/javascript';
-        po.async = true;
-        po.src = 'https://apis.google.com/js/client:plusone.js';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(po, s);
-    })();
-</script>
-
-</body>
-
 <?= tag_helper::js('system.js') ?>
 <?php if ('home' !== context::get_controller()->get_module()): ?>
     <?= tag_helper::js('module_'.context::get_controller()->get_module().'.js') ?>
 <?php endif ?>
-
 <?php if (conf::get('javascript_debug') || session::has_credential('programmer')) { ?>
     <?= tag_helper::js('debug.js') ?>
 <?php } ?>
-
 <?php include __DIR__.'/_js_static.php' ?>
+<?php if (true === conf::get('enable_web_debug')){ ?><!-- Executed in: <?= (microtime(
+                true
+        ) - APP_START_TS) ?>ms --><?php } ?>
+</body>
 </html>
-
-<?php if (true === conf::get('enable_web_debug')): ?>
-    <!-- Executed in: <?= (microtime(true) - APP_START_TS) ?>ms -->
-<?php endif; ?>

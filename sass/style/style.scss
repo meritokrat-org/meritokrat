@@ -1,0 +1,41 @@
+$primary: #377cea;
+
+.menu {
+  &.menu-primary > ul.nav a {
+    color: $primary;
+  }
+
+  & > ul.nav {
+    margin: 0;
+
+    & > li {
+      &:first-child > a {
+        padding-left: 0;
+      }
+
+      &:last-child > a {
+        padding-right: 0;
+      }
+    }
+
+    a {
+      &:hover {
+        color: #f5db55;
+        text-decoration: none;
+      }
+
+      & > i {
+        margin-right: .35rem;
+      }
+
+      color: white;
+      font-weight: bold;
+    }
+  }
+
+
+}
+
+[data-app='eapps-telegram-chat'] > div > div[type='embed-bubble'] > div:last-child {
+  display: none !important;
+}

@@ -3,10 +3,10 @@
 
 namespace App\Component\Member;
 
-use App\Component\Component;
+use App\Component\ComponentInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class Widget implements Component
+class Widget implements ComponentInterface
 {
     /** @var string */
     private $title;

@@ -1,0 +1,29 @@
+.menu.menu-primary > ul.nav a {
+  color: #377cea;
+}
+.menu > ul.nav {
+  margin: 0;
+}
+.menu > ul.nav > li:first-child > a {
+  padding-left: 0;
+}
+.menu > ul.nav > li:last-child > a {
+  padding-right: 0;
+}
+.menu > ul.nav a {
+  color: white;
+  font-weight: bold;
+}
+.menu > ul.nav a:hover {
+  color: #f5db55;
+  text-decoration: none;
+}
+.menu > ul.nav a > i {
+  margin-right: 0.35rem;
+}
+
+[data-app=eapps-telegram-chat] > div > div[type=embed-bubble] > div:last-child {
+  display: none !important;
+}
+
+/*# sourceMappingURL=style.css.map */

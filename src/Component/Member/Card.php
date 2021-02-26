@@ -2,9 +2,9 @@
 
 namespace App\Component\Member;
 
-use App\Component\Component;
+use App\Component\ComponentInterface;
 
-class Card implements Component
+class Card implements ComponentInterface
 {
     const FULL_NAME   = '%s %s';
     const PROFILE_URL = '/profile-%d';

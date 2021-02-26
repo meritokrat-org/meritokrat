@@ -1,0 +1,26 @@
+[
+  {
+    "href": "/profile/desktop?id=11752",
+    "text": "Робочий стіл"
+  },
+  {
+    "href": "/admin/rating",
+    "text": "Рейтинги"
+  },
+  {
+    "href": "/results",
+    "text": "Результати"
+  },
+  {
+    "href": "/groups",
+    "text": "Спільноти"
+  },
+  {
+    "href": "/polls",
+    "text": "Опитування"
+  },
+  {
+    "href": "/search",
+    "text": "Пошук людей"
+  }
+]
