@@ -164,21 +164,21 @@ class user_email_helper
             $html
         );
 
-        $options = [
-            '%text%'     => tag_helper::get_short(trim(strip_tags($body)), 120),
-            '%link%'     => 'https://'.context::get('host').'/messages/view?id='.$message_id,
-            '%sender%'   => $sender_data['first_name'].' '.$sender_data['last_name'],
-            '%settings%' => 'https://'.context::get('host').'/profile/edit?id='.$receiver_id.'&tab=settings',
-        ];
+        // $options = [
+        //     '%text%'     => tag_helper::get_short(trim(strip_tags($body)), 120),
+        //     '%link%'     => 'https://'.context::get('host').'/messages/view?id='.$message_id,
+        //     '%sender%'   => $sender_data['first_name'].' '.$sender_data['last_name'],
+        //     '%settings%' => 'https://'.context::get('host').'/profile/edit?id='.$receiver_id.'&tab=settings',
+        // ];
 
-        self::send_mail(
-            'messages_compose',
-            $receiver_id,
-            $sender_id,
-            $options,
-            $html,
-            email_peer::instance()->get_mail('messages_compose')
-        );
+        // self::send_mail(
+        //     'messages_compose',
+        //     $receiver_id,
+        //     $sender_id,
+        //     $options,
+        //     $html,
+        //     email_peer::instance()->get_mail('messages_compose')
+        // );
     }
 
 }

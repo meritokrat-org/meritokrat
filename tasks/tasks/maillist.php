@@ -1,4 +1,4 @@
-<?
+<?php
 
 class maillist_task extends shell_task
 {

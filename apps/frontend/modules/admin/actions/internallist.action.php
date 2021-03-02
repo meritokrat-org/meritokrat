@@ -1,4 +1,5 @@
 <?php
+
 load::app('modules/admin/controller');
 
 class admin_internallist_action extends admin_controller
@@ -17,14 +18,17 @@ class admin_internallist_action extends admin_controller
             $body_tpl = trim(request::get_string('body'));
             $this->add_to_archive($body_tpl);
         }
+
         if (request::get('getbody')) {
             $tmp = internal_mailing_peer::instance()->get_item(request::get_int('recId'));
             die($tmp['body']);
         }
+
         if (request::get_int('del')) {
             internal_mailing_peer::instance()->delete_item(request::get_int('del'));
             die();
         }
+
         if (1 === request::get_int('get_statistic')) {
             switch (request::get('stat_type')) {
                 case 'mode_act_sends':

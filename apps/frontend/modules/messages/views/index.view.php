@@ -7,11 +7,11 @@
 
 <?php if ($list) { ?>
 	<div class="mb5">
-		<a id="check_all" class="dotted fs11 ml5" href="javascript:;"><?= t('Выбрать все') ?></a>
-		<a href="javascript:;" onclick="messagesController.markAsRead();"
-		   class="dotted fs11 ml10"><?= t('Отметить прочитанными') ?></a>
-		<a id="bulk_delete" rel="<?= t('Вы уверены?') ?>" class="dotted fs11 ml5"
-		   onclick="messagesController.bulkDelete();"><?= t('Удалить') ?></a>
+		<a class="dotted fs11 ml5" href="javascript:" id="check_all"><?= t('Выбрать все') ?></a>
+		<a class="dotted fs11 ml10" href="javascript:"
+           onclick="messagesController.markAsRead();"><?= t('Отметить прочитанными') ?></a>
+		<a class="dotted fs11 ml5" href="javascript:" id="bulk_delete" onclick="messagesController.bulkDelete();"
+           rel="<?= t('Вы уверены?') ?>"><?= t('Удалить') ?></a>
         <?php /* <input id="bulk_delete" rel="<?=t('Вы уверены?')?>" class="button" type="button" onclick="messagesController.bulkDelete();" value="<?=t('Удалить')?>"/>*/ ?>
 
 	</div>

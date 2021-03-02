@@ -18,8 +18,12 @@
   color: #f5db55;
   text-decoration: none;
 }
-.menu > ul.nav a > i {
+.menu > ul.nav a > *:first-child {
   margin-right: 0.35rem;
+}
+.menu > ul.nav a > *:only-child {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 [data-app=eapps-telegram-chat] > div > div[type=embed-bubble] > div:last-child {
