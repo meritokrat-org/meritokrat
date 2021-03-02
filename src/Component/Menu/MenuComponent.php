@@ -3,7 +3,7 @@
 namespace App\Component\Menu;
 
 use App\Component\ComponentInterface;
-use App\Component\CreatableTrait;
+use App\Traits\CreatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class MenuComponent implements ComponentInterface
@@ -35,7 +35,7 @@ class MenuComponent implements ComponentInterface
     public function render()
     {
         return <<<HTML
-<ul class="nav">
+<ul class="nav justify-content-between w-auto">
     {$this->renderContext()}
 </ul>
 HTML;

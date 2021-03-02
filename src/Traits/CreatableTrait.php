@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Component;
+namespace App\Traits;
 
 use ReflectionClass;
 
 trait CreatableTrait
 {
+    /**
+     * @return CreatableInterface
+     */
     public static function create()
     {
         return (new ReflectionClass(static::class))

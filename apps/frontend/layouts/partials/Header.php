@@ -3,8 +3,8 @@
 namespace WebUI\Layout;
 
 use App\Component\ComponentInterface;
-use App\Component\CreatableTrait;
 use App\Component\Menu\MenuManager;
+use App\Traits\CreatableTrait;
 use session;
 
 class Header implements ComponentInterface
@@ -32,18 +32,16 @@ class Header implements ComponentInterface
     {
         return <<<HTML
 <header class="container-fluid p-0">
-    <div class="container-fluid px-0 pt-5 pb-3" style="background-color: #377cea">
+    <div class="container-fluid px-0 pt-3 pb-3" style="background-color: #377cea">
         <div class="container px-0">
-            <div class="position-relative" style="display: grid; grid-auto-flow: column; grid-template-columns: 330px 1px repeat(2, 1fr)">
-                <div>
-                    <img src="/static/images/common/header/header_1.svg" alt="" style="height: 2.5rem"/>
+            <div class="position-relative" style="display: grid; grid-auto-flow: column; grid-template-columns: 21.5rem 1px auto">
+                <div class="d-flex flex-row align-items-center">
+                    <img alt="..." src="/static/images/common/header/header_1.svg" style="height: 1.75rem" />
                 </div>
-                <div class="bg-white"></div>
-                <div class="text-end">
-                    <img src="/static/images/common/header/header_2.svg" alt="" style="height: 2.5rem"/>
-                </div>
-                <div>
-                    <img src="/static/images/common/header/header_3.svg" alt="" style="height: 2.5rem"/>
+                <div class="d-flex flex-row align-items-center bg-white"></div>
+                <div class="d-flex flex-row align-items-center justify-content-end">
+                    <img alt="..." src="/static/images/common/header/header_2.svg" style="height: 2.5rem" />
+                    <img alt="..." src="/static/images/common/header/header_3.svg" style="height: 2.5rem" />
                 </div>
             </div>
         </div>
@@ -97,7 +95,7 @@ return static function () {
                     [
                         [
                             'href' => '/',
-                            'text' => 'Головна',
+                            'icon' => '<i class="fas fa-house-user"></i>',
                         ],
                         [
                             'href' => '/people',
@@ -126,7 +124,7 @@ return static function () {
                     [
                         [
                             'href' => sprintf('/profile/desktop?id=%s', session::get_user_id()),
-                            'text' => 'Рабочий стол',
+                            'text' => 'Мой кабинет',
                             'icon' => '<i class="fas fa-chalkboard"></i>',
                         ],
                         [

@@ -209,14 +209,16 @@
 </div>
 <script type="text/javascript">
     function fsubmit() {
-        var error = 0;
+        let error = 0;
+
         $('div.mfilter:visible').find('select').each(function () {
-            var data = $(this).val();
-            if (data == '' || data == 0 || data == null) {
+            const data = $(this).val();
+            if (data === '' || data === 0 || data == null) {
                 error = 1;
             }
         });
-        if (error == 0) {
+
+        if (error === 0) {
             $('#send_form').submit();
         } else {
             alert('<?=t('Не выбран тип рассылки')?>');

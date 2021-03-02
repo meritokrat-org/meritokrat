@@ -24,8 +24,13 @@ $primary: #377cea;
         text-decoration: none;
       }
 
-      & > i {
+      & > *:first-child {
         margin-right: .35rem;
+      }
+
+      & > *:only-child {
+        margin-left: 0;
+        margin-right: 0;
       }
 
       color: white;

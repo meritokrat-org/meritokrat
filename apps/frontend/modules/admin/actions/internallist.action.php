@@ -196,7 +196,7 @@ class admin_internallist_action extends admin_controller
             case 'lists':
                 foreach ($fval_arr as $key => $value) {
                     foreach (lists_peer::instance()->get_item($value) as $lkey => $lvalue) {
-                        if ($lvalue['id'] == $value) {
+                        if ($lvalue === $value) {
                             $tmp[] = $lvalue['title'];
                         }
                     }

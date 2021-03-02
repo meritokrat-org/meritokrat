@@ -3,7 +3,7 @@
 namespace WebUI\Layout;
 
 use App\Component\ComponentInterface;
-use App\Component\CreatableTrait;
+use App\Traits\CreatableTrait;
 
 class Footer implements ComponentInterface
 {

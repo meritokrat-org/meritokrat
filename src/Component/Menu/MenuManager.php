@@ -2,7 +2,7 @@
 
 namespace App\Component\Menu;
 
-use App\Component\CreatableTrait;
+use App\Traits\CreatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class MenuManager
