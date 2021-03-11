@@ -13,8 +13,16 @@ class MenuComponent implements ComponentInterface
     /** @var ArrayCollection */
     private $context;
 
+    /** @var callable */
+    private $checkup;
+
     public function __construct($context)
     {
+        if (array_key_exists('checkup', $context)) {
+            $this->checkup = $context['checkup'];
+            unset($context['checkup']);
+        }
+
         $this->setContext($context);
     }
 
@@ -34,6 +42,10 @@ class MenuComponent implements ComponentInterface
 
     public function render()
     {
+        if (null !== $this->checkup && !call_user_func($this->checkup)) {
+            return null;
+        }
+        
         return <<<HTML
 <ul class="nav justify-content-between w-auto">
     {$this->renderContext()}

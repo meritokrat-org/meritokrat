@@ -34,7 +34,7 @@
 		});
 		$('#check_all').click(function (e) {
             e.stopPropagation();
-			if ($(this).attr('rel') == 1) {
+			if ($(this).attr('rel') === 1) {
 				$('.messages_checkbox').attr('checked', false);
 				$('#check_all').attr('rel', 0);
 			}

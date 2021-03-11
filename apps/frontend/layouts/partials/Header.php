@@ -87,6 +87,10 @@ HTML;
 }
 
 return static function () {
+    $isAuthenticatedCheckup = static function () {
+        return session::is_authenticated();
+    };
+
     return Header::create()
         ->setMenuManager(
             MenuManager::create()
@@ -98,12 +102,14 @@ return static function () {
                             'icon' => '<i class="fas fa-house-user"></i>',
                         ],
                         [
-                            'href' => '/people',
-                            'text' => 'Команда',
+                            'href'    => '/people',
+                            'text'    => 'Команда',
+                            'checkup' => $isAuthenticatedCheckup,
                         ],
                         [
-                            'href' => '/ppo',
-                            'text' => 'Організації',
+                            'href'    => '/ppo',
+                            'text'    => 'Організації',
+                            'checkup' => $isAuthenticatedCheckup,
                         ],
                         [
                             'href' => '/blogs/programs',
@@ -114,14 +120,16 @@ return static function () {
                             'text' => 'Публікації',
                         ],
                         [
-                            'href' => '/library',
-                            'text' => 'Бібліотека',
+                            'href'    => '/library',
+                            'text'    => 'Бібліотека',
+                            'checkup' => $isAuthenticatedCheckup,
                         ],
                     ]
                 )
                 ->set(
                     'secondary',
                     [
+                        'checkup' => $isAuthenticatedCheckup,
                         [
                             'href' => sprintf('/profile/desktop?id=%s', session::get_user_id()),
                             'text' => 'Мой кабинет',
