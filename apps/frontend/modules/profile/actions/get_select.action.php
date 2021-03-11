@@ -12,13 +12,16 @@ class profile_get_select_action extends basic_controller
         $list = [];
 
         if (isset($_POST['country_id'])) {
-            $country_id = @intval($_POST['country_id']);
-            $sql        = 'select * from regions where country_id = 0 or country_id = :id order by id asc ';
+            $country_id = (int) $_POST['country_id'];
+            $sql        = sprintf(
+                'select * from regions where country_id = 0 or country_id = :id order by name_%s',
+                session::get('language', 'ua')
+            );
             $bind       = ['id' => $country_id];
             if ($data = db::get_rows($sql, $bind, $this->connection_name)) {
                 //mem_cache::i()->set($cache_key, $data);
                 foreach ($data as $region) {
-                    $regions[] = ['id' => $region['id'], 'title' => $region['name_' . translate::get_lang()]];
+                    $regions[] = ['id' => $region['id'], 'title' => $region['name_'.translate::get_lang()]];
                 }
                 $result = ['type' => 'success', 'regions' => $regions];
             } else {
@@ -31,9 +34,12 @@ class profile_get_select_action extends basic_controller
             if ($data = db::get_rows( $sql, $bind, $this->connection_name ))*/
 
             if ($region > 28) {
-                $data = db::exec("select id, name_" . translate::get_lang() . " from cities where region_id = :region_id", ["region_id" => $region]);
+                $data = db::exec(
+                    "select id, name_".translate::get_lang()." from cities where region_id = :region_id",
+                    ["region_id" => $region]
+                );
                 foreach ($data as $city) {
-                    $cities[] = ['id' => $city['id'], 'title' => $city['name_' . translate::get_lang()]];
+                    $cities[] = ['id' => $city['id'], 'title' => $city['name_'.translate::get_lang()]];
                 }
                 $result = ['type' => 'success', 'cities' => $cities];
             } else {
