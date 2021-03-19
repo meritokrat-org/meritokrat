@@ -5,6 +5,7 @@ namespace WebUI\Layout;
 use App\Component\ComponentInterface;
 use App\Component\Menu\MenuManager;
 use App\Traits\CreatableTrait;
+use App\WebUI\Layout\LogoutBtn;
 use session;
 
 class Header implements ComponentInterface
@@ -15,10 +16,16 @@ class Header implements ComponentInterface
      * @var MenuManager
      */
     private $menuManager;
+    /**
+     * @var object
+     */
+    private $loginFormModal;
 
     public function __construct()
     {
-        $this->menuManager = new MenuManager();
+        $this->menuManager    = new MenuManager();
+        $this->loginFormModal = LoginFormModal::create();
+
     }
 
     public function setMenuManager($menuManager)
@@ -36,7 +43,9 @@ class Header implements ComponentInterface
         <div class="container px-0">
             <div class="position-relative" style="display: grid; grid-auto-flow: column; grid-template-columns: 21.5rem 1px auto">
                 <div class="d-flex flex-row align-items-center">
+                <a href="/">
                     <img alt="..." src="/static/images/common/header/header_1.svg" style="height: 1.75rem" />
+                </a>
                 </div>
                 <div class="d-flex flex-row align-items-center bg-white"></div>
                 <div class="d-flex flex-row align-items-center justify-content-end">
@@ -46,10 +55,15 @@ class Header implements ComponentInterface
             </div>
         </div>
     </div>
-    <div class="container-fluid bg-light px-0">
+    <div class="container-fluid bg-light px-0" style="border-top: 1px solid #ccc; border-bottom: 1px solid #ccc">
         <div class="container px-0">
             <div class="menu menu-primary text-uppercase d-flex flex-row justify-content-between">
                 {$this->menuManager->get('primary')->render()}
+                <ul class="nav">
+                    <li class="nav-item">
+                        {$this->signInOut()}
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -57,18 +71,6 @@ class Header implements ComponentInterface
         <div class="container px-0">
             <div class="menu menu-secondary d-flex flex-row justify-content-between">
                 {$this->menuManager->get('secondary')->render()}
-                <ul class="nav nav-pills">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                            <i class="fas fa-ellipsis-h"></i> 
-                            <i class="glyphicon glyphicon-menu-hamburger"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end text-center">
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Вихід</a></li>
-                        </ul>
-                    </li>
-                </ul>
             </div>
         </div>
     </div>
@@ -76,13 +78,11 @@ class Header implements ComponentInterface
 HTML;
     }
 
-    private function getMenu($type = null)
+    private function signInOut()
     {
-
-        ob_start();
-        include __DIR__.'/'.(null !== $type ? 'submenu.php' : 'menu.php');
-
-        return ob_get_clean();
+        return session::is_authenticated()
+            ? LogoutBtn::create()->render()
+            : LoginFormModal::create()->render();
     }
 }
 

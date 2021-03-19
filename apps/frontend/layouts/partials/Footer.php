@@ -22,8 +22,8 @@ class Footer implements ComponentInterface
         <div class="container p-0">
             <div class="row">
                 <div class="col-1 offset-11">
-                    <script src="https://apps.elfsight.com/p/platform.js" defer></script>
-                    <div class="elfsight-app-6ea67601-bec1-4755-95ca-dac7c266c4b9"></div>
+                    <!--<script src="https://apps.elfsight.com/p/platform.js" defer></script>-->
+                    <!--<div class="elfsight-app-6ea67601-bec1-4755-95ca-dac7c266c4b9"></div>-->
                 </div>
             </div>
         </div>

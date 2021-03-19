@@ -1,4 +1,4 @@
-<?
+<?php
 
 load::system('render/abstract_render');
 

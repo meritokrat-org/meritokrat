@@ -189,13 +189,7 @@
 
     <?php if (session::is_authenticated()) { ?>
         <div class="ml-2">
-            <div id="invite_friend"
-                 style="background: url('/static/images/common/box_head.gif') repeat-x; border-radius: 4px; cursor: pointer">
-                <div class="p5 acenter" onclick="window.location = '/profile/invite'"
-                     style="font-family: inherit; font-weight: bold; color: #FFCC66; text-transform: uppercase">
-                    <?= t('Пригласить') ?>
-                </div>
-            </div>
+            <button class="btn btn-primary w-100 rounded-0 text-uppercase" onclick="window.location = '/profile/invite'"><?= t('Пригласить') ?></button>
         </div>
 
         <script>
@@ -272,7 +266,9 @@
                     ) ?></a>-->
                 <?php } ?>
 
-                <a href="/messages"><?= t('Сообщения') ?><?= $new_messages ? " <b id=\"mesgs\">+" . $new_messages . "</b>" : '' ?></a>
+                <a href="/messages"><?= t(
+                            'Сообщения'
+                    ) ?><?= $new_messages ? " <b id=\"mesgs\">+".$new_messages."</b>" : '' ?></a>
                 <a style="display: inline" href="/friends"><?= t('Друзья') ?></a>
                 <?php if ($pending_friends) { ?>
                     <a class="fw-bold" style="display: inline; margin-left:0"
@@ -287,7 +283,8 @@
 
                 <?php load::model('comments/comments') ?>
 
-                <a href="/comments"><?= t('Комментарии') ?> <?= ($num = comments_peer::instance()->get_new_count()) ? '<b>+' . $num . '</b>' : '' ?></a>
+                <a href="/comments"><?= t('Комментарии') ?> <?= ($num = comments_peer::instance()->get_new_count(
+                    )) ? '<b>+'.$num.'</b>' : '' ?></a>
 
                 <a href="/bookmarks"><?= t('Закладки') ?></a>
                 <?php if (session::has_credential('admin')) { ?>
@@ -298,7 +295,7 @@
                         ['to_id' => session::get_user_id()]
                 ) ?>
                 <?php if (session::has_credential('admin') || $num) { ?>
-                    <a href="/invites"><?= t('Приглашения') ?> <b><?= $num ? '+' . $num : '' ?></b></a>
+                    <a href="/invites"><?= t('Приглашения') ?> <b><?= $num ? '+'.$num : '' ?></b></a>
                 <?php } ?>
 
                 <?php
@@ -309,7 +306,7 @@
                     load::model('groups/applicants');
                     $count_applicants      = 0;
                     $creator               = db::get_cols(
-                            'SELECT id FROM groups WHERE user_id=' . session::get_user_id(),
+                            'SELECT id FROM groups WHERE user_id='.session::get_user_id(),
                             [],
                             null,
                             true
@@ -330,7 +327,7 @@
                     ?>
                     <a href="/groups?app=1"><?= t(
                                 'Заявок'
-                        ) ?><?= $count_applicants ? '<b> +' . $count_applicants . '</b>' : '' ?></a>
+                        ) ?><?= $count_applicants ? '<b> +'.$count_applicants.'</b>' : '' ?></a>
                     <?php
                 }
                 ?>
@@ -340,7 +337,7 @@
                         ?>
                         <a href="/profile/approve_photos"><?= t(
                                     'Прем. фото'
-                            ) ?><?= $count_phts ? '<b> +' . $count_phts . '</b>' : '' ?></a>
+                            ) ?><?= $count_phts ? '<b> +'.$count_phts.'</b>' : '' ?></a>
                     <?php }
                 } ?>
 
@@ -356,13 +353,14 @@
                         ?>
                         <a href="/admin/approve_name"><?= t(
                                     'Прем. имен'
-                            ) ?><?= $count_nms ? '<b> +' . $count_nms . '</b>' : '' ?></a>
+                            ) ?><?= $count_nms ? '<b> +'.$count_nms.'</b>' : '' ?></a>
                     <?php }
                 } ?>
 
                 <?php if (session::has_credential('redcollegiant')) {
                     $count_posts = db::get_scalar(
-                            "SELECT count(*) FROM blogs_posts WHERE type=1 AND created_ts>1312200000 AND id NOT IN (SELECT post_id FROM blogs_views WHERE user_id=" . session::get_user_id() . ")",
+                            "SELECT count(*) FROM blogs_posts WHERE type=1 AND created_ts>1312200000 AND id NOT IN (SELECT post_id FROM blogs_views WHERE user_id=".session::get_user_id(
+                            ).")",
                             []
                     );
                     if ($count_posts > 0) {
@@ -371,7 +369,7 @@
                     <?php }
                 }
                 if (session::get_user_id()) {
-                    $menuset = db_key::i()->get('menuset_' . session::get_user_id());
+                    $menuset = db_key::i()->get('menuset_'.session::get_user_id());
                 }
                 ?>
 
@@ -417,7 +415,7 @@
         </div>
         <?php
         if (session::get_user_id()) {
-            $minidesktopset = db_key::i()->get('minidesktopset_' . session::get_user_id());
+            $minidesktopset = db_key::i()->get('minidesktopset_'.session::get_user_id());
         }
         ?>
         <div class="fs11 profile_menu ml10 wo <?= ($minidesktopset) ? '' : 'hide' ?>" id="mini-desktop-content"
@@ -452,49 +450,6 @@
         </a>
     </div>
 
-    <div id="flashContent" class="hide mt10 mb10 ml10" onClick="window.location = '/donate';">
-        <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="229" height="365" id="banner"
-                align="middle">
-            <param name="movie"
-                   value="/static/flash/banner.swf?lng=<?= session::get('language') != 'ru' ? 'ua' : 'ru' ?>"/>
-            <param name="quality" value="high"/>
-            <param name="bgcolor" value="#ffffff"/>
-            <param name="play" value="true"/>
-            <param name="loop" value="true"/>
-            <param name="wmode" value="window"/>
-            <param name="scale" value="showall"/>
-            <param name="menu" value="true"/>
-            <param name="devicefont" value="false"/>
-            <param name="salign" value=""/>
-            <param name="allowScriptAccess" value="sameDomain"/>
-            <param name="FlashVars" value="lng=<?= session::get('language') != 'ru' ? 'ua' : 'ru' ?>"/>
-            <!--[if !IE]>-->
-            <object type="application/x-shockwave-flash"
-                    data="/static/flash/banner.swf?lng=<?= session::get('language') != 'ru' ? 'ua' : 'ru' ?>"
-                    width="229" height="365">
-                <param name="movie"
-                       value="/static/flash/banner.swf?lng=<?= session::get('language') != 'ru' ? 'ua' : 'ru' ?>"/>
-                <param name="quality" value="high"/>
-                <param name="bgcolor" value="#ffffff"/>
-                <param name="play" value="true"/>
-                <param name="loop" value="true"/>
-                <param name="wmode" value="window"/>
-                <param name="scale" value="showall"/>
-                <param name="menu" value="true"/>
-                <param name="devicefont" value="false"/>
-                <param name="salign" value=""/>
-                <param name="allowScriptAccess" value="sameDomain"/>
-                <param name="FlashVars" value="lng=<?= session::get('language') != 'ru' ? 'ua' : 'ru' ?>"/>
-                <!--<![endif]-->
-                <a href="http://www.adobe.com/go/getflash">
-                    <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif"
-                         alt="Get Adobe Flash player"/>
-                </a>
-                <!--[if !IE]>-->
-            </object>
-            <!--<![endif]-->
-        </object>
-    </div>
 
     <?php if (context::get_controller()->get_module() == 'profile' and request::get(
                     'action'
@@ -532,7 +487,7 @@
         <div id="questions">
             <?php if ($questions) { ?>
                 <?php foreach ($questions as $id) {
-                    include conf::get('project_root') . '/apps/frontend/modules/profile/views/partials/question.php';
+                    include conf::get('project_root').'/apps/frontend/modules/profile/views/partials/question.php';
                 } ?>
             <?php } else { ?>
                 <div id="no_questions" class="acenter fs12 p5 ml10"><?= t('Сообщений нет') ?></div>
@@ -548,14 +503,6 @@
 
 
     <?php if (session::is_authenticated()) { ?>
-        <div class="ml10 mt5 hide">
-            <a href="/vnesky"><img src="/static/images/common/online_payments.png"/></a>
-        </div>
-
-        <div class="ml10 mt5 hide">
-            <a href="http://m-p-u.org/donate" target="_blank"><img width="231"
-                                                                   src="http://m-p-u.org/img/banners/ua/donate.png"></a>
-        </div>
 
     <?php if (session::is_authenticated() && ($user = user_auth_peer::instance()->get_item(
             session::get_user_id()

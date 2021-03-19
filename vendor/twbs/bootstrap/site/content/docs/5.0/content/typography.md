@@ -223,7 +223,7 @@ Use text utilities as needed to change the alignment of your blockquote.
 {{< /example >}}
 
 {{< example >}}
-<figure class="text-end">
+<figure class="text-right">
   <blockquote class="blockquote">
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
   </blockquote>

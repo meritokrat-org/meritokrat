@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "28d420c388239ca5d7a04edb47f157fd",
+    "content-hash": "1bf50510cbc5e69daad0941b0ea270ce",
     "packages": [
         {
             "name": "doctrine/collections",
@@ -71,6 +71,10 @@
                 "collections",
                 "iterator"
             ],
+            "support": {
+                "issues": "https://github.com/doctrine/collections/issues",
+                "source": "https://github.com/doctrine/collections/tree/master"
+            },
             "time": "2017-01-03T10:49:41+00:00"
         },
         {
@@ -133,6 +137,10 @@
                 "orm",
                 "query builder"
             ],
+            "support": {
+                "issues": "https://github.com/j4mie/idiorm/issues",
+                "source": "https://github.com/j4mie/idiorm"
+            },
             "time": "2020-04-29T00:37:09+00:00"
         },
         {
@@ -196,6 +204,10 @@
                 "orm",
                 "paris"
             ],
+            "support": {
+                "issues": "https://github.com/j4mie/paris/issues",
+                "source": "https://github.com/j4mie/paris"
+            },
             "time": "2017-03-21T02:13:30+00:00"
         },
         {
@@ -242,6 +254,10 @@
                 "sass",
                 "web"
             ],
+            "support": {
+                "issues": "https://github.com/twbs/bootstrap/issues",
+                "source": "https://github.com/twbs/bootstrap/tree/v5.0.0-alpha3"
+            },
             "funding": [
                 {
                     "url": "https://opencollective.com/bootstrap",
@@ -262,8 +278,9 @@
     "platform": {
         "php": ">=5.6",
         "ext-pdo": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-mbstring": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }

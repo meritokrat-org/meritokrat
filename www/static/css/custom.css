@@ -302,17 +302,15 @@ a {
 }
 
 .column_head {
-    background-color: #600;
+    background-color: #377cea;
     height: 27px;
-    -moz-border-radius: 4px;
     border-radius: 4px;
-    -webkit-border-radius: 4px;
-    margin-bottom: 0px;
-    padding: 4px 10px 0px 15px;
-    color: #ffcc66;
-    font-weight: bold;
-    font-size: 12px;
-    text-transform: UPPERCASE;
+    margin-bottom: 0;
+    padding: 4px 10px 0 15px;
+    color: white;
+    /*font-weight: bold;*/
+    /*font-size: 12px;*/
+    text-transform: uppercase;
 }
 
 .column_head a {

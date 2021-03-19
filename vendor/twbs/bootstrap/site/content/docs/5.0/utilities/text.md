@@ -13,7 +13,7 @@ Easily realign text to components with text alignment classes. For left, right, 
 {{< example >}}
 <p class="text-left">Left aligned text on all viewport sizes.</p>
 <p class="text-center">Center aligned text on all viewport sizes.</p>
-<p class="text-end">Right aligned text on all viewport sizes.</p>
+<p class="text-right">Right aligned text on all viewport sizes.</p>
 
 <p class="text-sm-left">Left aligned text on viewports sized SM (small) or wider.</p>
 <p class="text-md-left">Left aligned text on viewports sized MD (medium) or wider.</p>
