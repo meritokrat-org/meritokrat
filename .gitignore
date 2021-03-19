@@ -5,4 +5,4 @@
 /www/zz-app/bower_components/
 /www/zz-app/node_modules/
 /node_modules/
-/vendor/
+#/vendor/
