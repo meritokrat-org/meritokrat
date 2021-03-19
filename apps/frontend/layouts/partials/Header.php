@@ -43,9 +43,9 @@ class Header implements ComponentInterface
         <div class="container px-0">
             <div class="position-relative" style="display: grid; grid-auto-flow: column; grid-template-columns: 21.5rem 1px auto">
                 <div class="d-flex flex-row align-items-center">
-                <a href="/">
-                    <img alt="..." src="/static/images/common/header/header_1.svg" style="height: 1.75rem" />
-                </a>
+                    <a href="/">
+                        <img alt="..." src="/static/images/common/header/header_1.svg" style="height: 1.75rem" />
+                    </a>
                 </div>
                 <div class="d-flex flex-row align-items-center bg-white"></div>
                 <div class="d-flex flex-row align-items-center justify-content-end">
