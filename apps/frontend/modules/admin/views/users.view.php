@@ -24,7 +24,7 @@
                         <td width="30%"><?= t('Имя') ?></td>
                         <td>
                             <?= user_helper::full_name($user['id']) ?><br/>
-                            <?= user_helper::photo($user['id'], 't', array('class' => 'mt5')) ?>
+                            <?= user_helper::photo($user['id'], 't', ['class' => 'mt5']) ?>
                         </td>
                     </tr>
                     <tr>
@@ -37,44 +37,50 @@
 						<td>Синонимы имени</td>
 						<td>
 							<textarea style="width: 250px;" class="text" name="synonyms"><?= htmlspecialchars(
-                        $dictionary_names['names']
+                            $dictionary_names['names']
                     ) ?></textarea><br />
 							<input type="checkbox" name="enable_synonyms" value="1" <?= $dictionary_names['names'] ? 'checked' : '' ?> /> Включить в словарь персон
 						</td>
 					</tr-->
                     <?php if (
-                        intval(db_key::i()->get('schanger' . session::get_user_id()))
-                        || in_array(session::get_user_id(), [2, 5, 11752])
+                            intval(db_key::i()->get('schanger'.session::get_user_id()))
+                            || in_array(session::get_user_id(), [2, 5, 11752])
                     ) { ?>
                         <tr>
                             <td><?= t('Статус') ?></td>
                             <td>
                                 <?= tag_helper::select(
-                                    'user_status',
-                                    user_auth_peer::get_statuses(user_auth_peer::STATUS_TYPE_MAIN),
-                                    ['value' => $user['status']]
+                                        'user_status',
+                                        [0 => '&mdash;'] + user_auth_peer::get_statuses(
+                                                user_auth_peer::STATUS_TYPE_MAIN
+                                        ),
+                                        ['value' => $user['status']]
                                 ) ?>
                             </td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td>
-                                <?php $collection = [0 => '&mdash;'] + user_auth_peer::get_statuses(user_auth_peer::STATUS_TYPE_FUNCTIONARY) ?>
+                                <?php $collection = [0 => '&mdash;'] + user_auth_peer::get_statuses(
+                                                user_auth_peer::STATUS_TYPE_FUNCTIONARY
+                                        ) ?>
                                 <?= tag_helper::select(
-                                    'user_status_functionary',
-                                    $collection,
-                                    ['value' => $user['status_functionary']]
+                                        'user_status_functionary',
+                                        $collection,
+                                        ['value' => $user['status_functionary']]
                                 ) ?>
                             </td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td>
-                                <?php $collection = [0 => '&mdash;'] + user_auth_peer::get_statuses(user_auth_peer::STATUS_TYPE_POLITICIAN) ?>
+                                <?php $collection = [0 => '&mdash;'] + user_auth_peer::get_statuses(
+                                                user_auth_peer::STATUS_TYPE_POLITICIAN
+                                        ) ?>
                                 <?= tag_helper::select(
-                                    'user_status_politician',
-                                    $collection,
-                                    ['value' => $user['status_politician']]
+                                        'user_status_politician',
+                                        $collection,
+                                        ['value' => $user['status_politician']]
                                 ) ?>
                             </td>
                         </tr>
@@ -82,12 +88,19 @@
                             <td><?= t('Функция') ?></td>
                             <td>
                                 <?php foreach (user_auth_peer::get_user_functions() as $key => $name) { ?>
+                                    <?php if (!is_array($user['functions'])) { ?>
+                                        <?php $user['functions'] = json_decode($user['functions'], true) ?>
+                                    <?php } ?>
                                     <label style="display: block">
                                         <input
                                                 type="checkbox"
                                                 name="user_functions[]"
                                                 value="<?= $key ?>"
-                                            <?= in_array((string)$key, $user['functions'], true) ? 'checked' : '' ?>
+                                                <?= in_array(
+                                                        (string) $key,
+                                                        $user['functions'],
+                                                        true
+                                                ) ? 'checked' : '' ?>
                                         > <?= $name ?>
                                     </label>
                                 <?php } ?>
@@ -102,9 +115,9 @@
                             <td><?= t('Позиция в агиткоманде') ?></td>
                             <td>
                                 <?= tag_helper::select(
-                                    'user_position',
-                                    [0 => '&mdash;'] + user_auth_peer::get_user_positions(),
-                                    ['value' => $user['position']]
+                                        'user_position',
+                                        [0 => '&mdash;'] + user_auth_peer::get_user_positions(),
+                                        ['value' => $user['position']]
                                 ) ?>
                             </td>
                         </tr>
@@ -113,9 +126,9 @@
                         <td><?= t('Закриті статуси') ?></td>
                         <td>
                             <?= tag_helper::select(
-                                'hidden_type',
-                                user_auth_peer::get_hidden_types(),
-                                array('value' => $user['hidden_type'])
+                                    'hidden_type',
+                                    user_auth_peer::get_hidden_types(),
+                                    ['value' => $user['hidden_type']]
                             ) ?>
                         </td>
                     </tr>
@@ -124,16 +137,16 @@
                         <td>
                             <?php
 
-                            $expert = (strlen($user["expert"]) > 2) ? unserialize($user["expert"]) : array();
+                            $expert = (strlen($user["expert"]) > 2) ? unserialize($user["expert"]) : [];
 
-                            $experts = array();
+                            $experts = [];
                             foreach (user_auth_peer::instance()->get_expert_types() as $key => $name) {
                                 ?>
                                 <lable>
                                     <input type="checkbox" name="expert[]"
                                            value="<?= $key ?>" <?= in_array(
-                                        $key,
-                                        $expert
+                                            $key,
+                                            $expert
                                     ) ? "checked" : "" ?>> <?= $name ?>
                                 </lable><br>
                             <?php } ?>
@@ -212,7 +225,7 @@
                     </tr>
                     <tr>
                         <td><?= t('Обмежити правами гостя') ?></td>
-                        <td><?= tag_helper::select('ban', ban_peer::get_types(), array('value' => $ban_days)) ?></td>
+                        <td><?= tag_helper::select('ban', ban_peer::get_types(), ['value' => $ban_days]) ?></td>
                     </tr>
                     <!--tr>
 						<td>Выборы</td>

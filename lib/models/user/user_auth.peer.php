@@ -19,6 +19,10 @@ class user_auth_peer extends db_peer_postgre
     const SYMPATHETIC         = 1;
     const POTENTIAL_SUPPORTER = 3;
     const SUPPORTER           = 5;
+    const ACTIVE_SUPPORTER    = 7;
+    const ACTIVIST            = 10;
+    const CANDIDATE           = 15;
+    const PARTY_MEMBER        = 25;
 
     public static $activate_types = [1, 3, 4, 5, 6, 7];
     public static $register_types = [1, 3, 4, 5, 6, 7];
@@ -123,14 +127,14 @@ class user_auth_peer extends db_peer_postgre
         switch ($statusType) {
             case self::STATUS_TYPE_MAIN:
                 $map = [
+                    self::POTENTIAL_SUPPORTER => t('Потенциальный сторонник'),
                     self::UNDEFINED           => t('Житель'),
                     self::SYMPATHETIC         => t('Симпатик'),
-                    self::POTENTIAL_SUPPORTER => t('Потенциальный сторонник'),
                     self::SUPPORTER           => t('Сторонник'),
-                    7                         => t('Активний сторонник'),
-                    10                        => t('Активист'),
-                    15                        => t('Кандидат в члены партии'),
-                    25                        => t('Член партии'),
+                    self::ACTIVE_SUPPORTER    => t('Активний сторонник'),
+                    self::ACTIVIST            => t('Активист'),
+                    self::CANDIDATE           => t('Кандидат в члены партии'),
+                    self::PARTY_MEMBER        => t('Член партии'),
                 ];
 
                 if (true === $restrictedMode) {
@@ -141,9 +145,9 @@ class user_auth_peer extends db_peer_postgre
                                 $key,
                                 [
                                     self::POTENTIAL_SUPPORTER,
-                                    5,
-                                    10,
-                                    15,
+                                    self::SUPPORTER,
+                                    self::ACTIVIST,
+                                    self::CANDIDATE,
                                 ],
                                 true
                             );
@@ -221,7 +225,7 @@ where invited_by = :invited_by
 order by last_invite desc
 SQL;
         $parameters = [
-            'invited_by' => $id
+            'invited_by' => $id,
         ];
 
         return db::get_rows($sql, $parameters);
@@ -231,7 +235,7 @@ SQL;
     {
         $extraSql   = '';
         $parameters = [
-            'invited_by' => $id
+            'invited_by' => $id,
         ];
 
 

@@ -446,7 +446,7 @@ SQL;
         $sql = 'select id from user_auth where id in (%s)';
 
         if (!session::has_credential('admin')) {
-            $sql .= ' and status not in (-1, 1, 3)';
+            $sql .= ' and status not in (-1, 3)';
         }
 
         return db::get_cols(sprintf($sql, implode(', ', $ids)));

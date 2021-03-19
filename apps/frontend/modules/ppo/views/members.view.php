@@ -1,4 +1,4 @@
-<div class="row align-middle m-0 px-2 py-1 rounded" style="background-color: #600; font-size: 11px">
+<div class="row align-middle m-0 px-2 py-1 rounded" style="font-size: 11px">
     <?php $titleParts = [
         t('Партийная организация'),
         sprintf('<a href="/ppo%d/%d">%s</a>', $group['id'], $group['number'], htmlspecialchars($group['title'])),

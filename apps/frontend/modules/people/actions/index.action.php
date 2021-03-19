@@ -1,5 +1,18 @@
 <?php
 
+load::model('user/user_desktop');
+load::model('user/user_sessions');
+load::model('bookmarks/bookmarks');
+load::model('parties/members');
+load::model('parties/parties');
+load::model('lists/lists');
+load::model('lists/lists_users');
+load::model('user/user_desktop');
+load::model('user/user_novasys_data');
+load::model('user/user_contact');
+load::model('geo');
+load::action_helper('pager');
+
 /**
  * @property array list
  */
@@ -8,9 +21,6 @@ class people_index_action extends frontend_controller
     #protected $authorized_access = true;
     public function execute()
     {
-        load::model('user/user_desktop');
-        load::model('user/user_sessions');
-
         if (request::get_bool('sort')) {
             $__success  = true;
             $__priority = 1;
@@ -43,12 +53,7 @@ class people_index_action extends frontend_controller
             return;
         }
 
-        $this->sortable_list = user_auth_peer::instance()->get_sortable_list();
-
-        if (request::get('bookmark')) {
-            load::model('bookmarks/bookmarks');
-        }
-
+        $this->sortable_list  = user_auth_peer::instance()->get_sortable_list();
         $this->cur_type       = request::get_int('type', -1);
         $this->cur_status     = request::get_int('status', -1);
         $this->identification = request::get_string('identification');
@@ -56,65 +61,66 @@ class people_index_action extends frontend_controller
         if (request::get('online')) {
             $this->list = user_sessions_peer::instance()->who_online();
         }
+
         if (request::get('offline')) {
             if ('all' === request::get('offline')) {
                 $this->list = db::get_cols('SELECT id FROM user_auth WHERE offline > 0 AND del=0');
-            } else if ((int) request::get('offline') > 0) {
+            } elseif ((int) request::get('offline') > 0) {
                 $this->list = db::get_cols(
-                    'SELECT id FROM user_auth WHERE offline = ' . request::get('offline') . ' AND del=0'
+                    'SELECT id FROM user_auth WHERE offline = '.request::get('offline').' AND del=0'
                 );
             }
-        } else if (request::get('del')) {
+        } elseif (request::get('del')) {
             $this->list = db::get_cols('SELECT id FROM user_auth WHERE del != 0 ORDER BY del_ts DESC');
-        } else if (1 === request::get_int('famous')) {
+        } elseif (1 === request::get_int('famous')) {
             $this->list = user_auth_peer::instance()->get_famous_people();
-        } else if (1 === request::get_int('suslik')) {
+        } elseif (1 === request::get_int('suslik')) {
             $this->list = user_auth_peer::instance()->get_suslik_people();
-        } else if (1 === request::get_int('expert')) {
+        } elseif (1 === request::get_int('expert')) {
             $this->list = db::get_cols("SELECT id FROM user_auth WHERE expert != '0' AND expert != ''");
-        } else if (1 === request::get_int('meritokrat')) {
+        } elseif (1 === request::get_int('meritokrat')) {
             $this->list = db::get_cols(
                 'SELECT id FROM user_auth WHERE (status >= 10 OR ban >= 10) AND del=0 AND active = TRUE'
             );
-        } else if (request::get_int('function')) {
+        } elseif (request::get_int('function')) {
             $this->list = db::get_cols(
                 'SELECT user_id FROM user_desktop WHERE functions && :function ORDER BY user_id ASC',
-                ['function' => '{' . request::get_int('function') . '}']
+                ['function' => '{'.request::get_int('function').'}']
             );
-        } else if (request::get_int('target')) {
+        } elseif (null !== ($fn = request::get_int('fn', null))) {
+            $this->list = db::get_cols(
+                'select id from user_auth where functions like \'[%"'.$fn.'"%]\''
+            );
+        } elseif (request::get_int('target')) {
             $this->list = db::get_cols(
                 'SELECT user_id FROM user_data WHERE target && :target',
-                ['target' => '{' . request::get_int('target') . '}']
+                ['target' => '{'.request::get_int('target').'}']
             );
-        } else if (request::get_int('admintarget') && session::has_credential('admin')) {
+        } elseif (request::get_int('admintarget') && session::has_credential('admin')) {
             $this->list = db::get_cols(
                 'SELECT user_id FROM user_data WHERE admin_target && :admintarget',
-                ['admintarget' => '{' . request::get_int('admintarget') . '}']
+                ['admintarget' => '{'.request::get_int('admintarget').'}']
             );
-        } else if (request::get_int('list')) {
+        } elseif (request::get_int('list')) {
             $this->list = db::get_cols(
                 'SELECT user_id FROM lists2users WHERE list_id=:list_id AND type=0',
                 ['list_id' => request::get_int('list')]
             );
             if (request::get_int('print')) {
-                load::model('user/user_desktop');
-                load::model('user/user_novasys_data');
-                load::model('user/user_contact');
-                load::model('geo');
                 $this->set_layout('');
                 $this->set_template('print');
             }
-        } else if ('check' === $this->identification) {
+        } elseif ('check' === $this->identification) {
             $this->list = user_auth_peer::instance()->get_by_identification();
-        } else if (request::get_int('status') && request::get_int('region')) {
+        } elseif (request::get_int('status') && request::get_int('region')) {
             $this->list = db::get_cols(
-                'SELECT user_id FROM user_data WHERE region_id = ' . request::get_int(
+                'SELECT user_id FROM user_data WHERE region_id = '.request::get_int(
                     'region'
-                ) . ' AND user_id IN (SELECT id FROM user_auth WHERE status = ' . request::get_int(
+                ).' AND user_id IN (SELECT id FROM user_auth WHERE status = '.request::get_int(
                     'status'
-                ) . ' AND active=true)'
+                ).' AND active=true)'
             );
-        } else if (request::get_int('region')) {
+        } elseif (request::get_int('region')) {
             $this->list = db::get_cols(
                 'SELECT user_id FROM user_data WHERE region_id = :region_id',
                 ['region_id' => request::get_int('region')]
@@ -134,12 +140,12 @@ class people_index_action extends frontend_controller
 
             $this->raion_coordinators = db::get_cols(
                 'SELECT user_id FROM user_desktop_funct
-                        WHERE function_id=6 AND city_id IN (' . implode(',', $raions) . ')'
+                    WHERE function_id=6 AND city_id IN ('.implode(',', $raions).')'
             );
 
             $this->logistic_coordinators = db::get_cols(
                 'SELECT user_id FROM user_desktop_funct
-                        WHERE function_id=18 AND city_id IN (' . implode(',', $raions) . ')'
+                    WHERE function_id=18 AND city_id IN ('.implode(',', $raions).')'
             );
 
             $this->all_coordinators = [];
@@ -160,19 +166,19 @@ class people_index_action extends frontend_controller
             $this->all_coordinators = array_unique(
                 $this->all_coordinators
             );
-        } else if (request::get_int('activate')) {
+        } elseif (request::get_int('activate')) {
             $status = request::get_int('status', null);
 
-            if(!$status) {
+            if (!$status) {
                 $this->redirect('/people');
             }
 
             $this->list = db::get_cols(
-                // 'SELECT id FROM user_auth WHERE activated_ts IS NOT NULL ORDER BY activated_ts DESC'
+            // 'SELECT id FROM user_auth WHERE activated_ts IS NOT NULL ORDER BY activated_ts DESC'
                 'SELECT id FROM user_auth WHERE status = :status order by id desc',
                 ['status' => $status]
             );
-        } else if (array_key_exists('filter', $_REQUEST)) {
+        } elseif (array_key_exists('filter', $_REQUEST)) {
             $filter = $_REQUEST['filter'];
             if (array_key_exists('ppo', $filter)) {
                 $ppo = $filter['ppo'];
@@ -185,9 +191,12 @@ right join ppo p on p.id = pm.group_id
 where pm.function = :function;
 PGSQL;
 
-                    $this->list = db::get_cols($sql, [
-                        'function' => $ppo['function'],
-                    ]);
+                    $this->list = db::get_cols(
+                        $sql,
+                        [
+                            'function' => $ppo['function'],
+                        ]
+                    );
                 }
             }
         } else {
@@ -204,25 +213,17 @@ PGSQL;
             );
         }
 
-        load::action_helper('pager');
         $this->total = count($this->list);
-
         $this->pager = pager_helper::get_pager($this->list, request::get_int('page'), 10);
         $this->list  = $this->pager->get_list();
 
-        load::model('parties/members');
-        load::model('parties/parties');
-
         $this->selected_menu = '/people';
-
-        load::model('lists/lists');
-        load::model('lists/lists_users');
-        $this->own_lists  = lists_peer::instance()->own_lists(session::get_user_id());
-        $this->edit_lists = lists_users_peer::instance()->get_lists_by_user(session::get_user_id(), 2);
-        $this->view_lists = lists_users_peer::instance()->get_lists_by_user(session::get_user_id(), 1);
-        $all              = array_merge($this->edit_lists, $this->view_lists);
-        $all              = array_diff($all, $this->own_lists);
-        $this->lists      = array_merge($this->own_lists, $all);
+        $this->own_lists     = lists_peer::instance()->own_lists(session::get_user_id());
+        $this->edit_lists    = lists_users_peer::instance()->get_lists_by_user(session::get_user_id(), 2);
+        $this->view_lists    = lists_users_peer::instance()->get_lists_by_user(session::get_user_id(), 1);
+        $all                 = array_merge($this->edit_lists, $this->view_lists);
+        $all                 = array_diff($all, $this->own_lists);
+        $this->lists         = array_merge($this->own_lists, $all);
         if (!session::has_credential('admin')) {
             $susliki    = db::get_cols(
                 'SELECT id FROM user_auth WHERE suslik=1 AND offline!=:uid',
@@ -234,6 +235,6 @@ PGSQL;
         $this->locationlat = $my['locationlat'];
         $this->locationlng = $my['locationlng'];
 
-        client_helper::set_title(t('Люди') . ' | ' . conf::get('project_name'));
+        client_helper::set_title(t('Люди').' | '.conf::get('project_name'));
     }
 }

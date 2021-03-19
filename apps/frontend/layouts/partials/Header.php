@@ -103,7 +103,7 @@ return static function () {
                         ],
                         [
                             'href'    => '/people',
-                            'text'    => 'Команда',
+                            'text'    => 'Люди',
                             'checkup' => $isAuthenticatedCheckup,
                         ],
                         [

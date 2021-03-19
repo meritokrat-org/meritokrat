@@ -12,7 +12,7 @@ return static function ($ppo) {
     }
 
     $sql = sprintf(
-        'select status, array_to_json(array_agg(id)) as ids from user_auth where id in (%s) group by status order by status desc;',
+        'select status, array_to_json(array_agg(id)) as ids from user_auth where id in (%s) group by status order by status desc',
         implode(', ', $members)
     );
 
