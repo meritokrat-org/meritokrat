@@ -359,7 +359,6 @@ if($level==0 && is_dir($root.$tree.$branch))
 	$alldirs[] = array($branch,rtrim($topname,'/').' ('.$filenum.')',rtrim($topname,'/'),rtrim($topname,'/'),$filenum,filemtime($root.$tree.$branch));
 	}
 $level++;
-
 $dh = opendir($root.$tree.$branch);
 while (($dirname = readdir($dh)) !== false)
 	{

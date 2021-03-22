@@ -2,6 +2,8 @@
 /**
  * @var basic_controller $controller
  */
+
+require_once '_counter.php';
 ?>
 <!DOCTYPE html>
 <html lang="uk">
@@ -30,17 +32,16 @@
         });
     </script>
 
-    <?php if (isset($post_data) && empty($error_message) && 'blogs' === context::get_controller()->get_module()) { ?>
-        <?php preg_match(
-                '/\<title\>(.*)\<\/title\>/',
-                seo_helper::get_title(
-                        context::get_controller()->get_module(),
-                        context::get_controller()->get_action(),
-                        session::get('language', 'ua')
-                ),
-                $match
-        ); ?>
-        <?php $user = user_data_peer::instance()->get_item($post_data['user_id']) ?>
+    <?php if (isset($post_data) && empty($error_message) && 'blogs' === context::get_controller()->get_module(
+            )) { ?><?php preg_match(
+            '/\<title\>(.*)\<\/title\>/',
+            seo_helper::get_title(
+                    context::get_controller()->get_module(),
+                    context::get_controller()->get_action(),
+                    session::get('language', 'ua')
+            ),
+            $match
+    ); ?><?php $user = user_data_peer::instance()->get_item($post_data['user_id']) ?>
 
         <?php
 
@@ -64,19 +65,16 @@
         <meta property="og:description" content="<?= str_replace('<br />', '', $post_data['preview']) ?>"/>
     <?php } ?>
 
-    <?php if (!empty($error_message) && 'ooops' === context::get_controller()->get_module()) { ?>
-        <?php $tokens = explode('|', $error_message); ?>
+    <?php if (!empty($error_message) && 'ooops' === context::get_controller()->get_module(
+            )) { ?><?php $tokens = explode('|', $error_message); ?>
         <meta property="og:image" content="https://meritokrat.org/static/images/error.png"/>
         <meta property="og:url" content="https://meritokrat.org/<?= $_SERVER['REQUEST_URI'] ?>"/>
         <meta property="og:type" content="website"/>
-        <meta property="og:title"
-              content="Ошибка<?= !empty($tokens[0]) ? ': '.$tokens[0] : 'Документ, который Вы запрашиваете, не найден' ?>"/>
-        <meta property="og:description"
-              content="<?= isset($tokens[1]) ? $tokens[1] : 'Документ, который Вы запрашиваете, не найден. Возможно, ошиблись с вводом ссылки или документ перенесли в другой раздел' ?>"/>
+        <meta property="og:title" content="Ошибка<?= !empty($tokens[0]) ? ': '.$tokens[0] : 'Документ, который Вы запрашиваете, не найден' ?>"/>
+        <meta property="og:description" content="<?= isset($tokens[1]) ? $tokens[1] : 'Документ, который Вы запрашиваете, не найден. Возможно, ошиблись с вводом ссылки или документ перенесли в другой раздел' ?>"/>
     <?php } ?>
 
-    <?php if ('shop' === context::get_controller()->get_module()) { ?>
-        <?php $tokens = explode('|', $error_message); ?>
+    <?php if ('shop' === context::get_controller()->get_module()) { ?><?php $tokens = explode('|', $error_message); ?>
         <meta property="og:image" content="https://meritokrat.org/static/images/logos/logo.png"/>
         <meta property="og:url" content="https://meritokrat.org/shop"/>
         <meta property="og:type" content="website"/>
@@ -157,25 +155,21 @@
                 </div>
 
                 <div id="left" class="col-3 pl-1 m-0<?php if (!session::is_authenticated()) { ?> d-none<?php } ?>">
-                    <?php if (!('up' === request::get('action') && 'sign' === request::get('module'))) { ?>
-                        <?php include __DIR__.'/partials/profile.php'; ?>
-                    <?php } ?>
-                    <?php if ($controller->get_slot_path('context')) { ?>
-                        <?php include $controller->get_slot_path('context') ?>
-                    <?php } ?>
+                    <?php if (!('up' === request::get('action') && 'sign' === request::get(
+                                    'module'
+                            ))) { ?><?php include __DIR__.'/partials/profile.php'; ?><?php } ?><?php if ($controller->get_slot_path(
+                            'context'
+                    )) { ?><?php include $controller->get_slot_path('context') ?><?php } ?>
                 </div>
 
-            <?php } else { ?>
-                <?php include $controller->get_template_path() ?>
-            <?php } ?>
+            <?php } else { ?><?php include $controller->get_template_path() ?><?php } ?>
 
             <?php if (0 && session::has_credential('admin') && $seo_text = seo_helper::getText(
                             context::get_controller()->get_module(),
                             context::get_controller()->get_action(),
                             session::get('language', 'ua')
                     )) { ?>
-                <div class="mt10 mb10" id="target_text">
-                </div>
+                <div class="mt10 mb10" id="target_text"></div>
             <?php } ?>
             <br/>
         </div>
@@ -189,12 +183,11 @@
             5 !== ($userId = session::get_user_id()) && $userId > 10907
             && db_key::i()->get('all_visits_'.session::get_user_id()) > 2
             && !db_key::i()->get('seen_form'.date('md').':'.session::get_user_id())
-    ) { ?>
-        <?php db_key::i()->set('seen_form'.date('md').':'.$userId, true); //сегодня этому товарищу больше не показывать ?>
-        <div id="popup_opacity" class="hide"
-             style="position: absolute; left: 0pt; top: 0pt; width: 1700px; height: 2700px; text-align: center; z-index: 10000; background: none repeat scroll 0% 0% rgb(0, 0, 0);  opacity: 0.5; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50); -moz-opacity: 0.5; -khtml-opacity: 0.5;"
-             id="popup_box" class="popup_box"></div>
-    <?php include 'popups/target.php'; ?>
+    ) { ?><?php db_key::i()->set(
+            'seen_form'.date('md').':'.$userId,
+            true
+    ); //сегодня этому товарищу больше не показывать ?>
+        <div id="popup_opacity" class="hide" style="position: absolute; left: 0pt; top: 0pt; width: 1700px; height: 2700px; text-align: center; z-index: 10000; background: none repeat scroll 0% 0% rgb(0, 0, 0);  opacity: 0.5; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50); -moz-opacity: 0.5; -khtml-opacity: 0.5;" id="popup_box" class="popup_box"></div><?php include 'popups/target.php'; ?>
         <script>
             jQuery(document).ready(function () {
                 <?php if( !('blogs' == $_REQUEST['module'] && 'post' == $_REQUEST['action'] && 3910 == $_REQUEST['id'])){ ?>
@@ -234,11 +227,9 @@
 <?= tag_helper::js('/lib/api.js') ?>
 <?= tag_helper::js('system.js') ?>
 <?php if ('home' !== context::get_controller()->get_module()): ?>
-    <?= tag_helper::js('module_'.context::get_controller()->get_module().'.js') ?>
-<?php endif ?>
+    <?= tag_helper::js('module_'.context::get_controller()->get_module().'.js') ?><?php endif ?>
 <?php if (conf::get('javascript_debug') || session::has_credential('programmer')) { ?>
-    <?= tag_helper::js('debug.js') ?>
-<?php } ?>
+    <?= tag_helper::js('debug.js') ?><?php } ?>
 <?php include __DIR__.'/_js_static.php' ?>
 <?php if (true === conf::get('enable_web_debug')){ ?><!-- Executed in: <?= (microtime(
                 true

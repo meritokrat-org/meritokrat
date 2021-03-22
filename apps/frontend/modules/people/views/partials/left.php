@@ -18,14 +18,7 @@ if (request::get_int('status')) {
     }
 </style>
 
-<?php if (session::has_credential('admin')) { ?>
-    <h1 style="cursor: pointer;" class="column_head mt10">
-        <a style="display: block;" href="/search?map=1&distance=10&submit=1">* <?= t('Кто рядом') ?></a>
-    </h1>
-<?php } ?>
-
 <?php if (session::is_authenticated()) { ?>
-
     <?php
     $hasAdminCredential = static function () {
         return session::has_credential('admin');
@@ -582,3 +575,8 @@ HTML;
         });
     });
 </script>
+<?php if (session::has_credential('admin')) { ?>
+    <h1 style="cursor: pointer;" class="column_head mt10">
+        <a style="display: block;" href="/search?map=1&distance=10&submit=1">* <?= t('Кто рядом') ?></a>
+    </h1>
+<?php } ?>

@@ -19,5 +19,3 @@ if(session::get_user_id())
 			"time_out" => date("Y-m-d H:i:s")
 		));
 }
-
-?>

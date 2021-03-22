@@ -32,18 +32,11 @@
                                                 ],
                                                 'li > a' => [
                                                         'btn-link',
-                                                        'text-danger',
                                                 ],
                                         ];
 
                                         if ($key === $status) {
-                                            $classes['li']       = array_merge(
-                                                    $classes['li'],
-                                                    [
-                                                            'list-group-item-danger',
-                                                    ]
-                                            );
-                                            $classes['li > a'][] = 'text-danger';
+                                            $classes['li > a'][] = 'fw-bold';
                                         }
 
                                         array_walk(
@@ -63,7 +56,7 @@
                                         return <<<HTML
 <li class="{$classes['li']}">
     <a class="{$classes['li > a']}" href="/admin/rating?status={$key}">{$value}</a>
-    <span class="badge bg-danger rounded-pill">{$count}</span>
+    <span class="badge bg-primary rounded-pill">{$count}</span>
 </li>
 HTML;
                                     },
@@ -77,8 +70,8 @@ HTML;
                     <?php foreach ($alias2names as $alias => $name) { ?>
                         <?php if (!in_array($alias, ['full_rating', 'regional_ratio', 'added_points'])) { ?>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <a class="btn-link text-danger" href="/admin/rating&type=criteria_adv&direct=DESC&field=<?= $alias ?>"><?= $name ?></a>
-                                <span class="badge bg-danger rounded-pill"><?= db::get_scalar(
+                                <a class="btn-link" href="/admin/rating&type=criteria_adv&direct=DESC&field=<?= $alias ?>"><?= $name ?></a>
+                                <span class="badge bg-primary rounded-pill"><?= db::get_scalar(
                                             'select count(*) from user_auth where invited_by > 0'
                                     ) ?></span>
                             </li>

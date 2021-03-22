@@ -43,7 +43,7 @@ class Header implements ComponentInterface
         <div class="container px-0">
             <div class="position-relative" style="display: grid; grid-auto-flow: column; grid-template-columns: 21.5rem 1px auto">
                 <div class="d-flex flex-row align-items-center">
-                    <a href="/">
+                    <a href="/" style="line-height: 0">
                         <img alt="..." src="/static/images/common/header/header_1.svg" style="height: 1.75rem" />
                     </a>
                 </div>
