@@ -438,7 +438,7 @@ SQL;
 
         $row = db::get_row($sql, $bind);
 
-        if (!array_key_exists('ids', $row)) {
+        if (!$row || !array_key_exists('ids', $row)) {
             return [];
         }
 

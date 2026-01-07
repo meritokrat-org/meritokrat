@@ -33,7 +33,7 @@ PGSQL;
 
             $this->list = db::get_cols($sql, $sqlBind);
             //$this->list  = ppo_members_peer::instance()->get_members($this->group['id'], false, $this->group);
-            $this->pager = pager_helper::get_pager($this->list, request::get_int('page'), 16);
+            $this->pager = pager_helper::get_pager($this->list, request::get_int('page'), 20);
             $this->list  = $this->pager->get_list();
         }
     }

@@ -1,4 +1,5 @@
-<?
+<?php
+
 class user_contact_peer extends db_peer_postgre
 {
 	protected $table_name = 'user_contact';

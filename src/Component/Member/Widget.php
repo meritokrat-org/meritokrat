@@ -54,8 +54,8 @@ class Widget implements ComponentInterface
 
         return <<<HTML
 <div>
-    <div class="row align-middle m-0 p-1 rounded-top" style="background-color: #600; font-size: 11px">
-        <div class="col m-0 p-0 white fw-bold text-uppercase">{$this->getTitle()}</div>
+    <div class="row align-middle m-0 p-1 rounded-top bg-secondary" style="font-size: 11px">
+        <div class="col m-0 p-0 white fw-bold">{$this->getTitle()}</div>
         <div class="col-3 p-0 m-0 text-end">
             {$this->renderActions()}
         </div>
@@ -111,7 +111,7 @@ HTML;
     {
         return implode(PHP_EOL, array_map(function ($text, $url) {
             return <<<HTML
-<a class="link-warning text-nowrap p-0" href="{$url}" style="text-decoration: none">{$text}</a>
+<a class="white text-nowrap p-0" href="{$url}" style="text-decoration: none">{$text}</a>
 HTML;
         }, $this->actions->getValues(), $this->actions->getKeys()));
     }

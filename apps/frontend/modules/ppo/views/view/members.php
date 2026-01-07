@@ -24,7 +24,7 @@ return static function ($ppo) {
         $memberIds = json_decode($row['ids'], true);
 
         if ($row['status'] === user_auth_peer::POTENTIAL_SUPPORTER && !session::has_credential('admin')) {
-            $sql = 'select ua.id from ppo_members pm join user_auth ua on pm.user_id = ua.id where pm.group_id = :ppoId and ua.status = :userStatus and ua.invited_by = :invitedBy';
+            $sql = 'select ua.id from ppo_members pm join user_auth ua on pm.user_id = ua.id where pm.group_id = :ppoId and ua.status = :userStatus and ua.invited_by = :invitedBy ';
 
             $memberIds = db::get_cols(
                 $sql,
@@ -52,7 +52,7 @@ return static function ($ppo) {
                             ->setFirstName($data['first_name'])
                             ->setLastName($data['last_name']);
                     },
-                    $memberIds
+                    array_splice($memberIds, 0, 14)
                 )
             )
             ->render();

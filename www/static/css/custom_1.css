@@ -134,7 +134,7 @@ a.next:hover img {
 .friend_selector { border: 1px solid #EEE; }
 .friend_selector .item { float: left; width: 29%; line-height: 175%; border: 1px solid #FFF; padding: 5px; margin: 5px 5px 0px 5px; cursor: pointer; }
 .friend_selector .selected { background: #DDDDDD url(http://s1.meritokrat.org/icons/check.png) right bottom no-repeat; border: 1px solid #EEE; }
-table { margin-bottom:1.4em; color: #660000}
+table { margin-bottom:1.4em; color: black}
 table.data-table { width: 100%; background: #BBB; border-right: 1px solid #BBB; border-bottom: 1px solid #BBB;}
 table.data-table td { text-align: left; background: #F7F7F7; border-left: 1px solid #BBB; border-top: 1px solid #BBB; }
 table.data-table tr.highlight td { background: #E6EFC2; color: #264409; }

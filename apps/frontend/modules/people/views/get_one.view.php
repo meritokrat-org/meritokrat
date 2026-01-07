@@ -1,7 +1,7 @@
 <? header("Content-Type: text/html; charset=utf-8"); ?>
 <style>
 .atab{color:black;font-weight:bold}
-a.atab:hover,a.atab:focus,.asel{color:#660000;font-weight:bold;text-decoration:none}
+a.atab:hover,a.atab:focus,.asel{color: black;font-weight:bold;text-decoration:none}
 </style>
 <div class="clear"></div>
 <div class="mt10">

@@ -48,7 +48,7 @@
 <div class="profile" style="color:black;">
 
 	<div class="left" style="width: 750px;">
-            <h1 class="mb5 fs28 mt10" style="color:#660000; margin-left: 20px;">
+            <h1 class="mb5 fs28 mt10" style="color: black; margin-left: 20px;">
 	<?=t('Результаты')?>
        <?   load::model('user/user_sessions');
        $user_functions=explode(',',str_replace(array('{','}'),array('',''),$user_desktop['functions']));
@@ -91,7 +91,7 @@
                                 <p  style=" text-align: left;"><span style="font-size: 16px;"><strong><a href="https://meritokrat.org/results"><?=number_format($act, 0, '', ' ')?></a></strong></span></p>
                             </td>
                             <td>
-                                <p><span style="font-size: 12px;"><?=t('активистов партии по всей Украине')?>&nbsp;(<a href="https://meritokrat.org/search?smap=1&distance=10&submit=1&su=1" target="_blank" style='color:#660000 !important; font-weight: bold;'><?=t('карта активистов')?></a>)</span></p>
+                                <p><span style="font-size: 12px;"><?=t('активистов партии по всей Украине')?>&nbsp;(<a href="https://meritokrat.org/search?smap=1&distance=10&submit=1&su=1" target="_blank" style='color: black !important; font-weight: bold;'><?=t('карта активистов')?></a>)</span></p>
                             </td>
                         </tr>
                         <tr>
@@ -99,7 +99,7 @@
                                 <p  style=" text-align: left;"><span style="font-size: 16px;"><strong><a href="https://meritokrat.org/results"><?=number_format($meritokrat_members, 0, '', ' ')?></a></strong></span></p>
                             </td>
                             <td>
-                                <span style="font-size: 12px;"><?=t('участников социальной сети')?>&nbsp;"<span style="text-decoration: underline;"><a href="https://meritokrat.org/home" target="_blank" style='color:#660000 !important; '><strong><?=t('Меритократ')?></strong></a></span>"&nbsp;<?=t('(сеть, объединяющая людей, интересующихся идеями меритократии, а также сторонников и членов Меритократической партии Украины)')?></span>
+                                <span style="font-size: 12px;"><?=t('участников социальной сети')?>&nbsp;"<span style="text-decoration: underline;"><a href="https://meritokrat.org/home" target="_blank" style='color: black !important; '><strong><?=t('Меритократ')?></strong></a></span>"&nbsp;<?=t('(сеть, объединяющая людей, интересующихся идеями меритократии, а также сторонников и членов Меритократической партии Украины)')?></span>
                             </td>
                         </tr>
                         <tr>
@@ -318,7 +318,7 @@
         </tr> 
         <tr>
             <td colspan="2" style="padding-top: 0px;">
-                <h1 class="fs28 m0" style="color:#660000;">
+                <h1 class="fs28 m0" style="color: black;">
                     <?=t('Статистика')?>
                 </h1>
             </td>

@@ -1,4 +1,4 @@
-<?
+<?php
 
 load::system('db/db_connect');
 load::system('db/db_exception');
@@ -10,7 +10,7 @@ class db
         return $statement->fetch(pdo::FETCH_ASSOC);
     }
 
-    public static function get_scalar($sql, $bind = array(), $connection_name = null, $cache_key = null)
+    public static function get_scalar($sql, $bind = [], $connection_name = null, $cache_key = null)
     {
         if ($cache_key) {
             if (is_array($cache_key)) {
@@ -24,7 +24,7 @@ class db
         }
 
         $statement = self::exec($sql, $bind, $connection_name);
-        $data      = $statement->fetch(pdo::FETCH_COLUMN);
+        $data = $statement->fetch(pdo::FETCH_COLUMN);
 
         if ($cache_key) {
             mem_cache::i()->set($cache_key, $data, $cache_ttl);
@@ -36,7 +36,7 @@ class db
     /**
      * @return PDOStatement
      */
-    public static function exec($sql, $bind = array(), $connection_name = null)
+    public static function exec($sql, $bind = [], $connection_name = null)
     {
         $log_id = (conf::get('enable_log')) ? logger::start($sql, 'SQL', logger::LEVEL_WARNING) : null;
 
@@ -47,7 +47,7 @@ class db
 
         $statement->execute();
 
-        if (($statement->errorCode() != '0000') && !conf::get('disable_db_exceptions')) {
+        if (($statement->errorCode() != '0000') && ! conf::get('disable_db_exceptions')) {
             $error = $statement->errorInfo();
             throw new dbException($error[2], null, $sql);
         }
@@ -70,14 +70,14 @@ class db
         return PDO::PARAM_STR;
     }
 
-    public static function get_row($sql, $bind = array(), $connection_name = null)
+    public static function get_row($sql, $bind = [], $connection_name = null)
     {
         $statement = self::exec($sql, $bind, $connection_name);
 
         return $statement->fetch(pdo::FETCH_ASSOC);
     }
 
-    public static function get_rows($sql, $bind = array(), $connection_name = null, $cache_key = null)
+    public static function get_rows($sql, $bind = [], $connection_name = null, $cache_key = null)
     {
         if ($cache_key) {
             if (is_array($cache_key)) {
@@ -91,7 +91,7 @@ class db
         }
 
         $statement = self::exec($sql, $bind, $connection_name);
-        $data      = $statement->fetchAll(pdo::FETCH_ASSOC);
+        $data = $statement->fetchAll(pdo::FETCH_ASSOC);
 
         if ($cache_key) {
             mem_cache::i()->set($cache_key, $data, $cache_ttl);
@@ -100,7 +100,7 @@ class db
         return $data;
     }
 
-    public static function get_cols($sql, $bind = array(), $connection_name = null, $cache_key = null)
+    public static function get_cols($sql, $bind = [], $connection_name = null, $cache_key = null)
     {
         if ($cache_key) {
             if (is_array($cache_key)) {
@@ -114,7 +114,7 @@ class db
         }
 
         $statement = self::exec($sql, $bind, $connection_name);
-        $data      = $statement->fetchAll(pdo::FETCH_COLUMN);
+        $data = $statement->fetchAll(pdo::FETCH_COLUMN);
 
         if ($cache_key) {
             mem_cache::i()->set($cache_key, $data, $cache_ttl);

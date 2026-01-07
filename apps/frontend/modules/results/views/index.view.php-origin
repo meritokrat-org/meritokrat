@@ -56,7 +56,7 @@
 <div class="profile" style="color:black; background: none">
     <?php if (1 != 1) { ?>
         <div style="margin-left: 20px; margin-bottom: 20px">
-            <h1 class="fs28 mb5" style="color: #660000;">* <?= t('Выборы 2012') ?></h1>
+            <h1 class="fs28 mb5" style="color: black;">* <?= t('Выборы 2012') ?></h1>
 
             <div class="mb10">
                 <div class="left fs16" style="width: 100px;">
@@ -92,7 +92,7 @@
     <?php } ?>
 
     <div style="width: 750px;">
-        <h1 class="mb5 fs28 mt10" style="color:#660000; margin-left: 20px;">
+        <h1 class="mb5 fs28 mt10" style="color: black; margin-left: 20px;">
             <?= t('Результаты') ?>
             <?php load::model('user/user_sessions');
             $user_functions = explode(',', str_replace(['{', '}'], ['', ''], $user_desktop['functions']));
@@ -181,7 +181,7 @@
                                                     href="http://<?= context::get(
                                                             'host'
                                                     ); ?>/search?smap=1&distance=10&submit=1&su=1" target="_blank"
-                                                    style='color:#660000 !important; font-weight: bold;'><?= t(
+                                                    style='color: black !important; font-weight: bold;'><?= t(
                                                         'карта активистов'
                                                 ) ?></a>)<?php } ?></span></p>
                                 </td>
@@ -202,7 +202,7 @@
                                     <span style="font-size: 12px;"><?= t('участников социальной сети') ?>&nbsp;"<span
                                                 style="text-decoration: underline;"><a
                                                     href="http://<?= context::get('host'); ?>/" target="_blank"
-                                                    style='color:#660000 !important; '><strong><?= t(
+                                                    style='color: black !important; '><strong><?= t(
                                                             'Меритократ'
                                                     ) ?></strong></a></span>"</span>
                                 </td>
@@ -485,7 +485,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="padding-top: 0px;">
-                            <h1 class="fs28 m0" style="color:#660000;">
+                            <h1 class="fs28 m0" style="color: black;">
                                 <?= t('Статистика') ?>
                             </h1>
                         </td>

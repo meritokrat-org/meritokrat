@@ -28,7 +28,7 @@
 		overflow: auto;
 		height: 200px;
 		padding: 4px;
-		color: #660000;
+		color: black;
 	}
 	
 	.plus {
@@ -45,7 +45,7 @@
 		overflow: auto;
 		height: 96px;
 		padding: 4px;
-		color: #660000;
+		color: black;
 	}
 	
 	.minus {
@@ -106,7 +106,7 @@
 									Дата создания: <?=date("d.m.Y", $time)?>
 								</div>
 								<div style="font-size: 10px; color: #888">
-									Статус: <span id="status-<?=$inquirer["id"]?>" style="color: #660000;">
+									Статус: <span id="status-<?=$inquirer["id"]?>" style="color: black;">
 										<? if($count_gen > 0 && $inquirer["published"] > 0){ ?>
 											Опубликованный
 										<? } else { ?>

@@ -514,7 +514,7 @@ a.next:hover img {
 
 table {
     margin-bottom: 1.4em;
-    color: #660000
+    color: black
 }
 
 table.data-table {
@@ -734,7 +734,7 @@ a.hoverover {
 
 a.hoverover:hover {
     background: url(/icons/down_icon_brown.png) no-repeat right 2px;
-    color: #660000;
+    color: black;
 }
 
 .plm {
@@ -785,7 +785,7 @@ a.hoverover:hover {
 }
 
 .bord {
-    color: #660000;
+    color: black;
 }
 
 .gray_line {

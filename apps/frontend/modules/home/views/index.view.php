@@ -235,10 +235,10 @@ if (session::is_authenticated()) { ?>
 
         <?php if (session::has_credential('admin')) { ?>
             <div class="column_head mt10" style="cursor: pointer;" onclick="Application.ShowHide('team')">
-                <b class="left" style="margin-top:3px;">
-                    <a href="/team3/1"><?= t('Команда Игоря Шевченка') ?></a>
+                <b class="left">
+                    <a href="/team3/1" style="color: white"><?= t('Изберательная структура') ?></a>
                 </b>
-                <a class="right" style="margin-top:3px;" rel="nofollow" href="/team"><?= t('Все') ?> &rarr;</a>
+                <a class="right" style="color: white; text-transform: none" rel="nofollow" href="/team"><?= t('Все') ?> &rarr;</a>
             </div>
             <div class="mb5 mt5" id="team">
                 <?php
@@ -285,8 +285,8 @@ if (session::is_authenticated()) { ?>
 
 
         <div class="column_head mt10" style="cursor: pointer;" onclick="Application.ShowHide('projects')">
-            <b class="left" style="margin-top:3px;"><?= t('Проекты') ?></b>
-            <a class="right" style="margin-top:3px;" rel="nofollow" href="/projects"><?= t('Все') ?> &rarr;</a>
+            <b class="left"><?= t('Проекты') ?></b>
+            <a class="right" style="color: white; text-transform: none" rel="nofollow" href="/projects"><?= t('Все') ?> &rarr;</a>
         </div>
         <div class="mb5 mt5" id="projects">
             <?php
@@ -343,10 +343,11 @@ if (session::is_authenticated()) { ?>
         </div>
 
         <div class="column_head mt10" style="cursor: pointer;" onclick="Application.ShowHide('groups')">
-            <b class="left" style="margin-top:3px;"><?= t('Сообщества') ?></b>
+            <b class="left"><?= t('Сообщества') ?></b>
             <!--	        <a class="right" style="margin-top:3px;" rel="nofollow" href="/groups">-->
             <?php
             //=t('Все')?><!-- &rarr;</a>-->
+            <a class="right" style="color: white; text-transform: none" rel="nofollow" href="/groups"><?= t('Все') ?> &rarr;</a>
         </div>
         <div class="mb5 mt5" id="groups">
             <?php
@@ -573,10 +574,10 @@ if (session::is_authenticated()) { ?>
     */ ?>
     <div class="left ml10" style="width: 100%;">
         <div class="column_head mt10 mb10" style="cursor: pointer;" onclick="Application.ShowHide('blogs')">
-            <b class="left" style="margin-top:3px;"><?= t('Публикации')//.t('Интересная информация')       ?></b>
+            <b class="left" ><?= t('Публикации')//.t('Интересная информация')       ?></b>
             <?php
             if (session::is_authenticated()) { ?>
-                <a class="right" style="margin-top:3px;" rel="nofollow" href="/blogs"><?= t('Все') ?> &rarr;</a>
+                <a class="right"  style="color: white; text-transform: none" rel="nofollow" href="/blogs"><?= t('Все') ?> &rarr;</a>
                 <?php
             } ?>
         </div>

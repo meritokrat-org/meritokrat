@@ -13,7 +13,7 @@
         <div class="card">
             <h5 class="card-header d-flex justify-content-between align-items-center">
                 Кількість учасників загальнонаціональної команди
-                <span class="badge bg-danger rounded-pill" style="font-size: 11pt; background-color: #600 !important;">
+                <span class="badge bg-danger rounded-pill" style="font-size: 11pt; background-color: black !important;">
                     <a href="/people" class="text-white"><?= db::get_scalar(
                                 'select count(*) from user_auth where status not in (-1, 1, 3)'
                         ) ?></a>
@@ -33,7 +33,7 @@
                         <li class="list-group-item d-flex align-items-center">
                             <div class="flex-grow-1 ps-3"><?= $v ?></div>
                             <span class="badge bg-danger rounded-pill"
-                                  style="font-size: 11pt; background-color: #600 !important;">
+                                  style="font-size: 11pt; background-color: black !important;">
                         <?= db::get_scalar('select count(*) from user_auth where status = :status', ['status' => $k]) ?>
                     </span>
                         </li>
@@ -48,7 +48,7 @@
         <div class="card">
             <h5 class="card-header d-flex justify-content-between align-items-center">
                 Кількість партійних організацій
-                <span class="badge bg-danger rounded-pill" style="font-size: 11pt;background-color: #600 !important;">
+                <span class="badge bg-danger rounded-pill" style="font-size: 11pt;background-color: black !important;">
                 <a href="/ppo/index?status=2" class="text-white"><?= db::get_scalar(
                             'select count(*) from ppo where active = 1'
                     ) ?></a>
@@ -60,7 +60,7 @@
                         <li class="list-group-item d-flex align-items-center">
                             <div class="flex-grow-1 ps-3"><?= $v ?></div>
                             <span class="badge bg-danger rounded-pill"
-                                  style="font-size: 11pt;background-color: #600 !important;">
+                                  style="font-size: 11pt;background-color: black !important;">
                         <?= db::get_scalar('select count(*) from ppo where category = :category', ['category' => $k]) ?>
                     </span>
                         </li>

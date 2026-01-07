@@ -6,7 +6,7 @@ load::model('groups/groups'); ?>
 <div class="left" style="width: 35%;"><?php include 'partials/left.php' ?></div>
 
 <div class="left ml10" style="width: 62%;">
-    <h1 class="column_head">
+    <h1 class="column_head" style="text-transform: none; padding: 5px 10px 5px 15px; height: auto">
         <a href="/ppo/index?category=3" class=" mr15<?= request::get_int('category') === 3 ? '' : ' white' ?>"><?= t(
                     'Региональные'
             ) ?> &nbsp;<?= (int) db::get_scalar("SELECT count(*) FROM ppo WHERE category=3 AND active=1") ?></a>

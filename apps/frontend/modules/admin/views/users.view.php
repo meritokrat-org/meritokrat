@@ -56,6 +56,7 @@
                                         ),
                                         ['value' => $user['status']]
                                 ) ?>
+                                <input type="submit" name="submit" class="button" value=" <?= t('Сохранить') ?> ">
                             </td>
                         </tr>
                         <tr>

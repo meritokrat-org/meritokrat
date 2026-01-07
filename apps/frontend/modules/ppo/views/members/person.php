@@ -24,7 +24,7 @@ return static function ($uid) {
         <a class="btn btn-danger btn-sm"
            href="/messages/compose?user_id={$uid}"
            role="button"
-           style="font-size: 12px; background-color: #600; border-color: #600"
+           style="font-size: 12px; background-color: black; border-color: black"
         >{$i18n['Написать']}</a>
     </div>
 </div>

@@ -8,14 +8,14 @@
         <?php foreach (ppo_peer::get_levels() as $level => $title) { ?>
             <?php if ($level !== 0) { ?>
                 <li><a href="/ppo/index?category=<?= $level ?><?= user_helper::createlurl('category') ?>"
-                       style="<?= $level == $cur_category ? 'color: #772f23; font-weight: bold; text-decoration: none;' : '' ?>; margin: 1px;"><?= $title ?></a>
+                       style="<?= $level == $cur_category ? 'font-weight: bold; text-decoration: none;' : '' ?>; margin: 1px;"><?= $title ?></a>
                 </li>
             <?php } ?>
         <?php } ?>
     </ul>
 </div>
 
-<div onclick="Application.ShowHide('types')" style="cursor: pointer;" class="column_head mt10">
+<div onclick="Application.ShowHide('types')" style="cursor: pointer;" class="column_head mt10 <?php if($cur_category !== 1){ echo "d-none"; } ?>">
     <div class="left"><?= t('Тип') ?></div>
     <div class="right mt5 <?= !$cur_ptype ? 'hide' : '' ?> icoupicon" style="cursor: pointer;" id="types_on"></div>
     <div class="right mt5 <?= $cur_ptype ? 'hide' : '' ?> icodownt" style="cursor: pointer;" id="types_off"></div>

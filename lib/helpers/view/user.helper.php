@@ -15,8 +15,7 @@ class user_helper
         $new = '',
         $full_name = false,
         $rating = true
-    )
-    {
+    ) {
         if (isset($options['without-stats']) && true === $options['without-stats']) {
             $without_stats = true;
             unset($options['without-stats']);
@@ -26,7 +25,7 @@ class user_helper
 
         $without_stats = true;
 
-        $sizes = array(
+        $sizes = [
             'p' => '200',
             'm' => '160',
             'r' => '90',
@@ -38,7 +37,7 @@ class user_helper
             'sm' => '50',
             'ssm' => '30',
             'f' => '640',
-        );
+        ];
         $html = tag_helper::image(
             self::photo_path($id, $size, $folder, $new),
             $options,
@@ -52,8 +51,8 @@ class user_helper
         if ($linked) {
             $data = user_data_peer::instance()->get_item($id);
             $user = user_auth_peer::instance()->get_item($id);
-            $title = user_auth_peer::get_status($user['status']) . ' ' . htmlspecialchars(
-                    $data['first_name'] . ' ' . $data['last_name']
+            $title = user_auth_peer::get_status($user['status']).' '.htmlspecialchars(
+                    $data['first_name'].' '.$data['last_name']
                 );
 
             //$html = "<a title=\"{$title}\" href=\"http://" . context::get('host') . "/profile-{$data['user_id']}\">{$html}</a>";
@@ -75,26 +74,29 @@ class user_helper
             $wh = explode("x", $sizes[$size]['size']);
             $style = '';
             // href='/admin/rating?page=".ceil(rating_helper::get_user_rank($id)/50)."'
-            if (context::get_controller()->get_module() === "profile" && context::get_controller()->get_action() === "index") {
+            if (context::get_controller()->get_module() === "profile" && context::get_controller()->get_action(
+                ) === "index") {
                 $style = 'width: 100%';
             }
 
             if ($rating) {
-                $html = "<div class='left acenter' style='$style'>" . $html . "
-                                    <div class='rating_info acenter' style='font-size: " . $sizes[$size]['fs'] . "px; width: " . $wh[0] . "px'>
-                                        <span>" . t('Рейтинг') . "</span>&nbsp;" . (session::is_authenticated() ? "<a href='/admin/rating?page=" . ceil(
+                $html = "<div class='left acenter' style='$style'>".$html."
+                                    <div class='rating_info acenter' style='font-size: ".$sizes[$size]['fs']."px; width: ".$wh[0]."px'>
+                                        <span>".t('Рейтинг')."</span>&nbsp;".(session::is_authenticated(
+                    ) ? "<a href='/admin/rating?page=".ceil(
                             rating_helper::get_user_rank($id) / 50
-                        ) . "'>" : "<b>") . ((floatval(
+                        )."'>" : "<b>").((floatval(
                         rating_helper::get_rating_by_id($id)
-                    )) ? rating_helper::get_user_rank($id) : " - ") . (session::is_authenticated() ? "</a>" : "</b>") . "<br/>
-                                        <span>" . t('Баллы') . "</span>&nbsp;" . (session::is_authenticated() ? "<a href='/profile-" . $id . "?atab=rating'>" : "<b>") . ((floatval(
+                    )) ? rating_helper::get_user_rank($id) : " - ").(session::is_authenticated() ? "</a>" : "</b>")."<br/>
+                                        <span>".t('Баллы')."</span>&nbsp;".(session::is_authenticated(
+                    ) ? "<a href='/profile-".$id."?atab=rating'>" : "<b>").((floatval(
                         rating_helper::get_rating_by_id($id)
                     )) ? number_format(
                         floatval(rating_helper::get_rating_by_id($id)),
                         0,
                         '.',
                         ' '
-                    ) : " - ") . (session::is_authenticated() ? "</a>" : "</b>") .
+                    ) : " - ").(session::is_authenticated() ? "</a>" : "</b>").
                     "</div></div>";
             } else {
                 $html = sprintf('<div class="left acenter" style="%s">%s</div>', $style, $html);
@@ -108,22 +110,39 @@ class user_helper
     public static function photo_path($id, $size = 'p', $folder = 'user', $new = '')
     {
         $data = user_data_peer::instance()->get_item($id);
-        if ($data[$new . 'photo_salt']) {
+        if ($data[$new.'photo_salt']) {
             return "{$size}/{$folder}/{$id}{$data[$new.'photo_salt']}.jpg";
         } else {
             return "{$size}/{$folder}/0.jpg";
         }
     }
 
+    public static function get_status($num)
+    {
+        $arr = self::get_statuses();
+
+        return $arr[$num];
+    }
+
+    public static function get_statuses()
+    {
+        return [
+            t('Контакта не было'),
+            t('На контроле'),
+            t('Контакт завершен'),
+            t('Запрос телефона'),
+            //t('Контакт передан')
+        ];
+    }
+
     public static function full_name(
         $id,
         $linked = true,
-        $options = array(),
+        $options = [],
         $online_icon = true,
         $reverse = false,
         $father_name = false
-    )
-    {
+    ) {
         $data = user_data_peer::instance()->get_item($id);
 
         $full_name = $reverse ? htmlspecialchars(
@@ -131,7 +150,7 @@ class user_helper
         ) : htmlspecialchars(stripslashes("{$data['first_name']} {$data['last_name']}"));
 
         if ($father_name) {
-            $full_name = $full_name . ' ' . $data['father_name'];
+            $full_name = $full_name.' '.$data['father_name'];
         }
 
         if (!trim($full_name)) {
@@ -148,9 +167,9 @@ class user_helper
         }
 
         //return $img."<a " . tag_helper::get_options_html($options) . " href=\"http://" . context::get('server') . "/profile-{$data['user_id']}\">{$full_name}</a>";
-        return "<a " . tag_helper::get_options_html($options) . " href=\"http://" . context::get(
+        return "<a ".tag_helper::get_options_html($options)." href=\"http://".context::get(
                 'host'
-            ) . "/profile-{$data['user_id']}\">{$img}{$full_name}</a>";
+            )."/profile-{$data['user_id']}\">{$img}{$full_name}</a>";
     }
 
     public static function ppo_photo_path($id, $size = 'p', $photo_salt = '')
@@ -167,7 +186,7 @@ class user_helper
         }
     }
 
-    public static function ppo_photo($path, $options = array())
+    public static function ppo_photo($path, $options = [])
     {
         $options['id'] = 'photo';
 
@@ -188,7 +207,7 @@ class user_helper
         }
     }
 
-    public static function reform_photo($path, $options = array())
+    public static function reform_photo($path, $options = [])
     {
         $options['id'] = 'photo';
 
@@ -209,7 +228,7 @@ class user_helper
         }
     }
 
-    public static function team_photo($path, $options = array())
+    public static function team_photo($path, $options = [])
     {
         $options['id'] = 'photo';
 
@@ -225,15 +244,15 @@ class user_helper
 
     public static function change_photo_from_status($storage, $uid, $user_data, $new_salt)
     {
-        $user_key_new = 'user/' . $uid . $new_salt . '.jpg';
-        $prof_key_new = 'profile/' . $uid . $new_salt . '.jpg';
-        $user_key_old = 'user/' . $uid . $user_data['photo_salt'] . '.jpg';
-        $prof_key_old = 'profile/' . $uid . $user_data['photo_salt'] . '.jpg';
+        $user_key_new = 'user/'.$uid.$new_salt.'.jpg';
+        $prof_key_new = 'profile/'.$uid.$new_salt.'.jpg';
+        $user_key_old = 'user/'.$uid.$user_data['photo_salt'].'.jpg';
+        $prof_key_old = 'profile/'.$uid.$user_data['photo_salt'].'.jpg';
 
         list(
             $x, $y, $width, $height
             ) =
-            explode("-", db_key::i()->get('crop_coord_user_' . $uid));
+            explode("-", db_key::i()->get('crop_coord_user_'.$uid));
 
         if (!is_file($storage->get_path($prof_key_old))) {
             return false;
@@ -268,7 +287,7 @@ class user_helper
         $selection_h = request::get_int('height');
         $selection_w = request::get_int('width');
 
-        $redis_data = implode('-', array($selection_x, $selection_y, $selection_w, $selection_h));
+        $redis_data = implode('-', [$selection_x, $selection_y, $selection_w, $selection_h]);
 
         $small_image_w = request::get_int('img_w');
         $small_image_h = request::get_int('img_h');
@@ -278,8 +297,8 @@ class user_helper
 
         $old_salt = $user_data['new_photo_salt'] ? $user_data['new_photo_salt'] : $user_data['photo_salt'];
 
-        $prof_key_old = 'profile/' . request::get('id') . $old_salt . '.jpg';
-        $user_key_old = 'user/' . request::get('id') . $old_salt . '.jpg';
+        $prof_key_old = 'profile/'.request::get('id').$old_salt.'.jpg';
+        $user_key_old = 'user/'.request::get('id').$old_salt.'.jpg';
         if (is_file($storage->get_path($prof_key_old))) {
             $image_real_size = getimagesize($storage->get_path($prof_key_old));
         }
@@ -301,8 +320,8 @@ class user_helper
 
         $new_salt = user_data_peer::instance()->regenerate_photo_salt(request::get('id'), $new);
 
-        $user_key_new = 'user/' . request::get('id') . $new_salt . '.jpg';
-        $prof_key_new = 'profile/' . request::get('id') . $new_salt . '.jpg';
+        $user_key_new = 'user/'.request::get('id').$new_salt.'.jpg';
+        $prof_key_new = 'profile/'.request::get('id').$new_salt.'.jpg';
 
         #$image_real_size = getimagesize($storage->get_path($prof_key_old));
 
@@ -310,7 +329,7 @@ class user_helper
             $storage->img_crop($storage->get_path($prof_key_old), $user_key_old, $crop_x, $crop_y, $crop_w, $crop_h);
         }
 
-        db_key::i()->set($new . 'crop_coord_user_' . request::get('id'), $redis_data);
+        db_key::i()->set($new.'crop_coord_user_'.request::get('id'), $redis_data);
 
         $storage->move_from_path($user_key_new, $storage->get_path($user_key_old));
 
@@ -434,34 +453,34 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
 
     public static function profile_link($id)
     {
-        return "http://" . context::get('server') . "/profile-{$id}";
+        return "http://".context::get('server')."/profile-{$id}";
     }
 
     public static function login_require($text, $href = '')
     {
         $html = '<div class="mt10 p5 acenter fs12" style="border: 1px solid #E4E4E4; background: #F7F7F7;">
-				<a href="' . ($href != '' ? $href : "/") . '">' . $text . '</a>
+				<a href="'.($href != '' ? $href : "/").'">'.$text.'</a>
 			</div>';
 
         return $html;
     }
 
-    public static function share_item($type, $id, $options = array())
+    public static function share_item($type, $id, $options = [])
     {
         $options['onclick'] = "Application.shareItem('{$type}', {$id})";
         $options['href'] = "javascript:;";
-        $options['class'] = "share " . $options['class'];
+        $options['class'] = "share ".$options['class'];
         $type == 'group' ? $share = t('Пригласить') : $share = t('Поделиться');
         if ($type == 'group') {
-            return "<a " . tag_helper::get_options_html(
+            return "<a ".tag_helper::get_options_html(
                     $options
-                ) . "><span" . ($type == 'group' ? ' class="fs18"' : '') . ">" . $share . "</span></a>";
+                )."><span".($type == 'group' ? ' class="fs18"' : '').">".$share."</span></a>";
         } else {
-            return "<a " . tag_helper::get_options_html($options) . "><b></b><span>" . $share . "</span></a>";
+            return "<a ".tag_helper::get_options_html($options)."><b></b><span>".$share."</span></a>";
         }
     }
 
-    public static function bookmark_item($type, $id, $options = array())
+    public static function bookmark_item($type, $id, $options = [])
     {
         if (bookmarks_peer::instance()->is_bookmarked(session::get_user_id(), $type, $id)) {
             return '';
@@ -469,9 +488,9 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
 
         $options['onclick'] = "Application.bookmarkItem('{$type}', {$id})";
         $options['href'] = "javascript:;";
-        $options['class'] = "bookmark " . $options['class'];
+        $options['class'] = "bookmark ".$options['class'];
 
-        return "<a " . tag_helper::get_options_html($options) . "><b></b><span>" . t('В закладки') . "</span></a>";
+        return "<a ".tag_helper::get_options_html($options)."><b></b><span>".t('В закладки')."</span></a>";
     }
 
     public static function geo($id, $linked = false)
@@ -485,9 +504,11 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
         $city = geo_peer::instance()->get_city($data['city_id']);
         $region = geo_peer::instance()->get_region($city['region_id']);
         if ($linked) {
-            return '<a href="/search?submit=1&region_id=' . $city['region_id'] . '">' . $region['name_' . translate::get_lang()] . '</a> / <a href="/search?submit=1&city=' . $data['city_id'] . '">' . $city['name_' . translate::get_lang()] . '</a>';
+            return '<a href="/search?submit=1&region_id='.$city['region_id'].'">'.$region['name_'.translate::get_lang(
+                )].'</a> / <a href="/search?submit=1&city='.$data['city_id'].'">'.$city['name_'.translate::get_lang(
+                )].'</a>';
         } else {
-            return $city['name_' . translate::get_lang()] . ', ' . $region['name_' . translate::get_lang()];
+            return $city['name_'.translate::get_lang()].', '.$region['name_'.translate::get_lang()];
         }
     }
 
@@ -495,8 +516,8 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
     {
         load::model('user/user_desktop');
         $data = user_desktop_peer::instance()->get_item($id);
-        $user_functions = explode(',', str_replace(array('{', '}'), array('', ''), $data['functions']));
-        $arr = array();
+        $user_functions = explode(',', str_replace(['{', '}'], ['', ''], $data['functions']));
+        $arr = [];
         foreach (user_auth_peer::get_functions() as $function_id => $function_title) {
             if (in_array($function_id, $user_functions)) {
                 $arr[] = $function_title;
@@ -526,7 +547,7 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
         } elseif ($range < 259200) {
             return (!$numeric) ? t('Послезавтра') : 2;
         } else {
-            return (!$numeric) ? (t('Через') . ' ' . ceil($range / 86400) . ' ' . self::get_day_name(
+            return (!$numeric) ? (t('Через').' '.ceil($range / 86400).' '.self::get_day_name(
                     ceil($range / 86400)
                 )) : ceil($range / 86400);
         }
@@ -550,9 +571,9 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
         foreach ($result as $r) {
             $add = '';
             if ($date) {
-                $add = ' (' . date("d.m", $r['created_ts']) . ')';
+                $add = ' ('.date("d.m", $r['created_ts']).')';
             }
-            $arr[] = strip_tags(self::full_name($r['from_id'], false, array(), false), '<a>') . $add;
+            $arr[] = strip_tags(self::full_name($r['from_id'], false, [], false), '<a>').$add;
         }
 
         return implode(', ', $arr);
@@ -560,8 +581,8 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
 
     public static function com_date($date)
     {
-        $months = array(
-            'ru' => array(
+        $months = [
+            'ru' => [
                 '',
                 'января',
                 'февраля',
@@ -575,8 +596,8 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
                 'октября',
                 'ноября',
                 'декабря',
-            ),
-            'uk' => array(
+            ],
+            'uk' => [
                 '',
                 'січня',
                 'лютого',
@@ -590,16 +611,16 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
                 'жовтня',
                 'листопада',
                 'грудня',
-            ),
-        );
+            ],
+        ];
         session::get('language') != 'ru' ? $lang = 'uk' : $lang = 'ru';
         $month = $months[$lang][date('n', $date)];
         if (date('jmY', $date) == date('jmY')) {
-            return t('Сегодня') . ' ' . date('H:i', $date);
+            return t('Сегодня').' '.date('H:i', $date);
         } elseif (date('jmY', $date) == date('jmY', (time() - 86400))) {
-            return t('Вчера') . ' ' . date('H:i', $date);
+            return t('Вчера').' '.date('H:i', $date);
         } else {
-            return date('j', $date) . ' ' . $month . ' ' . date('Y', $date);
+            return date('j', $date).' '.$month.' '.date('Y', $date);
         }//.' '.date('H:i',$date);
     }
 
@@ -612,13 +633,13 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
 
     public static function get_contact_types()
     {
-        return array(
+        return [
             '&mdash;',
             t('Встреча'),
             t('Звонок'),
             t('Письмо'),
             t('Сообщение в меритократе'),
-        );
+        ];
     }
 
     public static function get_who($num)
@@ -630,18 +651,18 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
 
     public static function get_whos()
     {
-        return array(
+        return [
             '&mdash;',
             t('Шевченко'),
             t('Руководитель'),
             t('Координатор'),
             t('Организатор'),
-        );
+        ];
     }
 
     public static function get_targets()
     {
-        return array(
+        return [
             1 => t('Cтудент'),
             2 => t('Учитель'),
             3 => t('Преподаватель'),
@@ -666,25 +687,7 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
             22 => t('Редактор СМИ'),
             23 => t('Ведущий на ТВ'),
             24 => t('Эксперт'),
-        );
-    }
-
-    public static function get_status($num)
-    {
-        $arr = self::get_statuses();
-
-        return $arr[$num];
-    }
-
-    public static function get_statuses()
-    {
-        return array(
-            t('Контакта не было'),
-            t('На контроле'),
-            t('Контакт завершен'),
-            t('Запрос телефона'),
-            //t('Контакт передан')
-        );
+        ];
     }
 
     public static function get_links($text, $clear = true)
@@ -728,51 +731,51 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
 
     public static function get_guest_access()
     {
-        return array(
+        return [
             t('Никому'),
             t('Только друзьям'),
             t('Друзьям и друзьям друзей'),
             t('Всем зарегистрированным'),
             t('Всем'),
-        );
+        ];
     }
 
     public static function get_profile_access()
     {
-        return array(
-            0 => t('показывать') . ' ' . t('всем'),
+        return [
+            0 => t('показывать').' '.t('всем'),
             1 => t('показывать только зарегистрированным'),
             //			10 => t('показывать') . ' ' . t('только') . ' ' . t('меритократам'),
-            20 => t('показывать') . ' ' . t('только') . ' ' . t('членам МПУ'),
-        );
+            20 => t('показывать').' '.t('только').' '.t('членам МПУ'),
+        ];
     }
 
     public static function get_payment_access()
     {
-        return array(
+        return [
             1 => t('показывать зарегистрированным'),
-            20 => t('показывать') . ' ' . t('членам МПУ'),
+            20 => t('показывать').' '.t('членам МПУ'),
             99 => t('не показывать никому'),
-        );
+        ];
     }
 
     public static function get_agimaterials($key = false)
     {
-        $arr = array(
+        $arr = [
             //'1'=>t('Брошуры'),
             //'2'=>t('Листовки'),
             '3' => t('Буклет "МПУ" (рус)'),
             '4' => t('Буклет "МПУ" (укр)'),
             '5' => t('Брошура "Партия позитивных перемен" (рус)'),
             '6' => t('Брошура "Партiя позитивних змiн" (укр)'),
-            '7' => t('Буклет') . ' "Меритократия" (рус)',
-            '8' => t('Буклет') . ' "' . t('Меритократія') . '" (укр)',
-            '9' => t('Сборка текстов') . ' "' . t('Меритократия') . '" (рус)',
-            '10' => t('Сборка текстов') . ' "' . t('Меритократия') . '" (укр)',
+            '7' => t('Буклет').' "Меритократия" (рус)',
+            '8' => t('Буклет').' "'.t('Меритократія').'" (укр)',
+            '9' => t('Сборка текстов').' "'.t('Меритократия').'" (рус)',
+            '10' => t('Сборка текстов').' "'.t('Меритократия').'" (укр)',
             '11' => t('Информ. визитки'),
             '12' => 'Газета №0',
             '13' => t('Листовка "День Рождения партии"'),
-        );
+        ];
         if ($key) {
             return $arr[$key];
         } else {
@@ -798,8 +801,8 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
 
     public static function get_months($month = false)
     {
-        $months = array(
-            'ru' => array(
+        $months = [
+            'ru' => [
                 '&mdash;',
                 'январь',
                 'февраль',
@@ -813,8 +816,8 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
                 'октябрь',
                 'ноябрь',
                 'декабрь',
-            ),
-            'uk' => array(
+            ],
+            'uk' => [
                 '&mdash;',
                 'січень',
                 'лютий',
@@ -828,8 +831,8 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
                 'жовтень',
                 'листопад',
                 'грудень',
-            ),
-        );
+            ],
+        ];
         session::get('language') != 'ru' ? $lang = 'uk' : $lang = 'ru';
         if ($month === false) {
             return $months[$lang];
@@ -840,11 +843,11 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
 
     public static function get_payment_types()
     {
-        return array(
-            array(1 => t('наличными'), 2 => t('безналично')),
-            array(1 => t('через ППО'), 2 => t('в Центральный Секретариат')),
-            array(1 => t('через кассу банка'), 2 => t('он-лайн')),
-        );
+        return [
+            [1 => t('наличными'), 2 => t('безналично')],
+            [1 => t('через ППО'), 2 => t('в Центральный Секретариат')],
+            [1 => t('через кассу банка'), 2 => t('он-лайн')],
+        ];
     }
 
     public static function convert_distance($data, $ret_false = false)
@@ -854,21 +857,21 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
             return false;
         }
         if ($distance < 1) {
-            return ($distance * 1000) . " м";
+            return ($distance * 1000)." м";
         } else {
-            return round($distance) . " км";
+            return round($distance)." км";
         }
     }
 
     public static function get_political_post($key = false)
     {
-        $arr = array(
+        $arr = [
             '0' => '&mdash;',
             '1' => t('Председатель местного совета'),
             '2' => t('Депутат местного совета'),
             '3' => t('Народный депутат'),
             '4' => t('Президент'),
-        );
+        ];
         if ($key !== false) {
             return $arr[$key];
         } else {
@@ -878,11 +881,11 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
 
     public static function get_political_rank($key = false)
     {
-        $arr = array(
+        $arr = [
             '0' => t('Рядовой'),
             '1' => t('Руководитель'),
             '2' => t('Функционер'),
-        );
+        ];
         if ($key !== false) {
             return $arr[$key];
         } else {
@@ -892,12 +895,12 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
 
     public static function get_political_vibor($key = false)
     {
-        $arr = array(
+        $arr = [
             '0' => t('Местные (в местные советы)'),
             '1' => t('Местные (на должность руководителя)'),
             '2' => t('Парламентские'),
             '3' => t('Президентские'),
-        );
+        ];
         if ($key !== false) {
             return $arr[$key];
         } else {
@@ -907,13 +910,13 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
 
     public static function get_political_status($key = false)
     {
-        $arr = array(
+        $arr = [
             '0' => t('Кандидат'),
             '1' => t('Доверенное лицо'),
             '2' => t('Наблюдатель'),
             '3' => t('Член ТВК'),
             '4' => t('Член ДВК'),
-        );
+        ];
         if ($key !== false) {
             return $arr[$key];
         } else {
@@ -924,7 +927,7 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
     public static function createlurl($cur)
     {
         $urarray = ['region', 'ptype', 'status', 'category', 'city'];
-        $urarray = array_diff($urarray, array($cur));
+        $urarray = array_diff($urarray, [$cur]);
         foreach ($urarray as $ur) {
             if (request::get($ur)) {
                 $url .= sprintf('&%s=%s', $ur, request::get($ur));
@@ -943,16 +946,17 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
             if ($length < 200) {
                 $short = $text;
             } else {
-                $short = mb_substr($text, 0, mb_strpos($text, ' ', 150, 'UTF-8'), 'UTF-8') . '...';
+                $short = mb_substr($text, 0, mb_strpos($text, ' ', 150, 'UTF-8'), 'UTF-8').'...';
             }
         }
         if (db_key::i()->get(
-            'public_' . context::get_controller()->get_module() . '_' . context::get_controller()->get_action() . '_' . request::get_int('id')
+            'public_'.context::get_controller()->get_module().'_'.context::get_controller()->get_action(
+            ).'_'.request::get_int('id')
         )) {
             return '
-                <div class="addthis_toolbox addthis_default_style" addthis:title="' . htmlspecialchars(
+                <div class="addthis_toolbox addthis_default_style" addthis:title="'.htmlspecialchars(
                     $title
-                ) . '" addthis:description="' . htmlspecialchars($short) . '" addthis:screenshot="https://meritokrat.org/static/images/logos/logo.png"><a class="addthis_button_facebook"></a>
+                ).'" addthis:description="'.htmlspecialchars($short).'" addthis:screenshot="https://meritokrat.org/static/images/logos/logo.png"><a class="addthis_button_facebook"></a>
                 <a class="addthis_button_twitter"></a>
                 <a class="addthis_button_vk"></a>
                 <a class="addthis_button_livejournal"></a>
@@ -973,9 +977,9 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
                 <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e2974db61bc66ae"></script>
                 ';
         } else {
-            return '<a onclick="doprint();" href="javascript:viod(0)"><img src="/static/images/icons/print.gif" alt="print">' . t(
+            return '<a onclick="doprint();" href="javascript:viod(0)"><img src="/static/images/icons/print.gif" alt="print">'.t(
                     "напечатать"
-                ) . '</a>';
+                ).'</a>';
         }
     }
 
@@ -983,11 +987,10 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
         $name = '',
         $date = 0,
         $multiple = false,
-        $options = array(),
+        $options = [],
         $empty = false,
-        $yearstart = 1990
-    )
-    {
+        $minYear = 1990
+    ) {
         if ($empty) {
             $days[0] = "&mdash;";
             $months[0] = "&mdash;";
@@ -1003,66 +1006,76 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
         for ($d = 1; $d <= date("t", $date); $d++) {
             $days[$d] = $d;
         }
-        $months[1] = t('января');
-        $months[2] = t('февраля');
-        $months[3] = t('марта');
-        $months[4] = t('апреля');
-        $months[5] = t('мая');
-        $months[6] = t('июня');
-        $months[7] = t('июля');
-        $months[8] = t('августа');
-        $months[9] = t('сентября');
-        $months[10] = t('октября');
-        $months[11] = t('ноября');
-        $months[12] = t('декабря');
-        for ($y = date("Y"); $y >= $yearstart; $y--) {
-            $years[$y] = $y;
-        }
+        $months = [
+            1 => t('января'),
+            2 => t('февраля'),
+            3 => t('марта'),
+            4 => t('апреля'),
+            5 => t('мая'),
+            6 => t('июня'),
+            7 => t('июля'),
+            8 => t('августа'),
+            9 => t('сентября'),
+            10 => t('октября'),
+            11 => t('ноября'),
+            12 => t('декабря'),
+        ];
+
+        $years = range(date('Y'), $minYear);
+        $years = array_combine($years, $years);
+
         if ($multiple) {
             $multi = '[]';
         }
 
-        return '<div style="width:220px">
-                ' . tag_helper::select(
-                $name . '_day' . $multi,
+        return sprintf('<div style="width:220px">%s</div>', implode('', [
+            tag_helper::select(
+                "{$name}_day{$multi}",
                 $days,
-                array_merge($options, array('id' => $name . '_day', 'class' => 'datefield', 'value' => $curday))
-            ) . '
-                ' . tag_helper::select(
-                $name . '_month' . $multi,
+                array_merge(
+                    $options,
+                    [
+                        'id' => "{$name}_day",
+                        'class' => 'datefield',
+                        'value' => $curday,
+                    ]
+                )
+            ),
+            tag_helper::select(
+                "{$name}_month{$multi}",
                 $months,
                 array_merge(
                     $options,
-                    array(
-                        'id' => $name . '_month',
+                    [
+                        'id' => "{$name}_month",
                         'class' => 'datefield',
                         'value' => $curmonth,
                         'onclick' => 'Calendar.checkdate(this)',
-                    )
+                    ]
                 )
-            ) . '
-                ' . tag_helper::select(
-                $name . '_year' . $multi,
+            ),
+            tag_helper::select(
+                "{$name}_year{$multi}",
                 $years,
                 array_merge(
                     $options,
-                    array(
-                        'id' => $name . '_year',
+                    [
+                        'id' => "{$name}_year",
                         'class' => 'datefield',
                         'value' => $curyear,
                         'onclick' => 'Calendar.checkdate(this)',
-                    )
+                    ]
                 )
-            ) . '
-                </div>';
+            ),
+        ]));
     }
 
     public static function dateval($field = '', $multiple = false)
     {
         if ($multiple) {
-            $days = request::get($field . '_day');
-            $months = request::get($field . '_month');
-            $years = request::get($field . '_year');
+            $days = request::get($field.'_day');
+            $months = request::get($field.'_month');
+            $years = request::get($field.'_year');
             if (is_array($days) && is_array($months) && is_array($years)) {
                 foreach ($days as $k => $v) {
                     $arr[$k] = mktime(0, 0, 0, $months[$k], $days[$k], $years[$k]);
@@ -1077,16 +1090,16 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
                 0,
                 0,
                 0,
-                request::get_int($field . '_month'),
-                request::get_int($field . '_day'),
-                request::get_int($field . '_year')
+                request::get_int($field.'_month'),
+                request::get_int($field.'_day'),
+                request::get_int($field.'_year')
             );
         }
     }
 
     public static function get_program_types($key = false)
     {
-        $arr = array(
+        $arr = [
             32 => 'Мерітократія',
             38 => 'Соціал-лібералізм',
             39 => "Сінгапур",
@@ -1127,7 +1140,7 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
             29 => 'Релігія',
             30 => 'Мови',
             31 => 'Туризм',
-        );
+        ];
 
         if ($key !== false) {
             return $arr[$key];
@@ -1138,7 +1151,7 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
 
     public static function get_target_groups($key = false)
     {
-        $arr = array(
+        $arr = [
             1 => 'Середній клас',
             2 => 'Дрібні та середні підприємці',
             3 => 'Селяни',
@@ -1150,7 +1163,7 @@ exec("composite -gravity southwest {$wat_path}{$status}.png {$file_path} {$file_
             9 => 'Науковці',
             10 => 'Пенсіонери',
             11 => 'Малозабезпечені',
-        );
+        ];
 
         if ($key !== false) {
             return $arr[$key];

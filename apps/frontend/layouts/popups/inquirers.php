@@ -35,7 +35,7 @@
 <div id="popup_content" class="hide" style="" >
 	<div class="p10" style="background: #EEE">
 		<div class="left aleft" id="inquirer-title" style="width: 400px;">
-			<span style="color: #660000; font-size: 14px; font-weight: bold">&nbsp;</span>
+			<span style="color: black; font-size: 14px; font-weight: bold">&nbsp;</span>
 			<span style="color: #888; font-size: 14px;">&nbsp;</span>
 		</div>
 		<div class="left aright" style="width: 80px">

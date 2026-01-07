@@ -12,12 +12,12 @@ class profile_get_select_action extends basic_controller
         $list = [];
 
         if (isset($_POST['country_id'])) {
-            $country_id = (int) $_POST['country_id'];
-            $sql        = sprintf(
+            $country_id = (int)$_POST['country_id'];
+            $sql = sprintf(
                 'select * from regions where country_id = 0 or country_id = :id order by name_%s',
                 session::get('language', 'ua')
             );
-            $bind       = ['id' => $country_id];
+            $bind = ['id' => $country_id];
             if ($data = db::get_rows($sql, $bind, $this->connection_name)) {
                 //mem_cache::i()->set($cache_key, $data);
                 foreach ($data as $region) {

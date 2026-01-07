@@ -99,7 +99,7 @@ require_once '_counter.php';
     <style type="text/css">
         .submenu a {
             font-size: 12px;
-            color: #660000;
+            color: black;
             font-weight: bold;
         }
 
@@ -113,7 +113,7 @@ require_once '_counter.php';
 
         .rating_info a {
             display: inline-block;
-            color: #660000;
+            color: black;
             font-weight: normal;
         }
 

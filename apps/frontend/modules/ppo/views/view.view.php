@@ -37,8 +37,8 @@ load::model('ppo/news');
                 if ($group['ptype'] != 1 || ($group['ptype'] == 1 && $user_data['region_id'] == $group['region_id'])) {
                     if ($user['status'] == 20 && $group['category'] == 1) { ?>
                         <?php if (!ppo_applicants_peer::instance()->is_applicant(
-                                $group['id'],
-                                session::get_user_id()
+                            $group['id'],
+                            session::get_user_id()
                         )) { ?>
                             <a id="menu_apply" href="javascript:" style="<?= $is_member ? 'display:none;' : '' ?>"
                                rel="<?= $group['id'] ?>">
@@ -61,29 +61,29 @@ load::model('ppo/news');
             </div>
             <br/>
             <?php if (!$privacy_closed) {
-                $group['glava_id']    = (int) ppo_members_peer::instance()->get_user_by_function(
-                        1,
-                        $group['id'],
-                        $group
+                $group['glava_id']    = (int)ppo_members_peer::instance()->get_user_by_function(
+                    1,
+                    $group['id'],
+                    $group
                 );
-                $group['secretar_id'] = (int) ppo_members_peer::instance()->get_user_by_function(
-                        2,
-                        $group['id'],
-                        $group
+                $group['secretar_id'] = (int)ppo_members_peer::instance()->get_user_by_function(
+                    2,
+                    $group['id'],
+                    $group
                 ); ?>
                 <div class="column_head_small mt15"><?= t('Руководство') ?></div>
                 <?php $personCard = static function ($userId, $function) {
                 $functionName = t(ppo_members_peer::FUNCTIONS[$function]);
                 $userFullName = user_helper::full_name($userId, true, [], false);
                 $userPhoto    = user_helper::photo(
-                        $userId,
-                        's',
-                        ['class' => 'border1'],
-                        true,
-                        'user',
-                        '',
-                        false,
-                        false
+                    $userId,
+                    's',
+                    ['class' => 'border1'],
+                    true,
+                    'user',
+                    '',
+                    false,
+                    false
                 );
 
                 return <<<HTML
@@ -100,16 +100,16 @@ HTML;
             } ?>
                 <div class="mt5 quiet fs11">
                     <?php $head = db::get_rows(
-                            'select user_id, "function" from ppo_members where group_id = :ppoId and "function" in (1, 5) order by "function"',
-                            ['ppoId' => $group['id']]
+                        'select user_id, "function" from ppo_members where group_id = :ppoId and "function" in (1, 5) order by "function"',
+                        ['ppoId' => $group['id']]
                     ); ?>
                     <?php $secretary = db::get_rows(
-                            'select user_id, "function" from ppo_members where group_id = :ppoId and "function" in (2, 6) order by "function"',
-                            ['ppoId' => $group['id']]
+                        'select user_id, "function" from ppo_members where group_id = :ppoId and "function" in (2, 6) order by "function"',
+                        ['ppoId' => $group['id']]
                     ); ?>
                     <?php $managers = db::get_rows(
-                            'select * from ppo_members pm where pm.group_id = :ppo and pm."function" in (3, 4) order by pm."function" desc',
-                            ['ppo' => $group['id']]
+                        'select * from ppo_members pm where pm.group_id = :ppo and pm."function" in (3, 4) order by pm."function" desc',
+                        ['ppo' => $group['id']]
                     ) ?>
                     <?php if (count($head) > 0) { ?>
                         <?= $personCard($head[0]['user_id'], $head[0]['function']) ?>
@@ -120,7 +120,7 @@ HTML;
                 </div>
                 <?php $managerPosition = [3 => 'Член КРК', 4 => 'Член Совета'] ?>
                 <?php foreach ($managers as $manager) { ?>
-                    <?=$personCard($manager['user_id'], $manager['function'])?>
+                    <?= $personCard($manager['user_id'], $manager['function']) ?>
                 <?php } ?>
                 <br/>
                 <div class="column_head_small">
@@ -136,7 +136,7 @@ HTML;
                         <div class="fs11 mb5 pb5 clear" style="background: #F7F7F7;">
                             <div style="width: 60px;" class="left mr10">
                                 <?= user_helper::ppo_photo(
-                                        user_helper::ppo_photo_path($group['id'], 's', $group['photo_salt'])
+                                    user_helper::ppo_photo_path($group['id'], 's', $group['photo_salt'])
                                 ) ?>
                             </div>
                             <div class="fs11 ml5 white bold"></div>
@@ -144,7 +144,7 @@ HTML;
                                 <div class="mb5 quiet"><?= date_helper::human($new['created_ts'], ', ') ?></div>
                                 <a href="ppo/newsread?id=<?= $new['id'] ?>" class="fs12 bold"
                                    style="color:black"><?= stripslashes(
-                                            nl2br(htmlspecialchars($new['title']))
+                                        nl2br(htmlspecialchars($new['title']))
                                     ) ?></a>
                             </div>
                         </div>
@@ -168,56 +168,56 @@ HTML;
         </div>
     </div>
 
-    <div class="flex-grow-1" style="max-width: 515px; padding-top: 10px;">
+    <div class="flex-grow-1" style="max-width: 515px; padding-top: 10px">
 
         <div class="d-flex w-100">
-            <h1 class="flex-grow-1 m-0" style="font-size: 20px; color: #600;">
+            <h1 class="flex-grow-1 m-0" style="font-size: 20px; color: black;">
                 <?= stripslashes(htmlspecialchars($group['title'])) ?>
             </h1>
-            <div>
+            <div class="pr5">
                 <span class="badge bg-primary" style="font-size: 14pt">
                 <?= db::get_scalar(
-                        'select count(*)
+                    'select count(*)
 from ppo_members p
          right join user_auth ua on ua.id = p.user_id
 where p.group_id = :ppoId
   and ua.status not in (-1, 1, 3);',
-                        ['ppoId' => $group['id']]
+                    ['ppoId' => $group['id']]
                 ) ?>
                 </span>
             </div>
-            <div class="flex-shrink-1 px-2 fs11 quiet text-end">
+            <div class="flex-shrink-1 px-2 fs11 quiet text-end d-none">
                 <?= call_user_func(
-                        function ($isActive = false) {
-                            $attributes = [
-                                    'class' => ['form-check-input'],
-                                    'type'  => 'checkbox',
-                            ];
+                    function ($isActive = false) {
+                        $attributes = [
+                            'class' => ['form-check-input'],
+                            'type'  => 'checkbox',
+                        ];
 
-                            if (true === $isActive) {
-                                $attributes['checked'] = 'checked';
-                                $attributes['class'][] = 'bg-success';
-                            }
+                        if (true === $isActive) {
+                            $attributes['checked'] = 'checked';
+                            $attributes['class'][] = 'bg-success';
+                        }
 
-                            $attributes    = implode(
-                                    ' ',
-                                    array_map(
-                                            function ($val, $attr) {
-                                                switch ($attr) {
-                                                    case 'class':
-                                                        $val = implode(' ', $val);
-                                                        break;
-                                                }
+                        $attributes    = implode(
+                            ' ',
+                            array_map(
+                                function ($val, $attr) {
+                                    switch ($attr) {
+                                        case 'class':
+                                            $val = implode(' ', $val);
+                                            break;
+                                    }
 
-                                                return sprintf('%s="%s"', $attr, $val);
-                                            },
-                                            array_values($attributes),
-                                            array_keys($attributes)
-                                    )
-                            );
-                            $ppoStateLabel = $isActive ? t('Одобрено') : t('Не одобрено');
+                                    return sprintf('%s="%s"', $attr, $val);
+                                },
+                                array_values($attributes),
+                                array_keys($attributes)
+                            )
+                        );
+                        $ppoStateLabel = $isActive ? t('Одобрено') : t('Не одобрено');
 
-                            return <<<HTML
+                        return <<<HTML
 <div data-ppo-state="label">{$ppoStateLabel}</div>
 <div>
     <div class="form-check form-switch">
@@ -227,13 +227,13 @@ where p.group_id = :ppoId
     </div>
 </div>
 HTML;
-                        },
-                        1 === $group['active']
+                    },
+                    1 === $group['active']
                 ) ?>
                 <script>
                     const ppoStateController = (() => {
                         const ppoStateLabel = document.querySelector('div[data-ppo-state="label"]');
-                        const labelMap = new Map([['1', '<?=t('Одобрено')?>'], ['0', '<?=t('Не одобрено')?>']]);
+                        const labelMap = new Map([ [ '1', '<?=t('Одобрено')?>' ], [ '0', '<?=t('Не одобрено')?>' ] ]);
 
                         return {
                             submitState,
@@ -242,15 +242,15 @@ HTML;
 
                         function submitState(state, cb) {
                             fetch(`/api/ppo/set_state?id=<?=$group['id']?>&state=${state}`)
-                                    .then(r => r.json())
-                                    .then(response => cb({state, response}));
+                                .then(r => r.json())
+                                .then(response => cb({ state, response }));
                         }
 
                         function handleChange(target) {
                             target.classList.toggle('bg-success');
                             target.value = target.classList.contains('bg-success') ? 1 : 0;
 
-                            this.submitState(target.value, ({state}) => {
+                            this.submitState(target.value, ({ state }) => {
                                 ppoStateLabel.textContent = labelMap.get(state.toString());
                             });
                         }
@@ -269,8 +269,8 @@ HTML;
             <a rel="common" class="tab_menu selected fs11 quiet"
                href="javascript:"><?= t('Основные сведения') ?></a>
             <?php if (session::has_credential('admin')
-                    || (ppo_members_peer::instance()->allow_edit(session::get_user_id(), $group)
-                            && sizeof(array_intersect([113, 123], $user_functions)) > 0)
+                || (ppo_members_peer::instance()->allow_edit(session::get_user_id(), $group)
+                    && sizeof(array_intersect([113, 123], $user_functions)) > 0)
             ) { ?>
                 <a rel="more" class="tab_menu ml10 fs11" href="javascript:"><?= t('Служебная информация') ?></a>
             <?php } ?>
@@ -279,14 +279,14 @@ HTML;
             <?php } ?>
             <?php if (session::has_credential('admin')) { ?>
                 <?= $group['active'] != 1 ? '<a href="/ppo/approve_ppo?ppo_id='.$group['id'].'" class="ml10 fs11">'.t(
-                                'Одобрить'
-                        ).'</a>' : '' ?>
+                        'Одобрить'
+                    ).'</a>' : '' ?>
                 <a onclick="return confirm('Видалити цю партiйну органiзацiю?');"
                    href="/ppo/delete_ppo?ppo_id=<?= $group['id'] ?>" class="ml10 fs11"><?= t('Удалить') ?></a>
             <?php } ?>
             <?php if ($allow_edit) { ?>
                 <a href="/messages/compose_ppo?ppo=<?= $group['id'] ?>" class="ml10 fs11"><?= t(
-                            'Рассылки'
+                        'Рассылки'
                     ) ?></a>
             <?php } ?>
         </div>
@@ -299,11 +299,11 @@ HTML;
                 <td>
                     <?php $region = geo_peer::instance()->get_region($group['region_id']); ?>
                     <?= $region['name_'.translate::get_lang()] ?><?php $city = geo_peer::instance()->get_city(
-                            $group['city_id']
+                        $group['city_id']
                     ); ?>
                     <?= $group['category'] < 3 ? ' / '.$city['name_'.translate::get_lang(
-                            )] : '' ?><?php if ($group['location']) { ?> / <?= stripslashes(
-                            htmlspecialchars($group['location'])
+                        )] : '' ?><?php if ($group['location']) { ?> / <?= stripslashes(
+                        htmlspecialchars($group['location'])
                     ) ?><?php } ?>
                 </td>
                 <?php if ($group['coords']){ ?>
@@ -325,28 +325,28 @@ HTML;
                         <?php $types = ppo_peer::get_ptypes();
                         echo $types[$group['ptype']] ?>
                         <?php $bkm = bookmarks_peer::instance()->is_bookmarked(
-                                session::get_user_id(),
-                                8,
-                                $group['id']
+                            session::get_user_id(),
+                            8,
+                            $group['id']
                         ); ?>
                         <a class="right bookmark mb10 ml5 b8" style="<?= ($bkm) ? 'display:none' : '' ?>"
                            href="#add_bookmark"
                            onclick="Application.bookmarkItem('8','<?= $group['id'] ?>');return false;"><b></b><span><?= t(
-                                        'В закладки'
+                                    'В закладки'
                                 ) ?></span></a>
                         <a class="right unbkmrk mb10 ml5 b8" style="<?= ($bkm) ? '' : 'display:none' ?>"
                            href="#del_bookmark"
                            onclick="Application.unbookmarkItem('8','<?= $group['id'] ?>');return false;"><b></b><span><?= t(
-                                        'Удалить из закладок'
+                                    'Удалить из закладок'
                                 ) ?></span></a>
                     </td>
                 <?php } ?>
                 </tr><?php } ?>
         </table>
         <?php if (session::has_credential('admin') || ppo_members_peer::instance()->allow_edit(
-                        session::get_user_id(),
-                        $group
-                )) { ?>
+                session::get_user_id(),
+                $group
+            )) { ?>
             <table id="more_box" class="tbox hidden fs12 mt10" style="margin-bottom:0px;">
                 <tr>
                     <td class="bold aright">
@@ -383,7 +383,7 @@ HTML;
                         <td>
                             <?php $mc = 1;
                             foreach ($members as $m): ?>
-                                <?= user_helper::full_name((int) $m, true, [], false) ?>
+                                <?= user_helper::full_name((int)$m, true, [], false) ?>
                                 <?= $mc != count($members) ? ', ' : '' ?>
                                 <?php $mc++; endforeach; ?>
                         </td>
@@ -505,11 +505,11 @@ HTML;
                     ksort($inventory_types);
                     foreach ($inventory_types as $inv_id => $inv_name) {
                         $current = db::get_scalar(
-                                "SELECT sum(inventory_count) FROM party_inventory WHERE inventory_type=:itype AND user_id IN (".implode(
-                                        ',',
-                                        $inv_owners
-                                ).")",
-                                ['itype' => $inv_id]
+                            "SELECT sum(inventory_count) FROM party_inventory WHERE inventory_type=:itype AND user_id IN (".implode(
+                                ',',
+                                $inv_owners
+                            ).")",
+                            ['itype' => $inv_id]
                         );
                         if ($current) { ?>
                             <?php if (!$spike) { ?>
@@ -533,26 +533,23 @@ HTML;
         <?php } ?>
 
         <?php if ($children_mpo) { ?>
-            <div class="ml10 mt10">
-                <h1 class="column_head mt10 mb10">
-                    <?= t('Подчиненные местные организации') ?> <?= count($children_mpo) ?>
-                </h1>
-
-                <div class="pcontent_pane">
-                    <?php foreach ((array) $children_mpo as $pgroup) { ?>
-                        <div class="pl5">
-                            <a href="/ppo<?= $pgroup['id'] ?>/<?= $pgroup['number'] ?>">
-                                <?= $pgroup['title'] ?>
-                                <span>(<?= db::get_scalar(
-                                            'select count(*) from ppo_members where group_id = :ppoId',
-                                            ['ppoId' => $pgroup['id']]
-                                    ) ?>)</span>
-                            </a>
-                        </div>
-                    <?php } ?>
+            <div class="mb-2">
+                <div class="row align-middle m-0 mb-2 py-1 rounded-top bg-primary" style="font-size: 11px">
+                    <div class="col m-0 white fw-bold pl5"><?= t('Подчиненные местные организации') ?>
+                        - <?= count($children_mpo) ?></div>
                 </div>
+                <?php foreach ((array)$children_mpo as $pgroup) { ?>
+                    <div class="pl5">
+                        <a href="/ppo<?= $pgroup['id'] ?>/<?= $pgroup['number'] ?>">
+                            <?= $pgroup['title'] ?>
+                            <span>(<?= db::get_scalar(
+                                    'select count(*) from ppo_members where group_id = :ppoId',
+                                    ['ppoId' => $pgroup['id']]
+                                ) ?>)</span>
+                        </a>
+                    </div>
+                <?php } ?>
             </div>
-            <div class="clear"></div>
         <?php } ?>
 
         <?php if ($children_ppo) { ?>
@@ -562,13 +559,13 @@ HTML;
                 </h1>
 
                 <div class="pcontent_pane">
-                    <?php foreach ((array) $children_ppo as $pgroup) { ?>
+                    <?php foreach ((array)$children_ppo as $pgroup) { ?>
                         <div class="pl5">
                             <a href="/ppo<?= $pgroup['id'] ?>/<?= $pgroup['number'] ?>">
                                 <?= $pgroup['title'] ?>
                                 <span>(<?= db::get_scalar(
-                                            'select count(*) from ppo_members where group_id = :ppoId',
-                                            ['ppoId' => $pgroup['id']]
+                                        'select count(*) from ppo_members where group_id = :ppoId',
+                                        ['ppoId' => $pgroup['id']]
                                     ) ?>)</span>
                             </a>
                         </div>
@@ -581,7 +578,7 @@ HTML;
         <?= call_user_func(require __DIR__.'/view/members.php', $group) ?>
 
         <div class="ml10">
-            <div class="tab_pane">
+            <div class="tab_pane" style="background: #0d6efd !important">
                 <a rel="events" href="javascript:"><?= t('События') ?></a>
                 <a rel="posts" href="javascript:" class="selected"><?= t('Обсуждения') ?></a>
                 <a rel="files" href="javascript:"><?= t('Библиотека') ?></a>
@@ -596,7 +593,7 @@ HTML;
                 <?php if (session::is_authenticated()) { ?>
                     <div class="box_content p5 mb10 fs11"><a
                                 href="/ppo/post_edit?group_id=<?= $group['id'] ?>&add=1"><?= t(
-                                    'Добавить тему'
+                                'Добавить тему'
                             ) ?>
                             &rarr;</a>
                     </div>
@@ -609,20 +606,20 @@ HTML;
                         <div class="mb10 box_content p10 mr10" id="comment<?= $id ?>">
                             <div class="mb5 bold fs12">
                                 <a href="/ppo/post?group_id=<?= $group['id'] ?>&id=<?= $id ?>"><?= stripslashes(
-                                            htmlspecialchars($post['title'])
+                                        htmlspecialchars($post['title'])
                                     ) ?></a>
                             </div>
                             <div class="fs11 pb5">
                                 <div class="left quiet">
                                     <?= user_helper::full_name(
-                                            $post['user_id'],
-                                            true,
-                                            ['class' => 'mr10'],
-                                            false
+                                        $post['user_id'],
+                                        true,
+                                        ['class' => 'mr10'],
+                                        false
                                     ) ?>
                                     <?= t('Комментариев') ?>:
                                     <b class="mr5"><?= blogs_comments_peer::instance()->get_count_by_post(
-                                                $id
+                                            $id
                                         ) ?></b>
                                     <?= t('Просмотров') ?>: <b><?= $post['views'] ?></b>
                                 </div>
@@ -637,14 +634,14 @@ HTML;
             </div>
             <div id="pane_events" class="content_pane hidden">
                 <?php if (session::has_credential('admin') or
-                        ppo_peer::instance()->is_moderator($group['id'], session::get_user_id()) or
-                        user_desktop_peer::instance()->is_regional_coordinator(session::get_user_id()) or
-                        user_desktop_peer::instance()->is_raion_coordinator(session::get_user_id()) or
-                        ppo_members_peer::instance()->is_member($group["id"], session::get_user_id())
+                    ppo_peer::instance()->is_moderator($group['id'], session::get_user_id()) or
+                    user_desktop_peer::instance()->is_regional_coordinator(session::get_user_id()) or
+                    user_desktop_peer::instance()->is_raion_coordinator(session::get_user_id()) or
+                    ppo_members_peer::instance()->is_member($group["id"], session::get_user_id())
                 ) { ?>
                     <div class="box_content p5 mb10 fs11"><a
                                 href="/events/create?type=4&content_id=<?= $group['id'] ?>"><?= t(
-                                    'Добавить событие'
+                                'Добавить событие'
                             ) ?>
                             &rarr;</a>
                     </div>
@@ -661,22 +658,22 @@ HTML;
                                 <div class="fs11 pb5 ml10">
                                     <?php if (date('d-m-Y', $event['start']) == date('d-m-Y', $event['end'])) {
                                         $kolu = date_helper::get_format_date($event['start'], false).', '.t(
-                                                        'с'
-                                                ).' '.date('H:i', $event['start']).' до '.date(
-                                                        'H:i',
-                                                        $event['end']
-                                                );
+                                                'с'
+                                            ).' '.date('H:i', $event['start']).' до '.date(
+                                                'H:i',
+                                                $event['end']
+                                            );
                                     } else {
                                         $kolu = t('с').' '.date_helper::get_format_date(
-                                                        $event['start']
-                                                ).' '.date(
-                                                        'H:i',
-                                                        $event['start']
-                                                ).' <br/>до '.
-                                                date_helper::get_format_date($event['end']).' '.date(
-                                                        'H:i',
-                                                        $event['end']
-                                                );
+                                                $event['start']
+                                            ).' '.date(
+                                                'H:i',
+                                                $event['start']
+                                            ).' <br/>до '.
+                                            date_helper::get_format_date($event['end']).' '.date(
+                                                'H:i',
+                                                $event['end']
+                                            );
                                     } ?><?= $kolu ?>
                                     <br/>
                                     <?= t('Организатор').": " ?>
@@ -685,17 +682,17 @@ HTML;
                                         case 3:
                                             ?>
                                             <a href="/profile-31" style="color:black"><?= t(
-                                                        "Секретариат МПУ"
+                                                    "Секретариат МПУ"
                                                 ) ?></a>
                                             <?php
                                             break;
                                         default:
                                             ?>
                                             <?= user_helper::full_name(
-                                                $event['user_id'],
-                                                true,
-                                                ['style' => 'color:black'],
-                                                false
+                                            $event['user_id'],
+                                            true,
+                                            ['style' => 'color:black'],
+                                            false
                                         ); ?>
                                         <?php
                                     }
@@ -703,7 +700,7 @@ HTML;
                                     <br/>
                                     <?= t('Событие посещают') ?>:
                                     <b><?= $event['users1sum'] + $event['users3sum'] + $event['users1count'] + $event['users3count'] ?> <?= t(
-                                                'участников'
+                                            'участников'
                                         ) ?></b>
                                 </div>
                                 <div class="clear"></div>
@@ -719,9 +716,9 @@ HTML;
             <div id="pane_files" class="content_pane hidden">
                 <div
                         class="box_content p5 mb10 fs11"><?php if (groups_members_peer::instance()->is_member(
-                                    $group['id'],
-                                    session::get_user_id()
-                            ) || session::has_credential('admin')) { ?>
+                            $group['id'],
+                            session::get_user_id()
+                        ) || session::has_credential('admin')) { ?>
                         <a href="/ppo/file?id=<?= $group['id'] ?>&add=1"><?= t('Добавить материал') ?>&rarr;</a>
                     <?php } ?>
                 </div>
@@ -738,9 +735,9 @@ HTML;
                                 <div class="left">
                                     <div class="ml5"><a
                                                 href="<?= (isset($file['files'])) ? context::get(
-                                                                'file_server'
-                                                        ).$file['id'].'/'.$arr[0]['salt']."/".$arr[0]['name'] : $file['url'] ?>"><?= stripslashes(
-                                                    htmlspecialchars($file['title'])
+                                                        'file_server'
+                                                    ).$file['id'].'/'.$arr[0]['salt']."/".$arr[0]['name'] : $file['url'] ?>"><?= stripslashes(
+                                                htmlspecialchars($file['title'])
                                             ) ?></a>
                                     </div>
                                     <div class="left ml5 fs12"><?= $file['author'] ?></div>
@@ -751,7 +748,7 @@ HTML;
                                         ?>
                                         <div class="left ml5 <?//=$file['author'] ? 'mt15' : ''?>">
                                             <a href="<?= context::get(
-                                                    'file_server'
+                                                'file_server'
                                             ).$file['id'].'/'.$f['salt']."/".$f['name'] ?>">
                                                 <img
                                                         src="/static/images/files/<?= ppo_files_peer::instance(
@@ -764,19 +761,19 @@ HTML;
                                 <?php if ($file['lang'] == 'ua' or $file['lang'] == 'en') { ?>
                                     <div class="left ml5"
                                          style="margin-top:  1<?php //=$file['author'] ? '17' : '2'?>px;"><?= tag_helper::image(
-                                        'icons/'.$file['lang'].'.png',
-                                        ['']
+                                    'icons/'.$file['lang'].'.png',
+                                    ['']
                                 ) ?></div><?php } ?>
                                 <div class="right aright mr5"
-                                     style="border-bottom: 1px solid #d7d7d7; color:#565656;"> <?= $file['size'] ? $file['size'] : '' //$file['exts'] ? ppo_files_peer::formatBytes(filesize($file['url'])) : ''                                                                                      ?>
+                                     style="border-bottom: 1px solid #d7d7d7; color:#565656;"> <?= $file['size'] ? $file['size'] : '' //$file['exts'] ? ppo_files_peer::formatBytes(filesize($file['url'])) : ''                                                                                       ?>
                                     <?= tag_helper::image(
-                                            'icons/1.png',
-                                            ['alt' => "Інформація", 'id' => $file['id'], 'class' => "info ml5 "]
+                                        'icons/1.png',
+                                        ['alt' => "Інформація", 'id' => $file['id'], 'class' => "info ml5 "]
                                     ) ?>
                                     <?php if (ppo_peer::instance()->is_moderator(
-                                                    $group['id'],
-                                                    session::get_user_id()
-                                            ) || $file['user_id'] == session::get_user_id()) { ?>
+                                            $group['id'],
+                                            session::get_user_id()
+                                        ) || $file['user_id'] == session::get_user_id()) { ?>
                                         <a href="/ppo/file_edit?id=<?= $file['id'] ?>"><img class="ml5"
                                                                                             alt="Редагування"
                                                                                             src="/static/images/icons/2.png"></a>
@@ -789,7 +786,7 @@ HTML;
                                 <div class="clear"></div>
                                 <div id="file_describe_<?= $id ?>"
                                      class="ml10 fs11 hidden"><?= stripslashes(
-                                            htmlspecialchars($file['describe'])
+                                        htmlspecialchars($file['describe'])
                                     ) ?></div>
                             </div>
                         <?php } ?>
@@ -799,9 +796,9 @@ HTML;
                     <div class="m5 acenter fs12">
                         <?= t('') ?>
                         <?php if (ppo_peer::instance()->is_moderator(
-                                        $group['id'],
-                                        session::get_user_id()
-                                ) || session::has_credential('admin')) { ?>
+                                $group['id'],
+                                session::get_user_id()
+                            ) || session::has_credential('admin')) { ?>
                             <a href="/ppo/file?id=<?= $group['id'] ?>&add=1"><?= t('Добавить материал') ?>
                                 &rarr;</a>
                             <br/>
@@ -813,9 +810,9 @@ HTML;
             </div>
             <div id="pane_foto" class="content_pane hidden">
                 <?php if (ppo_peer::instance()->is_moderator(
-                                $group['id'],
-                                session::get_user_id()
-                        ) || session::has_credential('admin')) { ?>
+                        $group['id'],
+                        session::get_user_id()
+                    ) || session::has_credential('admin')) { ?>
                     <div class="box_content p5 mb10 fs11">
                         <a href="/photo/add?type=2&oid=<?= $group['id'] ?>"><?= t('Добавить фото') ?> &rarr;</a>
                     </div>
@@ -854,42 +851,42 @@ HTML;
                             <div class="quiet">
                                 <div class="fs11 pb5 ml10">
                                     <?php if (date('d-m-Y', $report['start']) == date(
-                                                    'd-m-Y',
-                                                    $report['end']
-                                            )) {
+                                            'd-m-Y',
+                                            $report['end']
+                                        )) {
                                         $kolu = date_helper::get_format_date($report['start'], false).', '.t(
-                                                        'с'
-                                                ).' '.date('H:i', $report['start']).' до '.date(
-                                                        'H:i',
-                                                        $report['end']
-                                                );
+                                                'с'
+                                            ).' '.date('H:i', $report['start']).' до '.date(
+                                                'H:i',
+                                                $report['end']
+                                            );
                                     } else {
                                         $kolu = t('с').' '.date_helper::get_format_date(
-                                                        $report['start']
-                                                ).' '.date(
-                                                        'H:i',
-                                                        $report['start']
-                                                ).' <br/>до '.
-                                                date_helper::get_format_date($report['end']).' '.date(
-                                                        'H:i',
-                                                        $report['end']
-                                                );
+                                                $report['start']
+                                            ).' '.date(
+                                                'H:i',
+                                                $report['start']
+                                            ).' <br/>до '.
+                                            date_helper::get_format_date($report['end']).' '.date(
+                                                'H:i',
+                                                $report['end']
+                                            );
                                     } ?><?= $kolu ?>
                                     <br/>
                                     <?= t('Организатор').": " ?>
                                     <?= user_helper::full_name(
-                                            $report['user_id'],
-                                            true,
-                                            ['style' => 'color:black'],
-                                            false
+                                        $report['user_id'],
+                                        true,
+                                        ['style' => 'color:black'],
+                                        false
                                     ); ?>
                                     <?php if (session::has_credential('admin') || $is_leader) { ?>
                                         <?php $statuses = [
-                                                [t('Новый'), 'green'],
-                                                [t('На утверждении'), 'blue'],
-                                                [t('На доработке'), 'red'],
-                                                [t('Утвержден'), 'black'],
-                                                [t('Мероприятие не состоялось'), 'red'],
+                                            [t('Новый'), 'green'],
+                                            [t('На утверждении'), 'blue'],
+                                            [t('На доработке'), 'red'],
+                                            [t('Утвержден'), 'black'],
+                                            [t('Мероприятие не состоялось'), 'red'],
                                         ] ?>
                                         <br/>Статус: <span
                                                 style="color:<?= $statuses[$report['status']][1] ?>"><?= $statuses[$report['status']][0] ?></span>
@@ -930,8 +927,8 @@ HTML;
                         <?= intval($ftotal) + intval($ffondtotal) ?> грн.
                     </div>
                     <?php if ($finances && (session::has_credential(
-                                            'admin'
-                                    ) || ($user['status'] == 20 && $user_data['region_id'] == $group['region_id']))) { ?>
+                                'admin'
+                            ) || ($user['status'] == 20 && $user_data['region_id'] == $group['region_id']))) { ?>
                         <?php foreach ($finances as $finance_id) { ?>
                             <div class="mb10 box_content p10 mr10">
                                 <?php $finance = ppo_finance_peer::instance()->get_item($finance_id); ?>
@@ -951,7 +948,7 @@ HTML;
                     </div>
                     <div class="box_content p5 mb10 fs12">
                         <?= t('Остаток (фонд)') ?>: <?= intval($ftotal) + intval($ffondtotal) - intval(
-                                $fsumm
+                            $fsumm
                         ) ?> грн.
                     </div>
                 </div>
@@ -989,27 +986,27 @@ if ($group['map_zoom'] == 0) {
         $('#menu_apply').click(function () {
             var groupId = $(this).attr('rel');
             $.post(
-                    '/ppo/check_join',
-                    {id: groupId},
-                    function (results) {
-                        if (results.check == 0) {
-                            $('#menu_leave').remove();
-                            $.post(
-                                    '/ppo/join',
-                                    {id: groupId},
-                                    function () {
-                                        $('#menu_join').hide();
-                                        $('#menu_leave').fadeIn(150);
-                                    },
-                                    'json',
-                            );
-                            $('#menu_apply').hide();
-                            $('#text_apply').fadeIn(150);
-                        } else {
-                            Application.showInfo('why_move');
-                        }
-                    },
-                    'json',
+                '/ppo/check_join',
+                { id: groupId },
+                function (results) {
+                    if (results.check == 0) {
+                        $('#menu_leave').remove();
+                        $.post(
+                            '/ppo/join',
+                            { id: groupId },
+                            function () {
+                                $('#menu_join').hide();
+                                $('#menu_leave').fadeIn(150);
+                            },
+                            'json',
+                        );
+                        $('#menu_apply').hide();
+                        $('#text_apply').fadeIn(150);
+                    } else {
+                        Application.showInfo('why_move');
+                    }
+                },
+                'json',
             );
 
         });
@@ -1018,13 +1015,13 @@ if ($group['map_zoom'] == 0) {
     function ppoJoin() {
         $('#menu_leave').remove();
         $.post(
-                '/ppo/join',
-                {id: $('#menu_apply').attr('rel'), text: $('#ppo_join_text').val()},
-                function () {
-                    $('#menu_join').hide();
-                    $('#menu_leave').fadeIn(150);
-                },
-                'json',
+            '/ppo/join',
+            { id: $('#menu_apply').attr('rel'), text: $('#ppo_join_text').val() },
+            function () {
+                $('#menu_join').hide();
+                $('#menu_leave').fadeIn(150);
+            },
+            'json',
         );
         $('#menu_apply').hide();
         $('#text_apply').fadeIn(150);

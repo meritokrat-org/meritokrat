@@ -12,4 +12,4 @@ class profile_get_regions_action extends frontend_controller
 	}
 }
 
-?>
+

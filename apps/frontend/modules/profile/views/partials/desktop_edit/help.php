@@ -11,7 +11,7 @@
     }
     a.hoverdown {
         background: url("/static/images/icons/down_icon_brown.png") no-repeat scroll right center transparent;
-        color: #660000;
+        color: black;
         padding-right: 12px;
         font-style: normal !important;
     }

@@ -1,12 +1,12 @@
 <?php load::view_helper('image'); ?>
 <style>
     a.sidebar-link {
-        color: #600;
+        color: black;
         font-weight: normal;
     }
 
     a.atab.sidebar-link:hover, a.sidebar-link.asel:focus {
-        color: #600;
+        color: black;
         font-weight: bold;
     }
 </style>

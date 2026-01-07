@@ -23,7 +23,7 @@ else
 	
 	.box-navigation-title {
 		background: #CCC;
-		color: #600;
+		color: black;
 		padding: 10px;
 		font-weight: bold;
 		border-bottom: 1px solid #888;

@@ -128,7 +128,7 @@
     <?php if (session::has_credential("admin")) { ?>
         <style>
             li b {
-                color: #660000;
+                color: black;
             }
 
             #sort_buffer {
@@ -193,26 +193,24 @@
         </div>
 
         <script>
-            $(document).ready(function () {
-
+            document.addEventListener('DOMContentLoaded', function () {
                 $('#invite_friend').mouseover(function () {
                     $(this).css('box-shadow', 'inset 0px 0px 5px #FFCC66');
                 })
-                        .mouseout(function () {
-                            $(this).css('box-shadow', 'none');
-                        })
-                        .mousedown(function () {
-                            $(this).css('box-shadow', 'inset 0px 4px 5px #444');
-                        })
-                        .mouseup(function () {
-                            $(this).css('box-shadow', 'none');
-                        });
+                    .mouseout(function () {
+                        $(this).css('box-shadow', 'none');
+                    })
+                    .mousedown(function () {
+                        $(this).css('box-shadow', 'inset 0px 4px 5px #444');
+                    })
+                    .mouseup(function () {
+                        $(this).css('box-shadow', 'none');
+                    });
                 // .click(function () {
                 //     window.location = '/profile/invite';
                 // });
 
             });
-
         </script>
     <?php } ?>
 
@@ -327,7 +325,7 @@
                     ?>
                     <a href="/groups?app=1"><?= t(
                                 'Заявок'
-                        ) ?><?= $count_applicants ? '<b> +'.$count_applicants.'</b>' : '' ?></a>
+                        ) ?></a>
                     <?php
                 }
                 ?>
@@ -404,14 +402,14 @@
         }
 
         #mini-desktop {
-            color: #660000 !important;
+            color: black !important;
         }
     </style>
 
     <?php if (session::get_user_id() == $user['id']) { ?>
         <div id="mini-desktop" class="column_head_small ml10 mt10 fs11 hide"
-             style="color: #660000; height: 20px; background: #FFDF94;"><a href="javascript:" id="mini-desktop"
-                                                                           style=""><?= t('Рабочий кабинет') ?></a>
+             style="height: 20px; background: #0d6efd;"><a href="javascript:" id="mini-desktop"
+                                                                           style="color: white !important;"><?= t('Рабочий кабинет') ?></a>
         </div>
         <?php
         if (session::get_user_id()) {
@@ -497,7 +495,7 @@
 } ?>
 
 <?php if (session::has_credential('admin')) { ?>
-    <a href="javascript:" id="hide_link" onClick="right_pane()" style="margin-left: 10px"><?= t('Свернуть') ?></a>
+<!--    <a href="javascript:" id="hide_link" onClick="right_pane()" style="margin-left: 10px">--><?//= t('Свернуть') ?><!--</a>-->
 <?php } ?>
 <div id="toggle_block" class="d-none">
 
@@ -674,7 +672,7 @@
     <div class="ml10 mt10 mb10" style="background-color:#fff8d3;padding:13px;">
         <?php $block_title = db_key::i()->get('banners_block_title') ?>
         <?php if ($block_title) { ?>
-            <p style="color:#660000;text-decoration:underline;margin-bottom:5px;font-size:90%;font-weight:bold;"><?= $block_title ?></p>
+            <p style="color: black;text-decoration:underline;margin-bottom:5px;font-size:90%;font-weight:bold;"><?= $block_title ?></p>
         <?php } ?>
         <?php
         load::view_helper('banner');
@@ -714,7 +712,7 @@
 <? foreach($birthdays as $b){ ?>
     <? //$user = user_data_peer::instance()->get_item($b); ?>
     <div class="ml10 mt10 mb15" style="background-color:#fff8d3;padding:13px;">
-        <p style="font-size:90%;color:#660000;text-decoration:underline;margin-bottom:5px;font-weight:bold;">
+        <p style="font-size:90%;color: black;text-decoration:underline;margin-bottom:5px;font-weight:bold;">
             <?=t('ДНИ РОЖДЕНИЯ')?>
         </p>
         <table style="margin:0;padding:0;"><tr>

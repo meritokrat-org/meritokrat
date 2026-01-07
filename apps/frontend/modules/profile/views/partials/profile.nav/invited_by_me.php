@@ -23,6 +23,6 @@ array_walk(
 
 ?>
 <a href="javascript:void(0);" class="atab sidebar-link" id="astats"><?= t('Приглашенные мною') ?> <span
-            class="right"><span style="color: #600"><?= count($activatedUsers) ?></span> / <span
+            class="right"><span style="color: black"><?= count($activatedUsers) ?></span> / <span
                 style="color: #7E7E7E"><?= count($nonActivatedUsers) ?></span> / <span
                 style="color: #7E7E7E"><?= (count($activatedUsers) + count($nonActivatedUsers)) ?></span></span></a>

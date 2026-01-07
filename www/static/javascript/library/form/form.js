@@ -38,10 +38,10 @@ var Form = function (id, options) {
         if (formElement.attr('type') == 'radio') {
             formElement.attr('id', name + '_' + formElement.val());
         }
-        else {
-            if (formElement.attr('id') == '')
-                formElement.attr('id', name);
-        }
+        // else {
+        //     if (formElement.attr('id') == '')
+        //         formElement.attr('id', name);
+        // }
         
         elements[formElement.attr('name')] = formElement;
     }

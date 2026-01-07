@@ -9,7 +9,7 @@ if (request::get_int('status')) {
 
 <style>
     li b {
-        color: #660000;
+        color: black;
     }
 
     #sort_buffer {
@@ -79,24 +79,6 @@ HTML;
     </div>
     <div class="p10 box_content" id="statuces">
         <ul class="mb5">
-            <?php if (session::has_credential('admin')) { ?>
-                <li>
-                    <a href="?filter[ppo][function]=1" style="<?= 1 == request::get_int(
-                            'suslik'
-                    ) ? 'color: #772f23; font-weight: bold; text-decoration: none;' : '' ?>; margin: 1px;">*<?= t(
-                                'Голова ПО'
-                        ) ?></a>
-                    <div class="right fs11 bold">
-                        <?= db::get_scalar(
-                                'select count(*) from ppo_members pm right join ppo p on p.id = pm.group_id where pm.function = 1'
-                        ) ?>
-                    </div>
-                </li>
-            <?php } ?>
-            <!--li><a href="/profile-5" style="margin: 1px;"><?= t('Глава Оргкомитета') ?></a></li-->
-            <?php /* foreach ( user_auth_peer::get_typess() as $type => $title ) { ?>
-			<li><a href="/people/index?type=<?=$type?>" style="<?= $type==$cur_type ? 'color: #772f23; font-weight: bold; text-decoration: none;' : ''?>; margin: 1px;"><?=$title?></a></li>
-		<? } */ ?>
             <?php
             $statuces = user_auth_peer::get_statucess();
             krsort($statuces);
@@ -106,18 +88,16 @@ HTML;
                             'SELECT count(*) FROM user_auth a, user_data u WHERE a.status=:status AND (a.ban=0 OR a.ban IS NULL) AND a.del=0 AND a.id=u.user_id AND a.active=TRUE',
                             ['status' => $status]
                     );
+                } elseif (10 === $status) {
+                    $cnt = db::get_scalar(
+                            'SELECT count(*) FROM user_auth a, user_data u WHERE a.status=:status AND a.del=0 AND a.id=u.user_id AND a.active=TRUE',
+                            ['status' => $status]
+                    );
                 } else {
-                    if (10 === $status) {
-                        $cnt = db::get_scalar(
-                                'SELECT count(*) FROM user_auth a, user_data u WHERE a.status=:status AND a.del=0 AND a.id=u.user_id AND a.active=TRUE',
-                                ['status' => $status]
-                        );
-                    } else {
-                        $cnt = db::get_scalar(
-                                'SELECT count(*) FROM user_auth a, user_data u WHERE (a.status=:status OR a.ban=:ban) AND a.del=0 AND a.id=u.user_id AND a.active=TRUE',
-                                ['status' => $status, 'ban' => $status]
-                        );
-                    }
+                    $cnt = db::get_scalar(
+                            'SELECT count(*) FROM user_auth a, user_data u WHERE (a.status=:status OR a.ban=:ban) AND a.del=0 AND a.id=u.user_id AND a.active=TRUE',
+                            ['status' => $status, 'ban' => $status]
+                    );
                 }
                 ?><?php $adminStar = '';
                 if ($status <= user_auth_peer::POTENTIAL_SUPPORTER) {
@@ -129,20 +109,18 @@ HTML;
                 <li>
                     <a href="/people/index?<?= (-10 === $status) ? 'meritokrat=1' : 'status='.$status ?><?= $url['region'] ?>" style="<?= (($status === $cur_status) || (10 === $status && request::get_int(
                                             'meritokrat'
-                                    ))) ? 'color: #772f23; font-weight: bold; text-decoration: none;' : '' ?>; margin: 1px;"><?= $adminStar ?><?= $title ?></a>
+                                    ))) ? 'font-weight: bold; text-decoration: none;' : '' ?>; margin: 1px;"><?= $adminStar ?><?= $title ?></a>
                     <div class="right fs11 bold"><?= $cnt ?></div>
                 </li>
             <?php } ?>
-            <!--li><a href="/people/index?expert=1" style="<?= 1 == request::get_int(
-                    'expert'
-            ) ? 'color: #772f23; font-weight: bold; text-decoration: none;' : '' ?>; margin: 1px;"><?= t(
+            <!--li><a href="/people/index?expert=1" style="<?= 1 === request::get_int('expert') ? 'color: #772f23; font-weight: bold; text-decoration: none;' : '' ?>; margin: 1px;"><?= t(
                     'Эксперты'
             ) ?></a></li-->
             <?php if (session::has_credential('admin')) { ?>
 
                 <!--<li><a href="/people/index?status=10" style="<?= 10 == request::get_int(
                         'status'
-                ) ? 'color: #772f23; font-weight: bold; text-decoration: none;' : '' ?>; margin: 1px;">*<?= t(
+                ) ? 'font-weight: bold; text-decoration: none;' : '' ?>; margin: 1px;">*<?= t(
                         'Лише мерітократи'
                 ) ?></a><div class="right fs11 bold"><?= db::get_scalar(
                         "SELECT count(*) FROM user_auth WHERE (status=10 OR ban=10) AND del=0"
@@ -158,7 +136,7 @@ HTML;
                 </li>
                 <li><a href="/people/index?famous=1" style="<?= 1 == request::get_int(
                             'famous'
-                    ) ? 'color: #772f23; font-weight: bold; text-decoration: none;' : '' ?>; margin: 1px;">*<?= t(
+                    ) ? 'font-weight: bold; text-decoration: none;' : '' ?>; margin: 1px;">*<?= t(
                                 'Известные люди'
                         ) ?></a>
                     <div class="right fs11 bold"><?= count(

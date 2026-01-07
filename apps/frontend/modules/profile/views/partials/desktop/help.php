@@ -5,7 +5,7 @@
     }
     a.hoverdown {
         background: url("/static/images/icons/down_icon_brown.png") no-repeat scroll right center transparent;
-        color: #660000;
+        color: black;
         padding-right: 12px;
         font-style: normal !important;
     }
@@ -301,7 +301,7 @@
                         <? if (session::get_user_id()!=$user_desktop['user_id']) { ?>
                         <tr>
                             <td>
-                                <p style="color: #000; font-weight: bold;">Для того, щоб отримати або запропонувати цій людині свою допомогу, напишіть їй внутрішнє <a href='https://meritokrat.org/messages/compose?user_id=<?php echo $user_desktop['user_id'];?>' style="color:#660000;">повідомлення</a> у Мерітократ.org.
+                                <p style="color: #000; font-weight: bold;">Для того, щоб отримати або запропонувати цій людині свою допомогу, напишіть їй внутрішнє <a href='https://meritokrat.org/messages/compose?user_id=<?php echo $user_desktop['user_id'];?>' style="color: black;">повідомлення</a> у Мерітократ.org.
                             </td>
                         </tr>
                         <? } ?>

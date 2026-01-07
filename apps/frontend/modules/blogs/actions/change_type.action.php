@@ -1,4 +1,4 @@
-<?
+<?php
 
 load::app('modules/blogs/controller');
 class blogs_change_type_action extends blogs_controller

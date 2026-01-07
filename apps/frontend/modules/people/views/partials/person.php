@@ -23,7 +23,7 @@
                 <?php if ($last_visit) { ?>
                     <!--<img class="left" style="padding-top: 2px; padding-right: 4px" alt="online" src="/static/images/common/user_online.png" />-->
                 <?php } ?>
-                <?= user_helper::full_name($id, true, ['class' => 'bold']) ?>
+                <?= user_helper::full_name($id, true, ['class' => 'text-dark bold']) ?>
             </div>
 
             <div class="fs11">

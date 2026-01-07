@@ -75,7 +75,7 @@ $recommend_member = db::get_cols(
     </div>
 
     <div class="col ml-0 pl-0">
-        <h1 class="mb5 fs28" style="color:#660000;">
+        <h1 class="mb5 fs28" style="color: black;">
             <a href="/profile-<?= $user_data['user_id'] ?>" style="text-decoration:none;
            "><?= stripslashes(htmlspecialchars($user_data['first_name'].' '.$user_data['last_name'])) ?></a> - <?= t(
                 'Рабочий стол'

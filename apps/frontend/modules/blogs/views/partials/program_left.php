@@ -55,25 +55,25 @@
 }
 </style>
 
-<h1 class="column_head"><?=t('Темы')?></h1>
+<h1 class="column_head" style="height: auto; padding: 5px 15px"><?=t('Темы')?></h1>
 <div class="box_content" style="padding-bottom:10px">
 	<ul class="mb5" id="prl">
         <? if(session::has_credential('admin') || $positiontotal>0){ ?>
             <li  <?=(request::get('theme')=='position') ? 'style="background-color:#e7e7e7"':''?> class="separator">
                 <a href="/blogs/programs?theme=position" <?=(request::get('theme')=='position')?'class="bold fs12"':'class="fs12"'?> style="margin: 1px;"><?=t('Позиция')?></a>
-                <div style="color:#660000" class="right fs12 bold"><?=$positiontotal?></div>
+                <div style="color: black" class="right fs12 bold"><?=$positiontotal?></div>
             </li>
         <? } ?>
         <? if(session::has_credential('admin') || $mputotal>0){ ?>
             <li <?=(request::get('theme')=='mpu')?'style="background-color:#e7e7e7"':''?>  class="separator">
                 <a href="/blogs/programs?theme=mpu" <?=(request::get('theme')=='mpu')?'class="bold fs12"':'class="fs12"'?> style="margin: 1px;"><?=t('Идеи для Идеальной Страны')?></a>
-                <div style="color:#660000" class="right fs12 bold"><?=$mputotal?></div>
+                <div style="color: black" class="right fs12 bold"><?=$mputotal?></div>
             </li>
         <? } ?>
         <? foreach($themes as $k=>$v){ ?>
             <li <?=(request::get('theme')==$k)?'style="background-color:#e7e7e7"':''?> class="<?=(in_array($k,array(38, 40, 'position', 'mpu')) ? 'separator' : '')?>">
                 <a href="/blogs/programs?theme=<?=$k?>" <?=(request::get_int('theme')==$k)?'class="bold fs12"':'class="fs12"'?> style="margin: 1px;"><?=$v['title']?></a>
-                <div style="color:#660000" class="right fs12 bold"><?=$v['summ']?></div>
+                <div style="color: black" class="right fs12 bold"><?=$v['summ']?></div>
             </li>
 	<? } ?>
 	</ul>
@@ -82,19 +82,19 @@
         <? } ?>
 </div>
 
-<h1 class="column_head mt10"><?=t('Целевые группы')?></h1>
+<h1 class="column_head mt10" style="height: auto; padding: 5px 15px"><?=t('Целевые группы')?></h1>
 <div class="p10 box_content">
 	<ul class="mb5">
         <? foreach($targets as $k=>$v){ ?>
             <li>
                 <a href="/blogs/programs?target=<?=$k?>" <?=(request::get_int('target')==$k)?'class="bold fs12"':'class="fs12"'?> style="margin: 1px;"><?=$v['title']?></a>
-                <div style="color:#660000" class="right fs12 bold"><?=$v['summ']?></div>
+                <div style="color: black" class="right fs12 bold"><?=$v['summ']?></div>
             </li>
 	<? } ?>
 	</ul>
 </div>
 
-<h1 class="column_head mt10"><?=t('Сейчас обсуждаются')?></h1>
+<h1 class="column_head mt10" style="height: auto; padding: 5px 15px"><?=t('Сейчас обсуждаются')?></h1>
 <div>
     <? foreach ($talk as $id) { ?>
         <? $post_data = blogs_posts_peer::instance()->get_item($id) ?>

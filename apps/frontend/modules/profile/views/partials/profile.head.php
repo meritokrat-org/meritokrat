@@ -8,9 +8,9 @@
 ?>
 
 <div class="row" style="min-height: 5rem">
-    <div class="col">
+    <div class="col-7">
 
-        <h1 class="mb-1 fs28" style="color: #660000; line-height: 1;">
+        <h1 class="mb-1 fs28" style="color: black; line-height: 1;">
             <?= stripslashes(htmlspecialchars($user_data['first_name'])) ?><!--
             -->&nbsp;<?= stripslashes(htmlspecialchars($user_data['last_name'])) ?>
         </h1>
@@ -326,8 +326,7 @@
 <?php } ?>
 
 
-<div class="mt10" style="-moz-border-radius: 3px 3px 3px 3px;
-    background: url('/static/images/common/box_head.gif') no-repeat scroll 0 0 transparent;
+<div class="mt10 bg-secondary " style="-moz-border-radius: 3px 3px 3px 3px;
     color: white;
     font-size: 11px;
     font-weight: bold;

@@ -9,7 +9,7 @@ load::model('geo');
 
 <div class="left ml10"
      style="<?php if (!session::is_authenticated()) { ?>width: 98%;<?php } else { ?>width: 62%;<?php } ?>">
-    <h1 class="column_head mt10">
+    <h1 class="column_head mt10" style="padding: 5px; height: auto">
         <?php if ($cur_type > 0) { ?>
             <?= user_auth_peer::instance()->get_type_s($cur_type) ?>
         <?php } elseif ($cur_status > 0 && request::get_int('region')) { ?>
@@ -50,7 +50,7 @@ load::model('geo');
         <!--div style="display:inline; margin-left:140px"><a style="text-transform: none;" href="/people?online=1">Посл посещение</a></div-->
 
         <span class="right">
-                    <a href="/people?online=1" style="text-transform:none;">Онлайн</a>
+                    <a href="/people?online=1" style="text-transform:none; color: white">Онлайн</a>
                     <?php if ($cur_type > 0) { ?>
                         <?= db::get_scalar(
                                 'SELECT count(user_id) FROM user_sessions WHERE visit_ts>=:visit_ts AND user_id IN (SELECT id FROM user_auth WHERE type=:type)',
@@ -68,6 +68,7 @@ load::model('geo');
                         ) ?>
                     <?php } ?>
                 </span>
+        <div class="clear"></div>
     </h1>
     <?php if (request::get('type') > 0
             || request::get_string('type') === '0'

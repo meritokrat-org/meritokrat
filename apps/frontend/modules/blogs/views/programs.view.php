@@ -20,7 +20,7 @@
 
 <div class="left ml10 mt10" style="width: 62%;">
 
-    <h1 class="column_head"><a href="/blogs/programs">Проект "<?=t('Успішна Україна')?>"</a></h1>
+    <h1 class="column_head" style="height: auto; padding: 5px 15px"><a href="/blogs/programs">Проект "<?=t('Успішна Україна')?>"</a></h1>
     <div class="box_content mb5 p10 fs18 cbrown acenter" style="background-color:#fbf4e1;text-transform:uppercase;text-decoration:none">
         <? if(request::get('theme')=='mpu'){ ?>
         <?=t('Идеи для Идеальной Страны')?>
@@ -37,14 +37,14 @@
 
         <? if(request::get('theme')!='mpu' && request::get('theme')!='position' && !request::get_int('page')){ ?>
             <? if(count($position)>0){ ?>
-                <h1 class="column_head"><a href="/blogs/programs&theme=position"><?=t('Позиция')?></a></h1>
+                <h1 class="column_head" style="height: auto; padding: 5px 15px"><a href="/blogs/programs&theme=position"><?=t('Позиция')?></a></h1>
                 <? foreach ( $position as $id ) { ?>
                         <? if ( !$post_data = blogs_posts_peer::instance()->get_item($id) ) continue; ?>
                         <? include 'partials/program_post.php'; ?>
                 <? } ?>
             <? } ?>
             <? if(count($mpu)>0){ ?>
-                <h1 class="column_head"><a href="/blogs/programs&theme=mpu"><?=t('Идеи для Идеальной Страны')?></a></h1>
+                <h1 class="column_head" style="height: auto; padding: 5px 15px"><a href="/blogs/programs&theme=mpu"><?=t('Идеи для Идеальной Страны')?></a></h1>
                 <? foreach ( $mpu as $id ) { ?>
                         <? if ( !$post_data = blogs_posts_peer::instance()->get_item($id) ) continue; ?>
                         <? include 'partials/program_post.php'; ?>
@@ -53,13 +53,13 @@
         <? } ?>
 
         <? if(request::get('theme')=='mpu'){ ?>
-            <h1 class="column_head"><?=t('Идеи для Идеальной Страны')?><a href="/blogs/programs" class="right"><?=t('Все')?></a></h1>
+            <h1 class="column_head" style="height: auto; padding: 5px 15px"><?=t('Идеи для Идеальной Страны')?><a href="/blogs/programs" class="right"><?=t('Все')?></a></h1>
         <? }elseif(request::get('theme')=='position'){ ?>
-            <h1 class="column_head"><?=t('Позиция')?><a href="/blogs/programs" class="right"><?=t('Все')?></a></h1>
+            <h1 class="column_head" style="height: auto; padding: 5px 15px"><?=t('Позиция')?><a href="/blogs/programs" class="right" style="text-transform: none; color: white"><?=t('Все')?></a></h1>
         <? }elseif(request::get_int('target')){ ?>
-            <h1 class="column_head"><?=t('По целевой группе')?> &rarr; <?=user_helper::get_target_groups(request::get_int('target'))?><a href="/blogs/programs" class="right"><?=t('Все')?></a></h1>
+            <h1 class="column_head" style="height: auto; padding: 5px 15px"><?=t('По целевой группе')?> &rarr; <?=user_helper::get_target_groups(request::get_int('target'))?><a href="/blogs/programs" class="right" style="text-transform: none; color: white"><?=t('Все')?></a></h1>
         <? }else{ ?>
-            <h1 class="column_head"><?=t('Статьи')?><a href="/blogs/programs" class="right"><?=t('Все')?></a></h1>
+            <h1 class="column_head" style="height: auto; padding: 5px 15px"><?=t('Статьи')?><a href="/blogs/programs" class="right" style="text-transform: none; color: white"><?=t('Все')?></a></h1>
         <? } ?>
         <? if(count($list)>0){ ?>
             <? foreach ( $list as $id ) { ?>
@@ -81,7 +81,7 @@
             <div class="box_content p10 fs16 mb5">
                 <a href="/group<?=$group_id?>"><?=user_helper::get_program_types($group_data['type'])?></a>
             </div>
-            <h1 class="column_head"><?=t('Обсуждение в рабочей группе')?></h1>
+            <h1 class="column_head" style="height: auto; padding: 5px 15px"><?=t('Обсуждение в рабочей группе')?></h1>
             <? if(count($group)>0){ ?>
                 <? foreach ( $group as $id ) { ?>
                         <? if ( !$post_data = blogs_posts_peer::instance()->get_item($id) ) continue; ?>
@@ -97,7 +97,7 @@
 
     <? }elseif(request::get('type')=='populars'){ ?>
 
-        <h1 class="column_head"><?=t('Популярные статьи')?><a href="/blogs/programs" class="right"><?=t('Все')?></a></h1>
+        <h1 class="column_head" style="height: auto; padding: 5px 15px"><?=t('Популярные статьи')?><a href="/blogs/programs" class="right"><?=t('Все')?></a></h1>
         <? if(count($list)>0){ ?>
             <? foreach ( $list as $id ) { ?>
                     <? if ( !$post_data = blogs_posts_peer::instance()->get_item($id) ) continue; ?>
@@ -111,7 +111,7 @@
 
     <? }elseif(request::get('type')=='last'){ ?>
 
-        <h1 class="column_head"><?=t('Последние статьи')?><a href="/blogs/programs" class="right"><?=t('Все')?></a></h1>
+        <h1 class="column_head" style="height: auto; padding: 5px 15px"><?=t('Последние статьи')?><a href="/blogs/programs" class="right"><?=t('Все')?></a></h1>
         <? if(count($list)>0){ ?>
             <? foreach ( $list as $id ) { ?>
                     <? if ( !$post_data = blogs_posts_peer::instance()->get_item($id) ) continue; ?>
@@ -126,7 +126,7 @@
     <? }else{ ?>
 
         <? if(count($position)>0){ ?>
-        <h1 class="column_head"><a href="/blogs/programs&theme=position"><?=t('Позиция')?></a><a href="/blogs/programs&theme=position" class="right"><?=t('Все')?></a></h1>
+        <h1 class="column_head" style="height: auto; padding: 5px 15px"><a href="/blogs/programs&theme=position"><?=t('Позиция')?></a><a href="/blogs/programs&theme=position" class="right"><?=t('Все')?></a></h1>
         <? if(count($position)>0){ ?>
             <? foreach ( $position as $id ) { ?>
                     <? if ( !$post_data = blogs_posts_peer::instance()->get_item($id) ) continue; ?>
@@ -139,7 +139,7 @@
         <? }} ?>
 
         <? if(count($list)>0){ ?>
-        <h1 class="column_head"><a href="/blogs/programs&theme=mpu"><?=t('Идеи для Идеальной Страны')?></a><a href="/blogs/programs&theme=mpu" class="right"><?=t('Все')?></a></h1>
+        <h1 class="column_head" style="height: auto; padding: 5px 15px"><a href="/blogs/programs&theme=mpu"><?=t('Идеи для Идеальной Страны')?></a><a href="/blogs/programs&theme=mpu" class="right"><?=t('Все')?></a></h1>
         <? if(count($list)>0){ ?>
             <? foreach ( $list as $id ) { ?>
                     <? if ( !$post_data = blogs_posts_peer::instance()->get_item($id) ) continue; ?>
@@ -151,7 +151,7 @@
             </div>
         <? }} ?>
 
-        <h1 class="column_head"><?=t('Популярные статьи')?><a href="/blogs/programs?type=populars" class="right"><?=t('Все')?></a></h1>
+        <h1 class="column_head" style="height: auto; padding: 5px 15px"><?=t('Популярные статьи')?><a href="/blogs/programs?type=populars" class="right"><?=t('Все')?></a></h1>
         <? if(count($popular)>0){ ?>
             <? foreach ( $popular as $id ) { ?>
                     <? if ( !$post_data = blogs_posts_peer::instance()->get_item($id) ) continue; ?>
@@ -163,7 +163,7 @@
             </div>
         <? } ?>
 
-        <h1 class="column_head"><?=t('Последние статьи')?><a href="/blogs/programs&type=last" class="right"><?=t('Все')?></a></h1>
+        <h1 class="column_head" style="height: auto; padding: 5px 15px"><?=t('Последние статьи')?><a href="/blogs/programs&type=last" class="right"><?=t('Все')?></a></h1>
         <? if(count($last)>0){ ?>
             <? foreach ( $last as $id ) { ?>
                     <? if ( !$post_data = blogs_posts_peer::instance()->get_item($id) ) continue; ?>
@@ -176,7 +176,7 @@
         <? } ?>
 
         <? if(count($group)>0){ ?>
-        <h1 class="column_head"><?=t('Обсуждения в рабочих группах')?></h1>
+        <h1 class="column_head" style="height: auto; padding: 5px 15px"><?=t('Обсуждения в рабочих группах')?></h1>
         <? if(count($group)>0){ ?>
             <? foreach ( $group as $id ) { ?>
                     <? if ( !$post_data = blogs_posts_peer::instance()->get_item($id) ) continue; ?>

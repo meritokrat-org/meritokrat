@@ -156,13 +156,13 @@
 
             /* Determine parent element offset */
             parOfs = $.inArray($parent.css('position'), ['absolute', 'relative']) + 1 ?
-            {
-                left: round($parent.offset().left) - $parent.scrollLeft(),
-                top: round($parent.offset().top) - $parent.scrollTop()
-            } :
+                {
+                    left: round($parent.offset().left) - $parent.scrollLeft(),
+                    top: round($parent.offset().top) - $parent.scrollTop()
+                } :
                 position == 'fixed' ?
-                {left: $(document).scrollLeft(), top: $(document).scrollTop()} :
-                {left: 0, top: 0};
+                    {left: $(document).scrollLeft(), top: $(document).scrollTop()} :
+                    {left: 0, top: 0};
 
             left = viewX(0);
             top = viewY(0);
@@ -233,10 +233,10 @@
                         $.imgAreaSelect.onKeyPress);
 
                 if (options.keys)
-                /*
-                 * Set the document keypress event handler to this instance's
-                 * docKeyPress() function
-                 */
+                    /*
+                     * Set the document keypress event handler to this instance's
+                     * docKeyPress() function
+                     */
                     $(document)[$.imgAreaSelect.keyPress](
                         $.imgAreaSelect.onKeyPress = docKeyPress);
             }
@@ -334,8 +334,7 @@
                 $(document).mousemove(selectingMouseMove)
                     .one('mouseup', docMouseUp);
                 $box.unbind('mousemove', areaMouseMove);
-            }
-            else if (options.movable) {
+            } else if (options.movable) {
                 startX = left + selection.x1 - evX(event);
                 startY = top + selection.y1 - evY(event);
 
@@ -348,8 +347,7 @@
                         $(document).unbind('mousemove', movingMouseMove);
                         $box.mousemove(areaMouseMove);
                     });
-            }
-            else
+            } else
                 $img.mousedown(event);
 
             return false;
@@ -365,8 +363,7 @@
                     y2 = round(max(top, min(top + imgHeight,
                         y1 + abs(x2 - x1) / aspectRatio * (y2 > y1 || -1))));
                     x2 = round(x2);
-                }
-                else {
+                } else {
                     y2 = max(top, min(top + imgHeight,
                         y1 + abs(x2 - x1) / aspectRatio * (y2 > y1 || -1)));
                     x2 = round(max(left, min(left + imgWidth,
@@ -481,7 +478,7 @@
             resize = '';
 
             if ($outer.is(':not(:visible)'))
-            /* Show the plugin elements */
+                /* Show the plugin elements */
                 $box.add($outer).hide().fadeIn(options.fadeSpeed || 0);
 
             shown = true;
@@ -616,8 +613,7 @@
                 }
 
                 doResize();
-            }
-            else {
+            } else {
                 /* Move selection */
 
                 x1 = min(x1, x2);
@@ -758,8 +754,7 @@
 
                 $box.unbind('mousemove', areaMouseMove).unbind('mousedown', areaMouseDown);
                 $(window).unbind('resize', windowResize);
-            }
-            else {
+            } else {
                 if (options.enable || options.disable === false) {
 
                     if (options.resizable || options.movable)
@@ -848,12 +843,10 @@
 
                     $(this).data('imgAreaSelect').remove();
                     $(this).removeData('imgAreaSelect');
-                }
-                else
+                } else
 
                     $(this).data('imgAreaSelect').setOptions(options);
-            }
-            else if (!options.remove) {
+            } else if (!options.remove) {
 
                 if (options.enable === undefined && options.disable === undefined)
                     options.enable = true;
@@ -903,8 +896,7 @@ function photo(img, selection) {
         window.w = selection.width;
 
         $('#crop_image_1').removeAttr('disabled');
-    }
-    else
+    } else
         $('#crop_image_1').attr('disabled', 'disabled');
 
 }
@@ -949,6 +941,7 @@ $(function () {
 function clearForm() {
     $('input[type="text"]').not(':disabled').val('');
 }
+
 function validateReceiveHelpParams() {
     $err = '';
     if ($('input[name="user_to"]').val() == '')
@@ -1036,8 +1029,7 @@ $(function () {
             if ($('textarea[name="help_review"]').val() == '') {
                 $err = true;
             }
-        }
-        else if ($(this).attr('need') == 0)
+        } else if ($(this).attr('need') == 0)
             if ($('textarea[name="help_describe"]').val() == '') {
                 $err = true;
             }
@@ -1119,8 +1111,7 @@ $(function () {
 
                 }
             });
-        }
-        else
+        } else
             $('.receive_success').fadeIn(250, function () {
                 $('.receive_success').html('Заповнені не всі поля або введено некоректну дату')
             });
@@ -1237,6 +1228,7 @@ $(function () {
 
     });
 })
+
 function sendMessage() {
     //alert('try send');
     $.ajax({
@@ -1423,13 +1415,11 @@ var profileController = new function () {
 
     this.editAction = function () {
 
-        var commonForm = new Form(
-            'common_form',
-            {
+        var commonForm = new Form('common_form', {
                 validators: {
                     first_name: [validatorRequired],
                     last_name: [validatorRequired],
-                    country: [validatorRequired],
+                    // country: [validatorRequired],
                     //region: [validatorRequired],
                     //city: [validatorRequired]
                 },
@@ -1631,8 +1621,7 @@ var profileController = new function () {
                 $('body').find('.imgareaselect-outer').each(function () {
                     $(this).css('display', 'none');
                 });
-            }
-            else {
+            } else {
                 window.setTimeout(loadImgarea, 1000);
             }
 
@@ -1730,12 +1719,11 @@ var profileController = new function () {
                 $('#trust_wait').hide();
 
                 $('.custom_rate_selected').removeClass('custom_rate_selected');
-                $('#' + ( trust ? 'trust' : 'not_trust' )).addClass('custom_rate_selected');
+                $('#' + (trust ? 'trust' : 'not_trust')).addClass('custom_rate_selected');
 
                 if (trust) {
                     $('#trust_value').html(parseInt($('#trust_value').html()) + 1);
-                }
-                else {
+                } else {
                     $('#not_trust_value').html(parseInt($('#not_trust_value').html()) + 1);
                 }
             },
@@ -1826,8 +1814,7 @@ var profileController = new function () {
         if (newRate > 0) {
             newRate = '+' + newRate;
             rateEl.css({color: 'green'});
-        }
-        else {
+        } else {
             rateEl.css({color: 'red'});
         }
 
@@ -1862,12 +1849,14 @@ var profileController = new function () {
         $.post('/profile/delete_desktop_photo', {id: id, user_id: user_id, salt: salt});
     };
 };
+
 function min(a, b) {
     if (a <= b)
         return a;
     else
         return b;
 }
+
 $(function () {
     $('select[name="help_type"]').change(function () {
         $id = $(this).attr('sel_need');
@@ -1877,6 +1866,7 @@ $(function () {
             $('input[inp_need="' + $id + '"]').hide();
     });
 });
+
 function loadImgarea() {
     $W = document.getElementById('photo_1').width;
     $H = document.getElementById('photo_1').height;
@@ -1886,13 +1876,11 @@ function loadImgarea() {
         window.y = crop_y;
         window.w = crop_w;
         window.h = crop_h;
-    }
-    else {
+    } else {
         if ($W >= $H * 0.7777) {
             window.w = $H * 0.77777;
             window.h = $H;
-        }
-        else {
+        } else {
             window.w = $W;
             window.h = $W * 1.285;
         }
@@ -1918,6 +1906,7 @@ function loadImgarea() {
     });
 
 }
+
 function askRecommendation(uId, uStat) {
     Popup.show();
     $.post(

@@ -117,7 +117,7 @@ table td
                                                                                  '<img src="'+$jsdata[$key][2]+'">'+
                                                                               '</div>'+
                                                                               '<div class="one_user_info_block fl">'+
-                                                                                  '<div class="one_user_name bold fs11 cb" style="color: #660000;">'+$jsdata[$key][0]+'</div>'+
+                                                                                  '<div class="one_user_name bold fs11 cb" style="color: black;">'+$jsdata[$key][0]+'</div>'+
                                                                                   '<div class="one_user_city fs11 cb" style="color: #000000;">'+$jsdata[$key][1]+'</div>'+
                                                                               '</div>'+
                                                                         '</div>';

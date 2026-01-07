@@ -5,7 +5,7 @@ class ppo_new_action extends ppo_controller
 {
 	public function execute()
 	{ load::model('groups/groups');
-             $all_regions=geo_peer::get_regions(1);
+             $all_regions=geo_peer::instance()->get_regions(1);
                     foreach ($all_regions  as $region_id => $title ) {   
             $count_users=db::get_scalar('SELECT count(*) 
                 FROM ppo 

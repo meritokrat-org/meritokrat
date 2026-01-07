@@ -1,9 +1,9 @@
 <form id="common_form" class="form mt10 hidden">
     <?php if (session::has_credential('admin') || $access) { ?>
-        <input type="hidden" name="id" value="<?= $user_data['user_id'] ?>">
+        <input type="hidden" name="id" value="<?= $user_data['user_id'] ?>"/>
     <?php } ?>
     <input type="hidden" name="type" value="common">
-    <table width="100%" class="fs12">
+    <table class="fs12" style="width: 100%">
         <tr>
             <td class="aright"><b><?= t('Имя') ?></b></td>
             <td>
@@ -25,7 +25,7 @@
                        value="<?= stripslashes(htmlspecialchars($user_data['father_name'])) ?>"/>
             </td>
         </tr>
-        <?php //старые статусы
+        <?php // старые статусы
         /* if (in_array($user['type'],array(4,5,7,0))) { ?>
         <tr>
                 <td class="aright"><?=t('Статус')?></td>
@@ -42,51 +42,19 @@
             <td class="aright"><?= t('Дата рождения') ?></td>
             <?php $ages = range(15, 107) ?>
             <td>
-                <div style="width:220px">
-                    <select id="birthday_day" class="datefield" value="12" name="birthday_day" use_values="">
-                        <?php foreach (range(0, 31) as $i) { ?>
-                            <option value="<?= $i ?>"><?= $i ?: '-' ?></option>
-                        <?php } ?>
-                    </select>
-                    <select id="birthday_month" class="datefield" value="2" onclick="Calendar.checkdate(this)"
-                            name="birthday_month" use_values="">
-                        <?php foreach (['-',
-                                        t('января'),
-                                        t('февраля'),
-                                        t('марта'),
-                                        t('апреля'),
-                                        t('мая'),
-                                        t('июня'),
-                                        t('июля'),
-                                        t('августа'),
-                                        t('сентября'),
-                                        t('октября'),
-                                        t('ноября'),
-                                        t('декабря'),
-                                       ] as $value => $text) { ?>
-                            <option value="<?= $value ?>"><?= $text ?></option>
-                        <?php } ?>
-                    </select>
-                    <select id="birthday_year" class="datefield" value="2000" onclick="Calendar.checkdate(this)"
-                            name="birthday_year" use_values="">
-                        <option value="0">-</option>
-                        <?php foreach (range((int) date('Y'), (int) date('Y') - 50) as $year) { ?>
-                            <option value="<?= $year ?>"><?= $year ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
                 <?php $bparts = explode('-', stripslashes(htmlspecialchars($user_data['birthday']))) ?>
                 <?= user_helper::datefields(
-                        'birthday',
-                        mktime(0, 0, 0, intval($bparts[1]), intval($bparts[2]), intval($bparts[0])),
-                        false,
-                        [],
-                        true
+                    'birthday',
+                    mktime(0, 0, 0, intval($bparts[1]), intval($bparts[2]), intval($bparts[0])),
+                    false,
+                    [],
+                    true,
+                    1950
                 ) ?>
                 <!--input name="birthday" rel="<?= t(
-                        'Заполните дату рождения корректно'
+                    'Заполните дату рождения корректно'
                 ) ?>" class="text" type="text" id="birthday" style="width:153px;" value="<?= stripslashes(
-                        htmlspecialchars($user_data['birthday'])
+                    htmlspecialchars($user_data['birthday'])
                 ) ?>" /-->
                 <?php //=tag_helper::select('age', $ages, array('use_values' => true, 'value' => $user_data['age']))?>
             </td>
@@ -94,36 +62,160 @@
         <tr>
             <td class="aright"><?= t('Пол') ?></td>
             <td>
-                <input type="radio" name="gender" value="m" <?= $user_data['gender'] == 'm' ? 'checked' : '' ?> />
-                <label for="gender_m"><?= t('Мужской') ?></label>
+                <label>
+                    <input type="radio" name="gender" value="m" <?= $user_data['gender'] == 'm' ? 'checked' : '' ?> />
+                    <?= t('Мужской') ?>
+                </label>
+                <label>
+                    <input type="radio" name="gender" value="f" <?= $user_data['gender'] == 'f' ? 'checked' : '' ?> />
+                    <?= t('Женский') ?>
+                </label>
+            </td>
+        </tr>
+    </table>
 
-                <input type="radio" name="gender" value="f" <?= $user_data['gender'] == 'f' ? 'checked' : '' ?> />
-                <label for="gender_f"><?= t('Женский') ?></label>
-            </td>
-        </tr>
-        <tr>
-            <td class="aright"><?= t('Страна') ?></td>
-            <td class="aleft">
-                <select class="countries" name="country" data-value="<?= $user_data['country_id'] ?>"
-                        data-region-select="common_region" style="width:131px;"></select>
-            </td>
-        </tr>
 
-        <tr>
-            <td class="aright"><?= t('Регион') ?></td>
-            <td class="aleft">
-                <select id="common_region" name="region" data-value="<?= $user_data['region_id'] ?>"
-                        data-city-select="common_city" style="width:131px;"></select>
-            </td>
-        </tr>
+    <!--    <table class="fs12" style="width: 100%">-->
+    <!--        <tr>-->
+    <!--            <td class="aright">-->
+    <!--                <label for="locality_country">--><?php //= t('Страна') ?><!--</label>-->
+    <!--            </td>-->
+    <!--            <td class="aleft">-->
+    <!--                <select-->
+    <!--                        id="locality_country"-->
+    <!--                        name="locality[country]"-->
+    <!--                        style="width: 131px"-->
+    <!--                        onload="new Locality(this)"-->
+    <!--                ></select>-->
+    <!--                --><?php // tag_helper::select('country', [], [
+    //                    'style' => 'width: 131px;',
+    //                    'data-value' => $user_data['country_id'],
+    //                    'data-tag' => 'locality',
+    //                ]) ?>
+    <!--            </td>-->
+    <!--        </tr>-->
+    <!--        <tr>-->
+    <!--            <td class="aright">--><?php //= t('Регион') ?><!--</td>-->
+    <!--            <td class="aleft">-->
+    <!--                <select-->
+    <!--                        id="locality_region"-->
+    <!--                        name="locality[region]"-->
+    <!--                        style="width: 131px"-->
+    <!--                        onload="new Locality(this)"-->
+    <!--                ></select>-->
+    <!--                --><?php //= tag_helper::select('region', [], [
+    //                    'style' => 'width: 130px;',
+    //                    'data-value' => $user_data['region_id'],
+    //                    'data-tag' => 'locality',
+    ////                    'data-depends-on' => 'country',
+    //                ]) ?>
+    <!--            </td>-->
+    <!--        </tr>-->
+    <!--        <tr>-->
+    <!--            <td class="aright">--><?php //= sprintf('%s / %s', t('Город'), t('Район')) ?><!--</td>-->
+    <!--            <td class="aleft">-->
+    <!--                --><?php //= tag_helper::select('district', [], [
+    //                    'style' => 'width: 130px;',
+    //                    'data-value' => $user_data['district_id'],
+    //                    'data-tag' => 'locality',
+    //                ]) ?>
+    <!--            </td>-->
+    <!--        </tr>-->
+    <!--        <tr>-->
+    <!--            <td class="aright">--><?php //= t('Громада') ?><!--</td>-->
+    <!--            <td class="aleft">-->
+    <!--                --><?php //= tag_helper::select('community', [], [
+    //                    'style' => 'width: 130px;',
+    //                    'data-tag' => 'locality',
+    //                ]) ?>
+    <!--            </td>-->
+    <!--        </tr>-->
+    <!--        <tr>-->
+    <!--            <td class="aright">--><?php //= t('Населений пункт') ?><!--</td>-->
+    <!--            <td class="aleft">-->
+    <!--                --><?php //= tag_helper::select('city', [], [
+    //                    'style' => 'width: 130px;',
+    //                    'data-tag' => 'locality',
+    //                ]) ?>
+    <!--            </td>-->
+    <!--        </tr>-->
+    <!--    </table>-->
 
-        <tr>
-            <td class="aright"><?= t('Город') ?></td>
-            <td class="aleft">
-                <select id="common_city" name="city" data-value="<?= $user_data['city_id'] ?>"
-                        style="width:131px;"></select>
-            </td>
-        </tr>
+    <div class="container my-2 py-3" style="border-top: 1px solid #387ceb; border-bottom: 1px solid #387ceb;"
+         data-container="locality"
+         onload="new Locality(this, this.querySelector(':scope> div select[name=\'locality[country]\']'))">
+
+        <input type="hidden" name="locality[id]"
+               value="<?= user_locality_peer::instance()->get_item($user_data['user_id']) ?>"/>
+
+        <div class="row">
+            <label class="col-3 col-form-label col-form-label-sm text-end fs-6"><?= t('Страна') ?></label>
+            <div class="col-3">
+                <select name="locality[country]"
+                        class="form-select form-select-sm"
+                        aria-label="<?= t('Страна') ?>"
+                        onchange="this.locality.region(this)">
+                <option disabled selected hidden><?= t('Выберите страну') ?></option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-3 col-form-label col-form-label-sm text-end fs-6"><?= t('Регион') ?></label>
+            <div class="col-3">
+                <select name="locality[region]"
+                        class="form-select form-select-sm"
+                        aria-label="<?= t('Регион') ?>"
+                        onchange="this.locality.district(this)">
+                    <option disabled selected hidden><?= t('Выберите регион') ?></option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-3 col-form-label col-form-label-sm text-end fs-6"><?= t('Район') ?></label>
+            <div class="col-3">
+                <select name="locality[district]"
+                        class="form-select form-select-sm"
+                        aria-label="<?= t('Район') ?>"
+                        onchange="this.locality.community(this)">
+                    <option disabled selected hidden><?= t('Выберите город или район') ?></option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-3 col-form-label col-form-label-sm text-end fs-6"><?= t('Громада') ?></label>
+            <div class="col-3">
+                <select name="locality[community]"
+                        class="form-select form-select-sm"
+                        aria-label="<?= t('Громада') ?>"
+                        onchange="this.locality.city(this)">
+                    <option disabled selected hidden><?= t('Выберите громаду') ?></option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-3 col-form-label col-form-label-sm text-end fs-6"><?= t('Населений пункт') ?></label>
+            <div class="col-3">
+                <select name="locality[city]"
+                        class="form-select form-select-sm"
+                        aria-label="<?= t('Населений пункт') ?>"
+                        onchange="this.locality.area(this)">
+                    <option disabled selected hidden><?= t('Выберите населений пункт') ?></option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-3 col-form-label col-form-label-sm text-end fs-6"><?= t('Район') ?></label>
+            <div class="col-3">
+                <select name="locality[area]"
+                        class="form-select form-select-sm"
+                        aria-label="<?= t('Район') ?>">
+                    <option disabled selected hidden><?= t('Выберите район в городе') ?></option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <table class="fs12" style="width: 100%">
         <tr>
             <td class="aright"><?= t('Место проживания') ?><br>
                 <span class="cgray fs11"><?= t('населенный пункт') ?></span>
@@ -146,7 +238,7 @@
         <tr class="shadr <?= ($user_data['street'] || $user_data['house']) ? '' : 'hidden' ?>">
             <td class="aright"><?= t('Показывать в профиле') ?></td>
             <td class="shadr">
-                <input class="showadrop" value="1" <?= db_key::i()->exists("showadrop_" . $uid) ? 'checked' : '' ?>
+                <input class="showadrop" value="1" <?= db_key::i()->exists("showadrop_".$uid) ? 'checked' : '' ?>
                        type="checkbox" name="showadrop"/>
             </td>
         </tr>
@@ -166,14 +258,14 @@
                     ksort($regions);
                     ?>
                     <?= tag_helper::select(
-                            'party_region',
-                            $regions,
-                            [
-                                    'use_values' => false,
-                                    'value'      => $user_data['party_region_id'],
-                                    'id'         => 'party_region',
-                                    'rel'        => t('Выберите регион'),
-                            ]
+                        'party_region',
+                        $regions,
+                        [
+                            'use_values' => false,
+                            'value' => $user_data['party_region_id'],
+                            'id' => 'party_region',
+                            'rel' => t('Выберите регион'),
+                        ]
                     ); ?>
                 </td>
             </tr>
@@ -182,21 +274,23 @@
                 <td>
                     <?php if ($user_data['party_region_id'] > 0 and $user_data['party_region_id'] != 10000 and $user_data['party_region_id'] != 9999) {
                         $cities = geo_peer::instance()->get_cities($user_data['party_region_id']);
-                    } else if ($user_data['party_country_id'] > 1) {
-                        $cities['10000'] = 'закордон';
                     } else {
-                        $cities[''] = '&mdash;';
+                        if ($user_data['party_country_id'] > 1) {
+                            $cities['10000'] = 'закордон';
+                        } else {
+                            $cities[''] = '&mdash;';
+                        }
                     } ?>
 
                     <?= tag_helper::select(
-                            'party_city',
-                            $cities,
-                            [
-                                    'use_values' => false,
-                                    'value'      => $user_data['party_city_id'],
-                                    'id'         => 'party_city',
-                                    'rel'        => t('Выберите город/район'),
-                            ]
+                        'party_city',
+                        $cities,
+                        [
+                            'use_values' => false,
+                            'value' => $user_data['party_city_id'],
+                            'id' => 'party_city',
+                            'rel' => t('Выберите город/район'),
+                        ]
                     ); ?>
                 </td>
             </tr>
@@ -213,24 +307,24 @@
             ksort($sferas);
             ?>
             <td><?= tag_helper::select(
-                        'segment',
-                        $sferas,
-                        ['use_values' => false, 'value' => $user_data['segment']]
+                    'segment',
+                    $sferas,
+                    ['use_values' => false, 'value' => $user_data['segment']]
                 ) ?></td>
         </tr>
         <tr>
             <td class="aright"><?= t('Дополнительная сфера') ?></td>
             <td><?= tag_helper::select(
-                        'additional_segment',
-                        $sferas,
-                        ['use_values' => false, 'value' => $user_data['additional_segment']]
+                    'additional_segment',
+                    $sferas,
+                    ['use_values' => false, 'value' => $user_data['additional_segment']]
                 ) ?></td>
         </tr>
         <tr>
             <td class="aright"><?= t('Дополнительная информация') ?></td>
             <td><textarea style="height: 75px; width: 400px;"
                           name="additional_info"><?= stripslashes(
-                            htmlspecialchars($user_data['additional_info'])
+                        htmlspecialchars($user_data['additional_info'])
                     ) ?></textarea>
             </td>
         </tr>
@@ -274,7 +368,7 @@
                 <td><a href="javascript:;" class="shareprofile"><?= t('Выбрать') ?></a>
                     <table class="m0">
                         <tr id="uchasniki"></tr>
-                        <?php if (!empty($share_users[0])) {
+                        <?php if ( ! empty($share_users[0])) {
                             foreach ($share_users as $su) {
                                 ?>
                                 <tr id="member<?= $su ?>">

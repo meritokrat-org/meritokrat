@@ -34,7 +34,7 @@
 <div class="p10 box_content" <?=(!request::get_int('region'))?'style="display:none;"':''?> id="regions">
 	<ul class="mb5">
 		<? foreach ( geo_peer::instance()->get_regions(1) as $region_id => $title ) { ?>
-		<li><a href="/events/?region=<?=$region_id?>" <?=(request::get_int('region')==$region_id)?'class="bold"':''?> style="margin: 1px;"><?=$title?></a><div style="color:#660000" class="right fs11 bold"><?=db::get_scalar('SELECT count(user_id) FROM events WHERE region_id=:region_id',array('region_id'=>$region_id))?></div></li>
+		<li><a href="/events/?region=<?=$region_id?>" <?=(request::get_int('region')==$region_id)?'class="bold"':''?> style="margin: 1px;"><?=$title?></a><div style="color: black" class="right fs11 bold"><?=db::get_scalar('SELECT count(user_id) FROM events WHERE region_id=:region_id',array('region_id'=>$region_id))?></div></li>
 	<? } ?>
 	</ul>
 </div>

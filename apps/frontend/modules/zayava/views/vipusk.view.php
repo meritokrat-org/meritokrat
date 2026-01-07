@@ -8,7 +8,7 @@
 		<style type="text/css">
 			a
 			{
-				color: #600;
+				color: black;
 			}
 		</style>
 	</head>

@@ -78,14 +78,35 @@ $com_cnt  = db::get_scalar(
         ) ?>
         <div class="mt5 quiet fs11">
             <?php if (count($head) > 0) { ?>
-                <?= t(ppo_members_peer::FUNCTIONS[$head[0]['function']]) ?>: <?= user_helper::full_name(
-                        $head[0]['user_id'],
+                <?php foreach ($head as $item) {?>
+                <?= t(ppo_members_peer::FUNCTIONS[$item['function']]) ?>: <?= user_helper::full_name(
+                        $item['user_id'],
                         true,
                         [],
                         false
                 ) ?>
+                <?php } ?>
             <?php } else { ?>
                 <?= t('Голова') ?>: <?= t('Отсутсвует') ?>
+            <?php } ?>
+        </div>
+
+        <?php $head = db::get_rows(
+            'select user_id, "function" from ppo_members where group_id = :ppoId and "function" in (2, 6) order by "function"',
+            ['ppoId' => $group['id']]
+        ) ?>
+        <div class="mt5 quiet fs11">
+            <?php if (count($head) > 0) { ?>
+                <?php foreach ($head as $item) {?>
+                    <?= t(ppo_members_peer::FUNCTIONS[$item['function']]) ?>: <?= user_helper::full_name(
+                        $item['user_id'],
+                        true,
+                        [],
+                        false
+                    ) ?>
+                <?php } ?>
+            <?php } else { ?>
+                <?= t('Руководитель секретариата') ?>: <?= t('Отсутсвует') ?>
             <?php } ?>
         </div>
 

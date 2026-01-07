@@ -53,7 +53,7 @@
 
         <?php if (($user_old['offline'] || $user_old['del']) && $user_old['why']) { ?>
             <div class="clear"></div>
-            <div class="mb10 ml10"><span style="font-weight:bold;color:#660000"><?= t('Причина удаления') ?>
+            <div class="mb10 ml10"><span style="font-weight:bold;color: black"><?= t('Причина удаления') ?>
                     :</span> <?= $user_old['why'] ?></div>
         <?php } ?>
 

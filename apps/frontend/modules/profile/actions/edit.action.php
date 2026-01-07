@@ -2,6 +2,7 @@
 
 load::model('ppo/ppo');
 load::model('ppo/members');
+load::model('user/locality');
 
 class profile_edit_action extends frontend_controller
 {
@@ -10,25 +11,25 @@ class profile_edit_action extends frontend_controller
 
     public function execute()
     {
-        if (!$user_id = request::get_int('id')) {
+        if ( ! $user_id = request::get_int('id')) {
             $user_id = session::get_user_id();
         }
 
-        if (!session::get('prof_lang')) {
+        if ( ! session::get('prof_lang')) {
             session::set('prof_lang', session::get('language', $code));
         }
 
         load::model('user/user_shevchenko_data');
 
-        $user       = user_auth_peer::instance()->get_item($user_id);
+        $user = user_auth_peer::instance()->get_item($user_id);
         $this->rkey = "public_profile_index_".request::get_int('id');
-        $this->uid  = $user_id;
+        $this->uid = $user_id;
 
         if (request::get_int('id') && request::get_int('id') !== session::get_user_id()) {
             if (session::has_credential('admin')) {
                 $this->access = 1;
             } else {
-                if (!strpos($user['credentials'], 'admin')) {
+                if ( ! strpos($user['credentials'], 'admin')) {
                     load::model('user/user_desktop');
                     $udata = user_data_peer::instance()->get_item(request::get_int('id'));
                     $adata = user_auth_peer::instance()->get_item(request::get_int('id'));
@@ -37,7 +38,7 @@ class profile_edit_action extends frontend_controller
                         session::get_user_id(),
                         true
                     );
-                    $raion_coordinator  = user_desktop_peer::instance()->is_raion_coordinator(
+                    $raion_coordinator = user_desktop_peer::instance()->is_raion_coordinator(
                         session::get_user_id(),
                         true
                     );
@@ -64,10 +65,10 @@ class profile_edit_action extends frontend_controller
         }
 
         if ($this->access) {
-            $user_id    = request::get_int('id');
+            $user_id = request::get_int('id');
             $this->user = $user;
         } else {
-            $user_id    = session::get_user_id();
+            $user_id = session::get_user_id();
             $this->user = user_auth_peer::instance()->get_item(session::get_user_id());
         }
 
@@ -103,9 +104,9 @@ class profile_edit_action extends frontend_controller
             load::model('user/user_work_party');
             load::model('user/user_work_election');
             load::model('user/user_work_action');
-            $this->work_party    = user_work_party_peer::instance()->get_user($user_id);
+            $this->work_party = user_work_party_peer::instance()->get_user($user_id);
             $this->work_election = user_work_election_peer::instance()->get_user($user_id);
-            $this->work_action   = user_work_action_peer::instance()->get_user($user_id);
+            $this->work_action = user_work_action_peer::instance()->get_user($user_id);
         }
 
         load::view_helper('user');
@@ -120,7 +121,7 @@ class profile_edit_action extends frontend_controller
         if (request::get('submit')) {
             $this->set_renderer('ajax');
             $this->json = [];
-            $user_data  = user_data_peer::instance()->get_item($user_id);
+            $user_data = user_data_peer::instance()->get_item($user_id);
             if (request::get_int('public') === 1) {
                 db_key::i()->set($this->rkey, 1);
             } else {
@@ -128,82 +129,76 @@ class profile_edit_action extends frontend_controller
             }
 
             if (request::get('type') === 'common') {
-                user_data_peer::instance()->update(
-                    [
-                        'user_id'   => $user_id,
-                        'birthday'  => date('Y-m-d', user_helper::dateval('birthday')),
-                        '_birthday' => json_encode(
-                            array_filter(
-                                [
-                                    'd' => request::get_int('birthday_day'),
-                                    'm' => request::get_int('birthday_month'),
-                                    'y' => request::get_int('birthday_year'),
-                                ],
-                                static function ($v) {
-                                    return (int) $v > 0;
-                                }
-                            )
-                        ),
-                    ]
-                );
+                user_data_peer::instance()->update([
+                    'user_id' => $user_id,
+                    'birthday' => date('Y-m-d', user_helper::dateval('birthday')),
+                    '_birthday' => json_encode(array_filter([
+                        'd' => request::get_int('birthday_day'),
+                        'm' => request::get_int('birthday_month'),
+                        'y' => request::get_int('birthday_year'),
+                    ], static function ($v) {
+                        return (int)$v > 0;
+                    })),
+                ]);
 
                 request::get_int('party_city') ? $party_city = request::get_int('party_city') : $party_city = 0;
-                //request::get_int('party_region') ? $party_region=request::get_int('party_region') : $party_region=request::get_int('region');
+                // request::get_int('party_region') ? $party_region=request::get_int('party_region') : $party_region=request::get_int('region');
                 $party_region = request::get_int('party_region');
 
-                user_data_peer::instance()->update(
-                    [
-                        'user_id'                      => $user_id,
-                        'first_name' => mb_substr(trim(request::get_string('first_name')), 0, 64),
-                        'last_name' => mb_substr(trim(request::get_string('last_name')), 0, 64),
-                        // $this->user_data["first_name"] === mb_substr(
-                        //     trim(request::get_string('first_name')),
-                        //     0,
-                        //     64
-                        // ) ? "first_name" : 'new_fname' => mb_substr(trim(request::get_string('first_name')), 0, 64),
-                        // $this->user_data["last_name"] == mb_substr(
-                        //     trim(request::get_string('last_name')),
-                        //     0,
-                        //     64
-                        // ) ? "last_name" : 'new_lname'  =>  mb_substr(trim(request::get_string('last_name')), 0, 64),
-                        'father_name'                  => mb_substr(trim(request::get_string('father_name')), 0, 64),
-                        'location'                     => mb_substr(request::get_string('location'), 0, 128),
-                        'last_location'                => mb_substr(request::get_string('last_location'), 0, 256),
-                        'position'                     => mb_substr(request::get_string('position'), 0, 128),
-                        'city_id'                      => request::get_int('city', 0),
-                        'region_id'                    => request::get_int('region', 0),
-                        'city'                         => request::get_string('city_txt', ""),
-                        'region'                       => request::get_string("region_txt", ""),
-                        'country_id'                   => request::get_int('country'),
-                        'party_city_id'                => $party_city,
-                        'party_region_id'              => $party_region,
-                        'party_location'               => mb_substr(request::get_string('party_location'), 0, 128),
-                        'segment'                      => request::get_int('segment'),
-                        'additional_segment'           => request::get_int('additional_segment'),
-                        //'age' => request::get_int('age'),
-                        'gender'                       => request::get_string('gender'),
-                        'email'                        => request::get_string('email'),
-                        'language'                     => request::get_string('language'),
-                        'about'                        => mb_substr(request::get('about'), 0, 8096),
-                        'street'                       => mb_substr(trim(request::get_string('street')), 0, 128),
-                        'house'                        => mb_substr(trim(request::get_string('house')), 0, 8),
-                        'additional_info'              => request::get_string('additional_info'),
-                    ]
-                );
+                user_data_peer::instance()->update([
+                    'user_id' => $user_id,
+                    'first_name' => mb_substr(trim(request::get_string('first_name')), 0, 64),
+                    'last_name' => mb_substr(trim(request::get_string('last_name')), 0, 64),
+                    // $this->user_data["first_name"] === mb_substr(
+                    //     trim(request::get_string('first_name')),
+                    //     0,
+                    //     64
+                    // ) ? "first_name" : 'new_fname' => mb_substr(trim(request::get_string('first_name')), 0, 64),
+                    // $this->user_data["last_name"] == mb_substr(
+                    //     trim(request::get_string('last_name')),
+                    //     0,
+                    //     64
+                    // ) ? "last_name" : 'new_lname'  =>  mb_substr(trim(request::get_string('last_name')), 0, 64),
+                    'father_name' => mb_substr(trim(request::get_string('father_name')), 0, 64),
+                    'location' => mb_substr(request::get_string('location'), 0, 128),
+                    'last_location' => mb_substr(request::get_string('last_location'), 0, 256),
+                    'position' => mb_substr(request::get_string('position'), 0, 128),
+//                    'city_id' => request::get_int('city', 0),
+//                    'region_id' => request::get_int('region', 0),
+//                    'city' => request::get_string('city_txt', ""),
+//                    'region' => request::get_string("region_txt", ""),
+//                    'country_id' => request::get_int('country'),
+                    'party_city_id' => $party_city,
+                    'party_region_id' => $party_region,
+                    'party_location' => mb_substr(request::get_string('party_location'), 0, 128),
+                    'segment' => request::get_int('segment'),
+                    'additional_segment' => request::get_int('additional_segment'),
+                    //'age' => request::get_int('age'),
+                    'gender' => request::get_string('gender'),
+                    'email' => request::get_string('email'),
+                    'language' => request::get_string('language'),
+                    'about' => mb_substr(request::get('about'), 0, 8096),
+                    'street' => mb_substr(trim(request::get_string('street')), 0, 128),
+                    'house' => mb_substr(trim(request::get_string('house')), 0, 8),
+                    'additional_info' => request::get_string('additional_info'),
+                ]);
 
-                if (session::get('prof_lang') == 'en' &&
-                    trim(request::get_string('first_name')) != '' && trim(
+                $locality = request::get('locality');
+                user_locality_peer::instance()->synchronize($user_id, $locality['id']);
+
+                var_dump($locality);
+
+                if (session::get('prof_lang') == 'en' && trim(request::get_string('first_name')) != '' && trim(
                         request::get_string('last_name')
-                    ) != '' && $this->user['en'] == false
-                ) {
+                    ) != '' && $this->user['en'] == false) {
                     user_auth_peer::instance()->update(["en" => true]);
                 }
 
-                if ((session::get('prof_lang') == 'ua' || session::get('prof_lang') == 'ru') &&
-                    trim(request::get_string('first_name')) != '' && trim(
+                if ((session::get('prof_lang') == 'ua' || session::get('prof_lang') == 'ru') && trim(
+                        request::get_string('first_name')
+                    ) != '' && trim(
                         request::get_string('last_name')
-                    ) != '' && $this->user['ru'] == false
-                ) {
+                    ) != '' && $this->user['ru'] == false) {
                     user_auth_peer::instance()->update(["ru" => true]);
                 }
 
@@ -226,7 +221,7 @@ class profile_edit_action extends frontend_controller
                 if (request::get_string('father_name', false)) {
                     user_shevchenko_data_peer::instance()->update(
                         [
-                            'user_id'    => $user_id,
+                            'user_id' => $user_id,
                             'fathername' => mb_substr(trim(request::get_string('father_name')), 0, 64),
                         ]
                     );
@@ -235,7 +230,7 @@ class profile_edit_action extends frontend_controller
 
                 $status = request::get_int('ustatus');
 
-                if (!session::has_credential('admin') and (mb_substr(
+                if ( ! session::has_credential('admin') and (mb_substr(
                             trim(request::get_string('first_name')),
                             0,
                             64
@@ -256,8 +251,8 @@ class profile_edit_action extends frontend_controller
                           )
                           ); */
                         $options = [
-                            '%name%'     => user_helper::full_name($user_id, false),
-                            '%newname%'  => '<a href="http://'.context::get('host').'/profile-'.$user_id.'">'.mb_substr(
+                            '%name%' => user_helper::full_name($user_id, false),
+                            '%newname%' => '<a href="http://'.context::get('host').'/profile-'.$user_id.'">'.mb_substr(
                                     trim(request::get_string('last_name')),
                                     0,
                                     64
@@ -273,120 +268,120 @@ class profile_edit_action extends frontend_controller
             if (request::get('type') === 'work_space') {
                 user_data_peer::instance()->update(
                     [
-                        'user_id'            => $user_id,
-                        'koordinator'        => request::get_int('koordinator', 0),
+                        'user_id' => $user_id,
+                        'koordinator' => request::get_int('koordinator', 0),
                         'brochure_remaining' => request::get_int('brochure_remaining'),
-                        'brochure_given'     => request::get_int('brochure_given'),
+                        'brochure_given' => request::get_int('brochure_given'),
                     ]
                 );
             } else {
                 if (request::get('type') === 'education') {
                     user_education_peer::instance()->update(
                         [
-                            'user_id'                   => $user_id,
-                            'midle_edu_country'         => mb_substr(
+                            'user_id' => $user_id,
+                            'midle_edu_country' => mb_substr(
                                 trim(request::get_string('midle_edu_country')),
                                 0,
                                 50
                             ),
-                            'midle_edu_city'            => mb_substr(
+                            'midle_edu_city' => mb_substr(
                                 trim(request::get_string('midle_edu_city')),
                                 0,
                                 80
                             ),
-                            'midle_edu_name'            => mb_substr(
+                            'midle_edu_name' => mb_substr(
                                 trim(request::get_string('midle_edu_name')),
                                 0,
                                 50
                             ),
-                            'midle_edu_admission'       => mb_substr(
+                            'midle_edu_admission' => mb_substr(
                                 trim(request::get_string('midle_edu_admission')),
                                 0,
                                 20
                             ),
-                            'midle_edu_graduation'      => mb_substr(
+                            'midle_edu_graduation' => mb_substr(
                                 trim(request::get_string('midle_edu_graduation')),
                                 0,
                                 20
                             ),
-                            'smidle_edu_country'        => mb_substr(
+                            'smidle_edu_country' => mb_substr(
                                 trim(request::get_string('smidle_edu_country')),
                                 0,
                                 50
                             ),
-                            'smidle_edu_city'           => mb_substr(
+                            'smidle_edu_city' => mb_substr(
                                 trim(request::get_string('smidle_edu_city')),
                                 0,
                                 128
                             ),
-                            'smidle_edu_name'           => mb_substr(
+                            'smidle_edu_name' => mb_substr(
                                 trim(request::get_string('smidle_edu_name')),
                                 0,
                                 128
                             ),
-                            'smidle_edu_admission'      => mb_substr(
+                            'smidle_edu_admission' => mb_substr(
                                 trim(request::get_string('smidle_edu_admission')),
                                 0,
                                 20
                             ),
-                            'smidle_edu_graduation'     => mb_substr(
+                            'smidle_edu_graduation' => mb_substr(
                                 trim(request::get_string('smidle_edu_graduation')),
                                 0,
                                 20
                             ),
-                            'major_edu_country'         => mb_substr(
+                            'major_edu_country' => mb_substr(
                                 trim(request::get_string('major_edu_country')),
                                 0,
                                 50
                             ),
-                            'major_edu_city'            => mb_substr(
+                            'major_edu_city' => mb_substr(
                                 trim(request::get_string('major_edu_city')),
                                 0,
                                 80
                             ),
-                            'major_edu_name'            => mb_substr(
+                            'major_edu_name' => mb_substr(
                                 trim(request::get_string('major_edu_name')),
                                 0,
                                 128
                             ),
-                            'major_edu_faculty'         => mb_substr(
+                            'major_edu_faculty' => mb_substr(
                                 trim(request::get_string('major_edu_faculty')),
                                 0,
                                 128
                             ),
-                            'major_edu_department'      => mb_substr(
+                            'major_edu_department' => mb_substr(
                                 trim(request::get_string('major_edu_department')),
                                 0,
                                 128
                             ),
-                            'major_edu_form'            => request::get_int('major_edu_form'),
-                            'major_edu_status'          => request::get_int('major_edu_status'),
-                            'major_edu_admission'       => mb_substr(
+                            'major_edu_form' => request::get_int('major_edu_form'),
+                            'major_edu_status' => request::get_int('major_edu_status'),
+                            'major_edu_admission' => mb_substr(
                                 trim(request::get_string('major_edu_admission')),
                                 0,
                                 20
                             ),
-                            'major_edu_graduation'      => mb_substr(
+                            'major_edu_graduation' => mb_substr(
                                 trim(request::get_string('major_edu_graduation')),
                                 0,
                                 20
                             ),
-                            'additional_edu_country'    => mb_substr(
+                            'additional_edu_country' => mb_substr(
                                 trim(request::get_string('additional_edu_country')),
                                 0,
                                 50
                             ),
-                            'additional_edu_city'       => mb_substr(
+                            'additional_edu_city' => mb_substr(
                                 trim(request::get_string('additional_edu_city')),
                                 0,
                                 80
                             ),
-                            'additional_edu_name'       => mb_substr(
+                            'additional_edu_name' => mb_substr(
                                 trim(request::get_string('additional_edu_name')),
                                 0,
                                 128
                             ),
-                            'additional_edu_faculty'    => mb_substr(
+                            'additional_edu_faculty' => mb_substr(
                                 trim(request::get_string('additional_edu_faculty')),
                                 0,
                                 128
@@ -396,9 +391,9 @@ class profile_edit_action extends frontend_controller
                                 0,
                                 80
                             ),
-                            'additional_edu_form'       => request::get_int('additional_edu_form'),
-                            'additional_edu_status'     => request::get_int('additional_edu_status'),
-                            'additional_edu_admission'  => mb_substr(
+                            'additional_edu_form' => request::get_int('additional_edu_form'),
+                            'additional_edu_status' => request::get_int('additional_edu_status'),
+                            'additional_edu_admission' => mb_substr(
                                 trim(request::get_string('additional_edu_admission')),
                                 0,
                                 20
@@ -408,71 +403,71 @@ class profile_edit_action extends frontend_controller
                                 0,
                                 20
                             ),
-                            'another_edu'               => trim(request::get_string('another_edu')),
+                            'another_edu' => trim(request::get_string('another_edu')),
                         ]
                     );
-                } //work
+                } // work
 
 
                 else {
                     if (request::get('type') === 'work') {
                         user_work_peer::instance()->update(
                             [
-                                'user_id'             => $user_id,
-                                'last_work_country'   => mb_substr(
+                                'user_id' => $user_id,
+                                'last_work_country' => mb_substr(
                                     trim(request::get_string('last_work_country')),
                                     0,
                                     50
                                 ),
-                                'last_work_city'      => mb_substr(trim(request::get_string('last_work_city')), 0, 80),
-                                'last_work_name'      => mb_substr(trim(request::get_string('last_work_name')), 0, 128),
-                                'last_position'       => mb_substr(trim(request::get_string('last_position')), 0, 128),
+                                'last_work_city' => mb_substr(trim(request::get_string('last_work_city')), 0, 80),
+                                'last_work_name' => mb_substr(trim(request::get_string('last_work_name')), 0, 128),
+                                'last_position' => mb_substr(trim(request::get_string('last_position')), 0, 128),
                                 'last_work_admission' => mb_substr(
                                     trim(request::get_string('last_work_admission')),
                                     0,
                                     20
                                 ),
-                                'last_work_end'       => mb_substr(trim(request::get_string('last_work_end')), 0, 20),
-                                'work_country'        => mb_substr(trim(request::get_string('work_country')), 0, 50),
-                                'work_city'           => mb_substr(trim(request::get_string('work_city')), 0, 80),
-                                'work_name'           => mb_substr(trim(request::get_string('work_name')), 0, 128),
-                                'position'            => mb_substr(trim(request::get_string('position')), 0, 128),
-                                'work_admission'      => mb_substr(trim(request::get_string('work_admission')), 0, 20),
-                                'expert'              => trim(request::get_string('expert')),
-                                'specialty'           => trim(request::get_string('specialty')),
-                                'work_jobsearch'      => request::get_int('jobsearch'),
+                                'last_work_end' => mb_substr(trim(request::get_string('last_work_end')), 0, 20),
+                                'work_country' => mb_substr(trim(request::get_string('work_country')), 0, 50),
+                                'work_city' => mb_substr(trim(request::get_string('work_city')), 0, 80),
+                                'work_name' => mb_substr(trim(request::get_string('work_name')), 0, 128),
+                                'position' => mb_substr(trim(request::get_string('position')), 0, 128),
+                                'work_admission' => mb_substr(trim(request::get_string('work_admission')), 0, 20),
+                                'expert' => trim(request::get_string('expert')),
+                                'specialty' => trim(request::get_string('specialty')),
+                                'work_jobsearch' => request::get_int('jobsearch'),
                             ]
                         );
-                    } //work
+                    } // work
 
 
                     else {
                         if (request::get('type') === 'bio') {
                             user_bio_peer::instance()->update(
                                 [
-                                    'user_id'              => $user_id,
-                                    'birth_family'         => request::get_string('birth_family'),
-                                    'major_education'      => request::get_string('major_education'),
-                                    'work'                 => request::get_string('work'),
-                                    'society'              => request::get_string('society'),
-                                    'politika'             => request::get_string('politika'),
-                                    'science'              => request::get_string('science'),
+                                    'user_id' => $user_id,
+                                    'birth_family' => request::get_string('birth_family'),
+                                    'major_education' => request::get_string('major_education'),
+                                    'work' => request::get_string('work'),
+                                    'society' => request::get_string('society'),
+                                    'politika' => request::get_string('politika'),
+                                    'science' => request::get_string('science'),
                                     'additional_education' => request::get_string('additional_education'),
-                                    'progress'             => request::get_string('progress'),
-                                    'other'                => request::get_string('other'),
+                                    'progress' => request::get_string('progress'),
+                                    'other' => request::get_string('other'),
                                 ]
                             );
                         } else {
                             if (request::get('type') === 'interests') {
                                 user_data_peer::instance()->update(
                                     [
-                                        'user_id'   => $user_id,
+                                        'user_id' => $user_id,
                                         'interests' => request::get_string('interests'),
-                                        'books'     => request::get_string('books'),
-                                        'films'     => request::get_string('films'),
-                                        'sites'     => request::get_string('sites'),
-                                        'music'     => request::get_string('music'),
-                                        'leisure'   => request::get_string('leisure'),
+                                        'books' => request::get_string('books'),
+                                        'films' => request::get_string('films'),
+                                        'sites' => request::get_string('sites'),
+                                        'music' => request::get_string('music'),
+                                        'leisure' => request::get_string('leisure'),
                                     ]
                                 );
                             } else {
@@ -483,17 +478,17 @@ class profile_edit_action extends frontend_controller
                                     }
                                     user_data_peer::instance()->update(
                                         [
-                                            'user_id'    => $user_id,
-                                            'mobile'     => mb_substr(trim(request::get_string('mobile')), 0, 35),
+                                            'user_id' => $user_id,
+                                            'mobile' => mb_substr(trim(request::get_string('mobile')), 0, 35),
                                             'work_phone' => mb_substr(trim(request::get_string('work_phone')), 0, 35),
                                             'home_phone' => mb_substr(trim(request::get_string('home_phone')), 0, 35),
-                                            'phone'      => mb_substr(trim(request::get_string('phone')), 0, 35),
-                                            'site'       => $site,
-                                            'icq'        => mb_substr(trim(request::get_string('icq')), 0, 15),
-                                            'skype'      => mb_substr(trim(request::get_string('skype')), 0, 50),
-                                            'contacts'   => serialize(request::get('contacts')),
-                                            'email'      => request::get('email'),
-                                            'about'      => mb_substr(request::get('about'), 0, 8096),
+                                            'phone' => mb_substr(trim(request::get_string('phone')), 0, 35),
+                                            'site' => $site,
+                                            'icq' => mb_substr(trim(request::get_string('icq')), 0, 15),
+                                            'skype' => mb_substr(trim(request::get_string('skype')), 0, 50),
+                                            'contacts' => serialize(request::get('contacts')),
+                                            'email' => request::get('email'),
+                                            'about' => mb_substr(request::get('about'), 0, 8096),
                                         ]
                                     );
                                 } else {
@@ -502,13 +497,13 @@ class profile_edit_action extends frontend_controller
                                         if ($email && strpos(
                                                 $email,
                                                 '@'
-                                            ) && ($email != $this->user['email']) && !request::get_int('doonline')) {
+                                            ) && ($email != $this->user['email']) && ! request::get_int('doonline')) {
                                             if (user_auth_peer::instance()->get_by_email($email, false)) {
                                                 $this->json = ['errors' => ['aemail' => ['Этот email уже используется']]];
                                             } else {
                                                 user_auth_peer::instance()->update(
                                                     [
-                                                        'id'    => $this->user['id'],
+                                                        'id' => $this->user['id'],
                                                         'email' => strtolower($email),
                                                     ]
                                                 );
@@ -520,19 +515,19 @@ class profile_edit_action extends frontend_controller
                                                 if (user_auth_peer::instance()->get_by_email($email, false)) {
                                                     $this->json = ['errors' => ['aemail' => ['Этот email уже используется']]];
                                                 } else {
-                                                    if (!trim(request::get_string('new_password')) || trim(
+                                                    if ( ! trim(request::get_string('new_password')) || trim(
                                                             request::get_string('new_password')
                                                         ) == 'offline') {
                                                         $this->json = ['errors' => ['new_password' => ['Введите пароль']]];
                                                     } else {
                                                         user_auth_peer::instance()->update(
                                                             [
-                                                                'id'       => $this->user['id'],
-                                                                'email'    => strtolower($email),
+                                                                'id' => $this->user['id'],
+                                                                'email' => strtolower($email),
                                                                 'password' => md5(
                                                                     trim(request::get_string('new_password'))
                                                                 ),
-                                                                'offline'  => 0,
+                                                                'offline' => 0,
                                                             ]
                                                         );
                                                     }
@@ -542,10 +537,10 @@ class profile_edit_action extends frontend_controller
                                             }
                                         }
 
-                                        if (request::get_string('new_password') && !request::get_int('doonline')) {
+                                        if (request::get_string('new_password') && ! request::get_int('doonline')) {
                                             user_auth_peer::instance()->update(
                                                 [
-                                                    'id'       => $this->user['id'],
+                                                    'id' => $this->user['id'],
                                                     'password' => md5(request::get_string('new_password')),
                                                 ]
                                             );
@@ -553,42 +548,42 @@ class profile_edit_action extends frontend_controller
 
                                         user_data_peer::instance()->update(
                                             [
-                                                'user_id'        => $user_id,
-                                                'notify'         => request::get_bool('notify'),
+                                                'user_id' => $user_id,
+                                                'notify' => request::get_bool('notify'),
                                                 'contact_access' => request::get_int('contact_access'),
-                                                'share_users'    => "{".implode(
+                                                'share_users' => "{".implode(
                                                         ",",
-                                                        (array) request::get('members')
+                                                        (array)request::get('members')
                                                     )."}",
                                             ]
                                         );
                                         user_auth_peer::instance()->update(
                                             [
-                                                'id'     => $this->user['id'],
+                                                'id' => $this->user['id'],
                                                 'suslik' => request::get_int('suslik'),
                                             ]
                                         );
                                         user_mail_access_peer::instance()->update(
                                             [
-                                                'user_id'                => $user_id,
-                                                'messages_compose'       => request::get_int('messages_compose'),
-                                                'blogs_comment'          => request::get_int('blogs_comment'),
-                                                'polls_comment'          => request::get_int('polls_comment'),
-                                                'messages_wall'          => request::get_int('messages_wall'),
-                                                'invites_add_group'      => request::get_int('invites_add_group'),
-                                                'invites_add_event'      => request::get_int('invites_add_event'),
-                                                'friends_make'           => request::get_int('friends_make'),
-                                                'admin_feed'             => request::get_int('admin_feed'),
-                                                'messages_spam'          => request::get_int('messages_spam'),
+                                                'user_id' => $user_id,
+                                                'messages_compose' => request::get_int('messages_compose'),
+                                                'blogs_comment' => request::get_int('blogs_comment'),
+                                                'polls_comment' => request::get_int('polls_comment'),
+                                                'messages_wall' => request::get_int('messages_wall'),
+                                                'invites_add_group' => request::get_int('invites_add_group'),
+                                                'invites_add_event' => request::get_int('invites_add_event'),
+                                                'friends_make' => request::get_int('friends_make'),
+                                                'admin_feed' => request::get_int('admin_feed'),
+                                                'messages_spam' => request::get_int('messages_spam'),
                                                 'profile_delete_process' => request::get_int('profile_delete_process'),
-                                                'groups_join'            => request::get_int('groups_join'),
-                                                'profile_edit'           => request::get_int('profile_edit'),
-                                                'profile_invite'         => request::get_int('profile_invite'),
-                                                'groups_create'          => request::get_int('groups_create'),
-                                                'comment_comment'        => request::get_int('comment_comment'),
-                                                'eventreport_send'       => request::get_int('eventreport_send'),
-                                                'event_agitation'        => request::get_int('event_agitation'),
-                                                'admin_profile_delete'   => request::get_int('admin_profile_delete'),
+                                                'groups_join' => request::get_int('groups_join'),
+                                                'profile_edit' => request::get_int('profile_edit'),
+                                                'profile_invite' => request::get_int('profile_invite'),
+                                                'groups_create' => request::get_int('groups_create'),
+                                                'comment_comment' => request::get_int('comment_comment'),
+                                                'eventreport_send' => request::get_int('eventreport_send'),
+                                                'event_agitation' => request::get_int('event_agitation'),
+                                                'admin_profile_delete' => request::get_int('admin_profile_delete'),
                                             ]
                                         );
                                     } else {
@@ -605,15 +600,14 @@ class profile_edit_action extends frontend_controller
                                             if (request::get('type') === 'photo') {
                                                 $user_auth = user_auth_peer::instance()->get_item($user_id);
 
-                                                if (session::has_credential('admin')
-                                                    || in_array(
+                                                if (session::has_credential('admin') || in_array(
                                                         session::get_user_id(),
                                                         [request::get_int('id'), $user_auth['offline']],
                                                         true
                                                     )) {
                                                     $user_id = request::get_int('id');
                                                 } else {
-                                                    $user_id    = session::get_user_id();
+                                                    $user_id = session::get_user_id();
                                                     $this->json = ['errors' => 'No rights!'];
                                                 }
 
@@ -627,7 +621,7 @@ class profile_edit_action extends frontend_controller
                                                     $storage = new storage_simple();
 
                                                     $user_data = user_data_peer::instance()->get_item($user_id);
-                                                    $old_salt  = $user_data['new_photo_salt'] ?: $user_data['photo_salt'];
+                                                    $old_salt = $user_data['new_photo_salt'] ?: $user_data['photo_salt'];
 
                                                     $salt = user_data_peer::instance()->regenerate_photo_salt(
                                                         $user_id,
@@ -635,7 +629,7 @@ class profile_edit_action extends frontend_controller
                                                     );
                                                     user_data_peer::instance()->update(
                                                         [
-                                                            'user_id'    => $user_id,
+                                                            'user_id' => $user_id,
                                                             'photo_salt' => $salt,
                                                         ]
                                                     );
@@ -648,10 +642,10 @@ class profile_edit_action extends frontend_controller
                                                     $H = $size[1];
 
                                                     if ($W > $H * 0.7777) {
-                                                        $width  = $H * 0.77777;
+                                                        $width = $H * 0.77777;
                                                         $height = $H;
                                                     } else {
-                                                        $width  = $W;
+                                                        $width = $W;
                                                         $height = $W * 1.285;
                                                     }
 
@@ -659,7 +653,7 @@ class profile_edit_action extends frontend_controller
                                                     $y = ($H - $height) / 2;
 
 
-                                                    #if(db_key::i()->exists('new_crop_coord_user_'.$user_id))
+                                                    # if(db_key::i()->exists('new_crop_coord_user_'.$user_id))
                                                     #        db_key::i()->delete('new_crop_coord_user_'.$user_id);
 
                                                     $redis_data = implode('-', [$x, $y, $width, $height]);
@@ -681,16 +675,16 @@ class profile_edit_action extends frontend_controller
                                                         load::model('messages/messages');
                                                         messages_peer::instance()->add(
                                                             [
-                                                                'sender_id'   => 31,
+                                                                'sender_id' => 31,
                                                                 'receiver_id' => session::get_user_id(),
-                                                                'body'        => t(
+                                                                'body' => t(
                                                                     'Внимание! Вы загрузили очень маленькое фото, поэтому качество очень низкое. Пожалуйста, загрузите фото большего размера.'
                                                                 ),
                                                             ]
                                                         );
                                                     }
 
-                                                    //user_helper::photo_watermark($crop_key, $user_auth['status'], intval($user_auth['expert']));
+                                                    // user_helper::photo_watermark($crop_key, $user_auth['status'], intval($user_auth['expert']));
 
                                                     $image_types = conf::get('image_types');
 
@@ -702,7 +696,7 @@ class profile_edit_action extends frontend_controller
                                                 } else {
                                                     $this->json = ['errors' => $form->get_errors()];
                                                 }
-                                            } //admin_info
+                                            } // admin_info
                                             else {
                                                 if (request::get('type') === 'admin_info' && session::has_credential(
                                                         'admin'
@@ -711,8 +705,8 @@ class profile_edit_action extends frontend_controller
                                                     if ($user['user_id']) {
                                                         user_shevchenko_data_peer::instance()->update(
                                                             [
-                                                                'user_id'    => $user_id,
-                                                                'fname'      => mb_substr(
+                                                                'user_id' => $user_id,
+                                                                'fname' => mb_substr(
                                                                     trim(request::get_string('fname')),
                                                                     0,
                                                                     64
@@ -722,136 +716,136 @@ class profile_edit_action extends frontend_controller
                                                                     0,
                                                                     64
                                                                 ),
-                                                                'sname'      => mb_substr(
+                                                                'sname' => mb_substr(
                                                                     trim(request::get_string('sname')),
                                                                     0,
                                                                     64
                                                                 ),
-                                                                'country'    => request::get_int('country'),
-                                                                'region'     => request::get_int('region'),
-                                                                'district'   => request::get_int('district'),
-                                                                'location'   => mb_substr(
+                                                                'country' => request::get_int('country'),
+                                                                'region' => request::get_int('region'),
+                                                                'district' => request::get_int('district'),
+                                                                'location' => mb_substr(
                                                                     trim(request::get_string('location')),
                                                                     0,
                                                                     128
                                                                 ),
-                                                                'age'        => mb_substr(
+                                                                'age' => mb_substr(
                                                                     trim(request::get_string('age')),
                                                                     0,
                                                                     64
                                                                 ),
-                                                                'sex'        => request::get_int('sex'),
-                                                                'sfera'      => mb_substr(
+                                                                'sex' => request::get_int('sex'),
+                                                                'sfera' => mb_substr(
                                                                     trim(request::get_string('sfera')),
                                                                     0,
                                                                     128
                                                                 ),
-                                                                'activity'   => request::get_int('activity'),
-                                                                'activitya'  => mb_substr(
+                                                                'activity' => request::get_int('activity'),
+                                                                'activitya' => mb_substr(
                                                                     trim(request::get_string('activitya')),
                                                                     0,
                                                                     128
                                                                 ),
-                                                                'activity2'  => request::get_int('activity2'),
+                                                                'activity2' => request::get_int('activity2'),
                                                                 'activitya2' => mb_substr(
                                                                     trim(request::get_string('activitya2')),
                                                                     0,
                                                                     128
                                                                 ),
-                                                                'about'      => mb_substr(
+                                                                'about' => mb_substr(
                                                                     trim(request::get_string('about')),
                                                                     0,
                                                                     250
                                                                 ),
-                                                                'referer'    => request::get_int('referer'),
-                                                                'rsocial'    => (request::get(
+                                                                'referer' => request::get_int('referer'),
+                                                                'rsocial' => (request::get(
                                                                         'rsocial'
                                                                     ) != 'other') ? mb_substr(
                                                                     trim(request::get_string('rsocial')),
                                                                     0,
                                                                     128
                                                                 ) : request::get('another_rsocial'),
-                                                                'ranother'   => (request::get_int(
+                                                                'ranother' => (request::get_int(
                                                                         'referer'
                                                                     ) == 6) ? request::get('ranother') : "",
-                                                                'influence'  => mb_substr(
+                                                                'influence' => mb_substr(
                                                                     trim(request::get_string('influence')),
                                                                     0,
                                                                     128
                                                                 ),
                                                                 'email_lang' => request::get_int('email_lang'),
-                                                                'is_public'  => request::get_int('is_public'),
+                                                                'is_public' => request::get_int('is_public'),
                                                             ]
                                                         );
                                                     } else {
                                                         user_shevchenko_data_peer::instance()->insert(
                                                             [
-                                                                'user_id'       => $user_id,
-                                                                'fname'         => mb_substr(
+                                                                'user_id' => $user_id,
+                                                                'fname' => mb_substr(
                                                                     trim(request::get_string('fname')),
                                                                     0,
                                                                     64
                                                                 ),
-                                                                'fathername'    => mb_substr(
+                                                                'fathername' => mb_substr(
                                                                     trim(request::get_string('fathername')),
                                                                     0,
                                                                     64
                                                                 ),
-                                                                'sname'         => mb_substr(
+                                                                'sname' => mb_substr(
                                                                     trim(request::get_string('sname')),
                                                                     0,
                                                                     64
                                                                 ),
-                                                                'country'       => request::get_int('country'),
-                                                                'region'        => request::get_int('region'),
-                                                                'district'      => request::get_int('district'),
-                                                                'location'      => mb_substr(
+                                                                'country' => request::get_int('country'),
+                                                                'region' => request::get_int('region'),
+                                                                'district' => request::get_int('district'),
+                                                                'location' => mb_substr(
                                                                     trim(request::get_string('location')),
                                                                     0,
                                                                     128
                                                                 ),
-                                                                'age'           => mb_substr(
+                                                                'age' => mb_substr(
                                                                     trim(request::get_string('age')),
                                                                     0,
                                                                     64
                                                                 ),
-                                                                'sex'           => request::get_int('sex'),
-                                                                'sfera'         => mb_substr(
+                                                                'sex' => request::get_int('sex'),
+                                                                'sfera' => mb_substr(
                                                                     trim(request::get_string('sfera')),
                                                                     0,
                                                                     128
                                                                 ),
-                                                                'activity'      => request::get_int('activity'),
-                                                                'activitya'     => mb_substr(
+                                                                'activity' => request::get_int('activity'),
+                                                                'activitya' => mb_substr(
                                                                     trim(request::get_string('activitya')),
                                                                     0,
                                                                     128
                                                                 ),
-                                                                'activity2'     => request::get_int('activity2'),
-                                                                'activitya2'    => mb_substr(
+                                                                'activity2' => request::get_int('activity2'),
+                                                                'activitya2' => mb_substr(
                                                                     trim(request::get_string('activitya2')),
                                                                     0,
                                                                     128
                                                                 ),
-                                                                'about'         => request::get_string('about'),
-                                                                'referer'       => request::get_int('referer'),
-                                                                'rsocial'       => (request::get(
+                                                                'about' => request::get_string('about'),
+                                                                'referer' => request::get_int('referer'),
+                                                                'rsocial' => (request::get(
                                                                         'rsocial'
                                                                     ) != 'other') ? mb_substr(
                                                                     trim(request::get_string('rsocial')),
                                                                     0,
                                                                     128
                                                                 ) : request::get('another_rsocial'),
-                                                                'ranother'      => (request::get_int(
+                                                                'ranother' => (request::get_int(
                                                                         'referer'
                                                                     ) == 6) ? request::get('ranother') : "",
-                                                                'influence'     => mb_substr(
+                                                                'influence' => mb_substr(
                                                                     trim(request::get_string('influence')),
                                                                     0,
                                                                     128
                                                                 ),
-                                                                'email_lang'    => request::get_int('email_lang'),
-                                                                'is_public'     => request::get_int('is_public'),
+                                                                'email_lang' => request::get_int('email_lang'),
+                                                                'is_public' => request::get_int('is_public'),
                                                                 'shevchenko_id' => request::get_int('shevchenko_id'),
                                                             ]
                                                         );
@@ -863,7 +857,7 @@ class profile_edit_action extends frontend_controller
                                                             [
                                                                 'user_id' => $user_id,
                                                                 'notates' => request::get_string('notates'),
-                                                                'status'  => request::get_int('status'),
+                                                                'status' => request::get_int('status'),
                                                             ]
                                                         );
                                                     } else {
@@ -871,28 +865,28 @@ class profile_edit_action extends frontend_controller
                                                             [
                                                                 'user_id' => $user_id,
                                                                 'notates' => request::get_string('notates'),
-                                                                'status'  => request::get_int('status'),
+                                                                'status' => request::get_int('status'),
                                                             ]
                                                         );
                                                     }
 
                                                     $ud = [
-                                                        "user_id"     => $user_id,
-                                                        "why_join"    => request::get("why_join"),
-                                                        "can_do"      => serialize(request::get("can_do")),
+                                                        "user_id" => $user_id,
+                                                        "why_join" => request::get("why_join"),
+                                                        "can_do" => serialize(request::get("can_do")),
                                                         "can_do_text" => strip_tags(request::get("can_do_text")),
                                                     ];
                                                     user_data_peer::instance()->update($ud);
-                                                } //contact_info
+                                                } // contact_info
                                                 else {
                                                     if (request::get(
                                                             'type'
                                                         ) === 'contact_info' && session::has_credential(
                                                             'admin'
                                                         )) {
-                                                        $date        = request::get('idate');
-                                                        $type        = request::get('types');
-                                                        $who         = request::get('who');
+                                                        $date = request::get('idate');
+                                                        $type = request::get('types');
+                                                        $who = request::get('who');
                                                         $description = request::get('description');
 
                                                         $items = user_contact_peer::instance()->get_user($user_id);
@@ -904,7 +898,7 @@ class profile_edit_action extends frontend_controller
                                                             foreach ($description as $k => $v) {
                                                                 if (trim($v) != '') {
                                                                     $time = explode('/', $date[$k]);
-                                                                    if (!$time[0] && !$time[1] && !$time[2]) {
+                                                                    if ( ! $time[0] && ! $time[1] && ! $time[2]) {
                                                                         $time = time();
                                                                     } else {
                                                                         $time = mktime(
@@ -918,12 +912,12 @@ class profile_edit_action extends frontend_controller
                                                                     }
                                                                     user_contact_peer::instance()->insert(
                                                                         [
-                                                                            'user_id'      => $user_id,
+                                                                            'user_id' => $user_id,
                                                                             'contacter_id' => session::get_user_id(),
-                                                                            'date'         => $time,
-                                                                            'type'         => $type[$k],
-                                                                            'who'          => $who[$k],
-                                                                            'description'  => trim($v),
+                                                                            'date' => $time,
+                                                                            'type' => $type[$k],
+                                                                            'who' => $who[$k],
+                                                                            'description' => trim($v),
                                                                         ]
                                                                     );
                                                                 }
@@ -932,7 +926,7 @@ class profile_edit_action extends frontend_controller
 
                                                         user_data_peer::instance()->update(
                                                             [
-                                                                'user_id'        => $user_id,
+                                                                'user_id' => $user_id,
                                                                 'contact_status' => request::get_int('contact_status'),
                                                             ]
                                                         );
@@ -943,25 +937,25 @@ class profile_edit_action extends frontend_controller
                                                         if ($novasys['user_id']) {
                                                             user_novasys_data_peer::instance()->update(
                                                                 [
-                                                                    'user_id'      => $user_id,
+                                                                    'user_id' => $user_id,
                                                                     'all_contacts' => mb_substr(
                                                                         trim(request::get_string('all_contacts')),
                                                                         0,
                                                                         250
                                                                     ),
-                                                                    'contacted'    => request::get_int('contacted'),
+                                                                    'contacted' => request::get_int('contacted'),
                                                                 ]
                                                             );
                                                         } else {
                                                             user_novasys_data_peer::instance()->insert(
                                                                 [
-                                                                    'user_id'      => $user_id,
+                                                                    'user_id' => $user_id,
                                                                     'all_contacts' => mb_substr(
                                                                         trim(request::get_string('all_contacts')),
                                                                         0,
                                                                         250
                                                                     ),
-                                                                    'contacted'    => request::get_int('contacted'),
+                                                                    'contacted' => request::get_int('contacted'),
                                                                 ]
                                                             );
                                                         }
@@ -1001,35 +995,35 @@ class profile_edit_action extends frontend_controller
                                                                     break;
 
                                                                 case 6:
-                                                                    $coordinators = [2641]; //Чаплига
+                                                                    $coordinators = [2641]; // Чаплига
                                                                     break;
 
 
                                                                 case 7:
-                                                                    $coordinators = [1299]; //Шульцева
+                                                                    $coordinators = [1299]; // Шульцева
                                                                     break;
 
                                                                 case 8:
-                                                                    $coordinators = [2]; //Коломіець
+                                                                    $coordinators = [2]; // Коломіець
                                                                     break;
                                                                 case 11:
-                                                                    $coordinators = [2464]; //Predstavitel` VNZ
+                                                                    $coordinators = [2464]; // Predstavitel` VNZ
                                                                     break;
                                                             }
                                                             if (count($coordinators) > 0) {
                                                                 load::action_helper('user_email', false);
                                                                 $options = [
                                                                     '%message%' => '',
-                                                                    '%name%'    => strip_tags(
+                                                                    '%name%' => strip_tags(
                                                                         user_helper::full_name($user_id)
                                                                     ),
-                                                                    '%link%'    => '<a href="http://'.conf::get(
+                                                                    '%link%' => '<a href="http://'.conf::get(
                                                                             'server'
                                                                         ).'/profile-'.$user_id.'">http://'.conf::get(
                                                                             'server'
                                                                         ).'/profile-'.$user_id.'</a>',
                                                                 ];
-                                                                $txt     = trim(
+                                                                $txt = trim(
                                                                     strip_tags(request::get('contactedtext'))
                                                                 );
                                                                 if ($txt != '') {
@@ -1057,7 +1051,7 @@ class profile_edit_action extends frontend_controller
                                                             if ($user_id) {
                                                                 user_data_peer::instance()->update(
                                                                     [
-                                                                        'user_id'        => $user_id,
+                                                                        'user_id' => $user_id,
                                                                         'contact_status' => request::get_int('status'),
                                                                     ]
                                                                 );
@@ -1074,23 +1068,23 @@ class profile_edit_action extends frontend_controller
                                                                 if ($user['user_id']) {
                                                                     user_novasys_data_peer::instance()->update(
                                                                         [
-                                                                            'user_id'  => $user_id,
-                                                                            'phone'    => mb_substr(
+                                                                            'user_id' => $user_id,
+                                                                            'phone' => mb_substr(
                                                                                 trim(request::get_string('phone')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'email0'   => mb_substr(
+                                                                            'email0' => mb_substr(
                                                                                 trim(request::get_string('email0')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'site'     => mb_substr(
+                                                                            'site' => mb_substr(
                                                                                 trim(request::get_string('site')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'mphone1'  => mb_substr(
+                                                                            'mphone1' => mb_substr(
                                                                                 trim(request::get_string('mphone1')),
                                                                                 0,
                                                                                 250
@@ -1100,97 +1094,97 @@ class profile_edit_action extends frontend_controller
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'fax1'     => mb_substr(
+                                                                            'fax1' => mb_substr(
                                                                                 trim(request::get_string('fax1')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'email1'   => mb_substr(
+                                                                            'email1' => mb_substr(
                                                                                 trim(request::get_string('email1')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'email1a'  => mb_substr(
+                                                                            'email1a' => mb_substr(
                                                                                 trim(request::get_string('email1a')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'site1'    => mb_substr(
+                                                                            'site1' => mb_substr(
                                                                                 trim(request::get_string('site1')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'skype1'   => mb_substr(
+                                                                            'skype1' => mb_substr(
                                                                                 trim(request::get_string('skype1')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'icq1'     => mb_substr(
+                                                                            'icq1' => mb_substr(
                                                                                 trim(request::get_string('icq1')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'phone2'   => mb_substr(
+                                                                            'phone2' => mb_substr(
                                                                                 trim(request::get_string('phone2')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'fax2'     => mb_substr(
+                                                                            'fax2' => mb_substr(
                                                                                 trim(request::get_string('fax2')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'email2'   => mb_substr(
+                                                                            'email2' => mb_substr(
                                                                                 trim(request::get_string('email2')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'site2'    => mb_substr(
+                                                                            'site2' => mb_substr(
                                                                                 trim(request::get_string('site2')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'name3'    => mb_substr(
+                                                                            'name3' => mb_substr(
                                                                                 trim(request::get_string('name3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'lname3'   => mb_substr(
+                                                                            'lname3' => mb_substr(
                                                                                 trim(request::get_string('lname3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'mname3'   => mb_substr(
+                                                                            'mname3' => mb_substr(
                                                                                 trim(request::get_string('mname3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'phone3'   => mb_substr(
+                                                                            'phone3' => mb_substr(
                                                                                 trim(request::get_string('phone3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'hphone3'  => mb_substr(
+                                                                            'hphone3' => mb_substr(
                                                                                 trim(request::get_string('hphone3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'mphone3'  => mb_substr(
+                                                                            'mphone3' => mb_substr(
                                                                                 trim(request::get_string('mphone3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'email3'   => mb_substr(
+                                                                            'email3' => mb_substr(
                                                                                 trim(request::get_string('email3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'skype3'   => mb_substr(
+                                                                            'skype3' => mb_substr(
                                                                                 trim(request::get_string('skype3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'icq3'     => mb_substr(
+                                                                            'icq3' => mb_substr(
                                                                                 trim(request::get_string('icq3')),
                                                                                 0,
                                                                                 250
@@ -1200,23 +1194,23 @@ class profile_edit_action extends frontend_controller
                                                                 } else {
                                                                     user_novasys_data_peer::instance()->insert(
                                                                         [
-                                                                            'user_id'  => $user_id,
-                                                                            'phone'    => mb_substr(
+                                                                            'user_id' => $user_id,
+                                                                            'phone' => mb_substr(
                                                                                 trim(request::get_string('phone')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'email0'   => mb_substr(
+                                                                            'email0' => mb_substr(
                                                                                 trim(request::get_string('email0')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'site'     => mb_substr(
+                                                                            'site' => mb_substr(
                                                                                 trim(request::get_string('site')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'mphone1'  => mb_substr(
+                                                                            'mphone1' => mb_substr(
                                                                                 trim(request::get_string('mphone1')),
                                                                                 0,
                                                                                 250
@@ -1226,97 +1220,97 @@ class profile_edit_action extends frontend_controller
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'fax1'     => mb_substr(
+                                                                            'fax1' => mb_substr(
                                                                                 trim(request::get_string('fax1')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'email1'   => mb_substr(
+                                                                            'email1' => mb_substr(
                                                                                 trim(request::get_string('email1')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'email1a'  => mb_substr(
+                                                                            'email1a' => mb_substr(
                                                                                 trim(request::get_string('email1a')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'site1'    => mb_substr(
+                                                                            'site1' => mb_substr(
                                                                                 trim(request::get_string('site1')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'skype1'   => mb_substr(
+                                                                            'skype1' => mb_substr(
                                                                                 trim(request::get_string('skype1')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'icq1'     => mb_substr(
+                                                                            'icq1' => mb_substr(
                                                                                 trim(request::get_string('icq1')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'phone2'   => mb_substr(
+                                                                            'phone2' => mb_substr(
                                                                                 trim(request::get_string('phone2')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'fax2'     => mb_substr(
+                                                                            'fax2' => mb_substr(
                                                                                 trim(request::get_string('fax2')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'email2'   => mb_substr(
+                                                                            'email2' => mb_substr(
                                                                                 trim(request::get_string('email2')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'site2'    => mb_substr(
+                                                                            'site2' => mb_substr(
                                                                                 trim(request::get_string('site2')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'name3'    => mb_substr(
+                                                                            'name3' => mb_substr(
                                                                                 trim(request::get_string('name3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'lname3'   => mb_substr(
+                                                                            'lname3' => mb_substr(
                                                                                 trim(request::get_string('lname3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'mname3'   => mb_substr(
+                                                                            'mname3' => mb_substr(
                                                                                 trim(request::get_string('mname3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'phone3'   => mb_substr(
+                                                                            'phone3' => mb_substr(
                                                                                 trim(request::get_string('phone3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'hphone3'  => mb_substr(
+                                                                            'hphone3' => mb_substr(
                                                                                 trim(request::get_string('hphone3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'mphone3'  => mb_substr(
+                                                                            'mphone3' => mb_substr(
                                                                                 trim(request::get_string('mphone3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'email3'   => mb_substr(
+                                                                            'email3' => mb_substr(
                                                                                 trim(request::get_string('email3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'skype3'   => mb_substr(
+                                                                            'skype3' => mb_substr(
                                                                                 trim(request::get_string('skype3')),
                                                                                 0,
                                                                                 250
                                                                             ),
-                                                                            'icq3'     => mb_substr(
+                                                                            'icq3' => mb_substr(
                                                                                 trim(request::get_string('icq3')),
                                                                                 0,
                                                                                 250
@@ -1330,7 +1324,7 @@ class profile_edit_action extends frontend_controller
                                                                     ) === 'political' && session::has_credential(
                                                                         'admin'
                                                                     )) {
-                                                                    $ppo  = request::get('ppo', []);
+                                                                    $ppo = request::get('ppo', []);
                                                                     $keys = ['private', 'city', 'region'];
 
                                                                     db::exec(
@@ -1341,7 +1335,7 @@ class profile_edit_action extends frontend_controller
                                                                         $ppoId = array_key_exists(
                                                                             $key,
                                                                             $ppo
-                                                                        ) ? (int) $ppo[$key] : 0;
+                                                                        ) ? (int)$ppo[$key] : 0;
 
                                                                         if ($ppoId > 0) {
                                                                             ppo_members_peer::instance()->add(
@@ -1354,40 +1348,40 @@ class profile_edit_action extends frontend_controller
 
                                                                     user_auth_peer::instance()->update(
                                                                         [
-                                                                            'id'  => $user_id,
+                                                                            'id' => $user_id,
                                                                             'ppo' => json_encode($ppo),
                                                                         ]
                                                                     );
 
-                                                                    $pname   = request::get('pname');
-                                                                    $psite   = request::get('psite');
-                                                                    $ppost   = request::get('ppost');
+                                                                    $pname = request::get('pname');
+                                                                    $psite = request::get('psite');
+                                                                    $ppost = request::get('ppost');
                                                                     $pstatus = request::get('pstatus');
-                                                                    $pstart  = user_helper::dateval('pstart', true);
-                                                                    $pend    = user_helper::dateval('pend', true);
+                                                                    $pstart = user_helper::dateval('pstart', true);
+                                                                    $pend = user_helper::dateval('pend', true);
                                                                     $pacting = request::get('pacting');
 
-                                                                    $eyear     = request::get('eyear');
-                                                                    $etype     = request::get('etype');
-                                                                    $estatus   = request::get('estatus');
-                                                                    $eregion   = request::get('eregion');
-                                                                    $ecity     = request::get('ecity');
+                                                                    $eyear = request::get('eyear');
+                                                                    $etype = request::get('etype');
+                                                                    $estatus = request::get('estatus');
+                                                                    $eregion = request::get('eregion');
+                                                                    $ecity = request::get('ecity');
                                                                     $elocation = request::get('elocation');
 
-                                                                    $astart    = user_helper::dateval('astart', true);
-                                                                    $aend      = user_helper::dateval('aend', true);
-                                                                    $apost     = request::get('apost');
-                                                                    $aregion   = request::get('aregion');
-                                                                    $acity     = request::get('acity');
+                                                                    $astart = user_helper::dateval('astart', true);
+                                                                    $aend = user_helper::dateval('aend', true);
+                                                                    $apost = request::get('apost');
+                                                                    $aregion = request::get('aregion');
+                                                                    $acity = request::get('acity');
                                                                     $alocation = request::get('alocation');
-                                                                    $aname     = request::get('aname');
+                                                                    $aname = request::get('aname');
 
                                                                     user_work_party_peer::instance()->del_user(
                                                                         $user_id
                                                                     );
                                                                     if (is_array(request::get('pname'))) {
                                                                         foreach ($pname as $k => $v) {
-                                                                            if (!$v) {
+                                                                            if ( ! $v) {
                                                                                 $this->json[] = [
                                                                                     'section' => '$pname',
                                                                                     'context' => [
@@ -1399,31 +1393,31 @@ class profile_edit_action extends frontend_controller
                                                                             user_work_party_peer::instance()->insert(
                                                                                 [
                                                                                     'user_id' => $user_id,
-                                                                                    'name'    => mb_substr(
+                                                                                    'name' => mb_substr(
                                                                                         trim($pname[$k]),
                                                                                         0,
                                                                                         128
                                                                                     ),
-                                                                                    'site'    => mb_substr(
+                                                                                    'site' => mb_substr(
                                                                                         trim($psite[$k]),
                                                                                         0,
                                                                                         128
                                                                                     ),
-                                                                                    'post'    => mb_substr(
+                                                                                    'post' => mb_substr(
                                                                                         trim($ppost[$k]),
                                                                                         0,
                                                                                         128
                                                                                     ),
-                                                                                    'status'  => intval($pstatus[$k]),
-                                                                                    'start'   => date(
+                                                                                    'status' => intval($pstatus[$k]),
+                                                                                    'start' => date(
                                                                                         "Y-m-d",
                                                                                         $pstart[$k]
                                                                                     ),
-                                                                                    'end'     => date(
+                                                                                    'end' => date(
                                                                                         "Y-m-d",
                                                                                         $pend[$k]
                                                                                     ),
-                                                                                    'acting'  => mb_substr(
+                                                                                    'acting' => mb_substr(
                                                                                         trim($pacting[$k]),
                                                                                         0,
                                                                                         128
@@ -1438,7 +1432,7 @@ class profile_edit_action extends frontend_controller
                                                                     );
                                                                     if (is_array(request::get('elocation'))) {
                                                                         foreach ($elocation as $k => $v) {
-                                                                            if (!$v || !$eregion[$k] || !$ecity[$k]) {
+                                                                            if ( ! $v || ! $eregion[$k] || ! $ecity[$k]) {
                                                                                 $this->json[] = [
                                                                                     'section' => '$elocation',
                                                                                     'context' => [
@@ -1451,12 +1445,12 @@ class profile_edit_action extends frontend_controller
                                                                             }
                                                                             user_work_election_peer::instance()->insert(
                                                                                 [
-                                                                                    'user_id'  => $user_id,
-                                                                                    'year'     => $eyear[$k],
-                                                                                    'type'     => $etype[$k],
-                                                                                    'status'   => $estatus[$k],
-                                                                                    'region'   => $eregion[$k],
-                                                                                    'city'     => $ecity[$k],
+                                                                                    'user_id' => $user_id,
+                                                                                    'year' => $eyear[$k],
+                                                                                    'type' => $etype[$k],
+                                                                                    'status' => $estatus[$k],
+                                                                                    'region' => $eregion[$k],
+                                                                                    'city' => $ecity[$k],
                                                                                     'location' => mb_substr(
                                                                                         trim($elocation[$k]),
                                                                                         0,
@@ -1472,7 +1466,7 @@ class profile_edit_action extends frontend_controller
                                                                     );
                                                                     if (is_array(request::get('alocation'))) {
                                                                         foreach ($apost as $k => $v) {
-                                                                            if (!$v) {
+                                                                            if ( ! $v) {
                                                                                 $this->json[] = [
                                                                                     'section' => '$apost',
                                                                                     'context' => [
@@ -1483,22 +1477,22 @@ class profile_edit_action extends frontend_controller
                                                                             }
                                                                             user_work_action_peer::instance()->insert(
                                                                                 [
-                                                                                    'user_id'  => $user_id,
-                                                                                    'start'    => date(
+                                                                                    'user_id' => $user_id,
+                                                                                    'start' => date(
                                                                                         "Y-m-d",
                                                                                         $astart[$k]
                                                                                     ),
-                                                                                    'end'      => date(
+                                                                                    'end' => date(
                                                                                         "Y-m-d",
                                                                                         $aend[$k]
                                                                                     ),
-                                                                                    'post'     => $apost[$k],
-                                                                                    'region'   => mb_substr(
+                                                                                    'post' => $apost[$k],
+                                                                                    'region' => mb_substr(
                                                                                         trim($aregion[$k]),
                                                                                         0,
                                                                                         128
                                                                                     ),
-                                                                                    'city'     => mb_substr(
+                                                                                    'city' => mb_substr(
                                                                                         trim($acity[$k]),
                                                                                         0,
                                                                                         128
@@ -1508,7 +1502,7 @@ class profile_edit_action extends frontend_controller
                                                                                         0,
                                                                                         128
                                                                                     ),
-                                                                                    'name'     => mb_substr(
+                                                                                    'name' => mb_substr(
                                                                                         trim($aname[$k]),
                                                                                         0,
                                                                                         128
@@ -1526,17 +1520,17 @@ class profile_edit_action extends frontend_controller
                                                                         ) : session::get_user_id();
                                                                         user_data_peer::instance()->update(
                                                                             [
-                                                                                'user_id'     => $user_id,
+                                                                                'user_id' => $user_id,
                                                                                 'locationlat' => request::get_string(
                                                                                     'LocationLat'
                                                                                 ),
                                                                                 'locationlng' => request::get_string(
                                                                                     'LocationLng'
                                                                                 ),
-                                                                                'MapZoom'     => request::get_string(
+                                                                                'MapZoom' => request::get_string(
                                                                                     'MapZoom'
                                                                                 ),
-                                                                                'onmap'       => request::get_int(
+                                                                                'onmap' => request::get_int(
                                                                                     'onmap'
                                                                                 ),
                                                                             ]
@@ -1577,7 +1571,7 @@ class profile_edit_action extends frontend_controller
 
     protected function check_empty_array($array)
     {
-        if (!is_array($array) || count($array) == 0) {
+        if ( ! is_array($array) || count($array) == 0) {
             $array = [''];
         }
 

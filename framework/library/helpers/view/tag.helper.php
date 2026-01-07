@@ -10,31 +10,66 @@ class tag_helper
             $server = conf::get('subdomains-disabled') ? context::get('server') : context::get('file_server');
         }
 
-        return $server . $src;
+        return $server.$src;
     }
 
-    public static function select($name, $data, $options = array())
+    public static function select($name, array $data, array $options = [])
     {
-        $options['name'] = $name;
+        $options = array_merge([
+            'name' => $name,
+            'autocomplete' => 'off',
+        ], $options);
 
-        if (!$options['use_values']) {
-            $options['use_values'] = false;
+        $use_values = false;
+        if (array_key_exists('use_values', $options)) {
+            $use_values = (bool)$options['use_values'];
+            unset($options['use_values']);
         }
 
-        $html = '<select ' . self::get_options_html($options) . '>';
-        foreach ($data as $key => $value) {
-            $val = ($options['use_values'] ? $value : $key);
-            if ($value !== '&mdash;') {
-                $value = htmlspecialchars($value);
+        $attributes = self::get_options_html($options);
+//        $html = '<select '.$attributes.'>';
+//        foreach ($data as $key => $value) {
+//            $val = ($options['use_values'] ? $value : $key);
+//            if ($value !== '&mdash;') {
+//                $value = htmlspecialchars($value);
+//            }
+//            $html .= '<option value="'.htmlspecialchars(
+//                    $val
+//                ).'" '.($val == $options['value'] ? 'selected' : '').'>'.$value.'</option>';
+//        }
+//
+//        $html .= '</select>';
+
+        $textMap = array_values($data);
+        $valueMap = $use_values ? $textMap : array_keys($data);
+
+        $children = implode(PHP_EOL, array_map(function ($text, $value) use ($options) {
+            $attributes = [];
+
+            if ($text !== '&mdash;') {
+                $text = htmlspecialchars($text);
             }
-            $html .= '<option value="' . htmlspecialchars(
-                    $val
-                ) . '" ' . ($val == $options['value'] ? 'selected' : '') . '>' . $value . '</option>';
-        }
 
-        $html .= '</select>';
+            if (
+                array_key_exists('value', $options)
+                && $options['value'] === $value
+            ) {
+                $attributes[] = 'selected';
+            }
 
-        return $html;
+            $attributes = implode(' ', $attributes);
+            if (!empty($attributes)) {
+                $attributes = sprintf(' %s', $attributes);
+            }
+
+            return <<<HTML
+<option value="$value"$attributes>$text</option>
+HTML;
+        }, $textMap, $valueMap));
+
+        return <<<HTML
+<select $attributes>$children</select>
+HTML;
     }
 
     public static function get_options_html($options)
@@ -42,13 +77,13 @@ class tag_helper
         $html = '';
 
         foreach ($options as $option => $value) {
-            $html .= ' ' . $option . '="' . htmlspecialchars($value) . '"';
+            $html .= ' '.$option.'="'.htmlspecialchars($value).'"';
         }
 
         return $html;
     }
 
-    public static function select_first_epmty($name, $data, $options = array())
+    public static function select_first_epmty($name, $data, $options = [])
     {
         $options['name'] = $name;
 
@@ -56,7 +91,7 @@ class tag_helper
             $options['use_values'] = false;
         }
 
-        $html = '<select ' . self::get_options_html($options) . '>';
+        $html = '<select '.self::get_options_html($options).'>';
         $data[-1] = '&mdash;';
         ksort($data);
         foreach ($data as $key => $value) {
@@ -74,7 +109,7 @@ class tag_helper
             if ($val == $options['value']) {
                 $selected = 'selected';
             }
-            $html .= '<option value="' . htmlspecialchars($val) . '" ' . $selected . '>' . $value . '</option>';
+            $html .= '<option value="'.htmlspecialchars($val).'" '.$selected.'>'.$value.'</option>';
         }
 
         $html .= '</select>';
@@ -115,39 +150,39 @@ class tag_helper
             $server = conf::get('subdomains-disabled') ? context::get('server') : context::get('static_server');
         }
 
-        return $server . $src;
+        return $server.$src;
     }
 
-    public static function tag($name, $options = array(), $block = false)
+    public static function tag($name, $options = [], $block = false)
     {
         $options_html = self::get_options_html($options);
 
-        return "<{$name}{$options_html}" . ($block ? "></{$name}>" : '/>');
+        return "<{$name}{$options_html}".($block ? "></{$name}>" : '/>');
     }
 
     public static function css($src)
     {
-        $src = $src . '?' . conf::get('static_hash', 1);
-        $src = (conf::get('subdomains-disabled') ? context::get('server') : context::get('static_server')) . $src;
+        $src = $src.'?'.conf::get('static_hash', 1);
+        $src = (conf::get('subdomains-disabled') ? context::get('server') : context::get('static_server')).$src;
 
-        $options = array(
+        $options = [
             'href' => $src,
             'rel' => 'stylesheet',
             'type' => 'text/css',
-        );
+        ];
 
         return self::tag('link', $options);
     }
 
     public static function js($src)
     {
-        $src = $src . (strpos($src, '?') !== false ? '&' : '?') . conf::get('static_hash', 1);
-        $src = (conf::get('subdomains-disabled') ? context::get('server') : context::get('static_server')) . $src;
+        $src = $src.(strpos($src, '?') !== false ? '&' : '?').conf::get('static_hash', 1);
+        $src = (conf::get('subdomains-disabled') ? context::get('server') : context::get('static_server')).$src;
 
-        $options = array(
+        $options = [
             'src' => $src,
             'type' => 'text/javascript',
-        );
+        ];
 
         return self::tag('script', $options, true);
     }
@@ -155,7 +190,7 @@ class tag_helper
     public static function rss()
     {
         if (self::$rss) {
-            $html = '<link rel="alternate" type="application/rss+xml" title="RSS" href="' . self::$rss . '">';
+            $html = '<link rel="alternate" type="application/rss+xml" title="RSS" href="'.self::$rss.'">';
 
             return $html;
         }
@@ -169,7 +204,7 @@ class tag_helper
         } else {
             $pos = mb_strpos($string, ' ', $num);
 
-            return mb_substr($string, 0, ($pos > 60 ? $pos : $num)) . ' ...';
+            return mb_substr($string, 0, ($pos > 60 ? $pos : $num)).' ...';
         }
     }
 }

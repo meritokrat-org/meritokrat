@@ -48,7 +48,7 @@ class Header implements ComponentInterface
                     </a>
                 </div>
                 <div class="d-flex flex-row align-items-center bg-white"></div>
-                <div class="d-flex flex-row align-items-center justify-content-end">
+                <div class="d-flex flex-row align-items-center justify-content-end gap-3">
                     <img alt="..." src="/static/images/common/header/header_2.svg" style="height: 2.5rem" />
                     <img alt="..." src="/static/images/common/header/header_3.svg" style="height: 2.5rem" />
                 </div>
@@ -113,7 +113,7 @@ return static function () {
                         ],
                         [
                             'href' => '/blogs/programs',
-                            'text' => 'Успішна Україна',
+                            'text' => 'Програма',
                         ],
                         [
                             'href' => '/blogs',
@@ -145,11 +145,11 @@ return static function () {
                             'text' => 'Результаты',
                             'icon' => '<i class="fas fa-poll"></i>',
                         ],
-                        [
-                            'href' => '/groups',
-                            'text' => 'Сообщества',
-                            'icon' => '<i class="fas fa-users"></i>',
-                        ],
+//                        [
+//                            'href' => '/groups',
+//                            'text' => 'Сообщества',
+//                            'icon' => '<i class="fas fa-users"></i>',
+//                        ],
                         [
                             'href' => '/polls',
                             'text' => 'Опросы',
